@@ -3,10 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/welcome_nav_graph"
-    app:startDestination="@id/loginFragment">
+    app:startDestination="@id/fragment_login">
     <fragment
-        android:id="@+id/loginFragment"
-        android:name="it.unimib.exercise.andrea.mediahandler.ui.login.LoginFragment"
+        android:id="@+id/fragment_login"
+        android:name="it.unimib.exercise.andrea.mediahandler.fragment_login"
         android:label="fragment_login"
-        tools:layout="@layout/fragment_login" />
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_fragment_login_to_activityMain"
+            app:destination="@id/activityMain" />
+    </fragment>
+    <activity
+        android:id="@+id/activityMain"
+        android:name="it.unimib.exercise.andrea.mediahandler.ActivityMain"
+        android:label="activity_main"
+        tools:layout="@layout/activity_main" />
 </navigation>
