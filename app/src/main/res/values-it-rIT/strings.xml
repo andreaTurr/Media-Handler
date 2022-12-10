@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Media Handler</string>
+    <string name="action_register">Registrati</string>
+    <string name="action_login">Accedi</string>
+    <string name="welcome">Benvenuto!</string>
+    <string name="invalid_username">Nome utente non valido</string>
+    <string name="invalid_password">La Password vede essere >5 caratteri</string>
+    <string name="login_failed">Accesso fallito</string>
+    <string name="txt_or">oppure</string>
+    <string name="forgot_password">Password dimenticata?</string>
+</resources>
