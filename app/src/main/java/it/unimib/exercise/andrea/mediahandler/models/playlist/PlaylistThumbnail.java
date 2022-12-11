@@ -3,11 +3,22 @@ package it.unimib.exercise.andrea.mediahandler.models.playlist;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.room.Embedded;
+
 import com.google.gson.annotations.SerializedName;
 
 public class PlaylistThumbnail implements Parcelable {
     @SerializedName("default")
+    @Embedded
     private PlaylistImg image;
+
+    public PlaylistImg getImage() {
+        return image;
+    }
+
+    public void setImage(PlaylistImg image) {
+        this.image = image;
+    }
 
     @Override
     public int describeContents() {

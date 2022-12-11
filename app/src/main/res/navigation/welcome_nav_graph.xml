@@ -12,10 +12,19 @@
         <action
             android:id="@+id/action_fragment_login_to_activityMain"
             app:destination="@id/activityMain" />
+        <action
+            android:id="@+id/action_fragment_login_to_activity_login_google"
+            app:destination="@id/activity_login_google" />
     </fragment>
     <activity
         android:id="@+id/activityMain"
         android:name="it.unimib.exercise.andrea.mediahandler.ui.ActivityMain"
         android:label="activity_main"
         tools:layout="@layout/activity_main" />
+
+    <activity
+        android:id="@+id/activity_login_google"
+        android:name="it.unimib.exercise.andrea.mediahandler.ui.Activity_login_google"
+        android:label="activity_login_google"
+        tools:layout="@layout/activity_login_google" />
 </navigation>

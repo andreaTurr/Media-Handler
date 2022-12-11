@@ -18,7 +18,7 @@ import it.unimib.exercise.andrea.mediahandler.models.playlist.Playlist;
  */
 @Dao
 public interface PlaylistDao {
-    @Query("SELECT * FROM playlist ORDER BY snippet DESC")
+    @Query("SELECT * FROM playlist ORDER BY id DESC")
     List<Playlist> getAll();
 
     @Query("SELECT * FROM playlist WHERE id = :id")

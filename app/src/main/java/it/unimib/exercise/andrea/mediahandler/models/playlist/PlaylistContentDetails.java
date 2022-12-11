@@ -6,6 +6,14 @@ import android.os.Parcelable;
 public class PlaylistContentDetails implements Parcelable {
     private int itemCount;
 
+    public int getItemCount() {
+        return itemCount;
+    }
+
+    public void setItemCount(int itemCount) {
+        this.itemCount = itemCount;
+    }
+
     @Override
     public int describeContents() {
         return 0;

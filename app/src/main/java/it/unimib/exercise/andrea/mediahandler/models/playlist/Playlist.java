@@ -3,8 +3,12 @@ package it.unimib.exercise.andrea.mediahandler.models.playlist;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+
+import com.google.gson.annotations.SerializedName;
 
 /**
  * Class to represent the playlist of youtube API v3
@@ -15,7 +19,9 @@ public class Playlist implements Parcelable {
     // Used for Room
     @PrimaryKey(autoGenerate = true)
     private long id;
+    @Embedded
     private PlaylistSnippet snippet;
+    @Embedded
     private PlaylistContentDetails contentDetails;
 
     //getter and setters
