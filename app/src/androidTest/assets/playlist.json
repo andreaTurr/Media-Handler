@@ -1,0 +1,277 @@
+{
+  "kind": "youtube#playlistListResponse",
+  "etag": "vAm-2LxgPM5fyg7cuXl4r8XvwUg",
+  "pageInfo": {
+    "totalResults": 7,
+    "resultsPerPage": 25
+  },
+  "items": [
+    {
+      "kind": "youtube#playlist",
+      "etag": "-b26djWg26gvy2MCCxoECmKcAKk",
+      "id": "PLsizmByY7_uV0J7feYX4pta_05SV5SkJr",
+      "snippet": {
+        "publishedAt": "2021-09-26T16:12:02Z",
+        "channelId": "UCzzit8rp0wGwd5gvryshQ-A",
+        "title": "Tutorials",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/fis26HvvDII/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/fis26HvvDII/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/fis26HvvDII/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/fis26HvvDII/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/fis26HvvDII/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "Andrea326",
+        "localized": {
+          "title": "Tutorials",
+          "description": ""
+        }
+      },
+      "contentDetails": {
+        "itemCount": 6
+      }
+    },
+    {
+      "kind": "youtube#playlist",
+      "etag": "yIG20WYVlnjvQ3V3ke1whPZ5Yd4",
+      "id": "PLsizmByY7_uW4DSQyoNiSSq7MpInCQBlI",
+      "snippet": {
+        "publishedAt": "2020-06-07T11:18:49Z",
+        "channelId": "UCzzit8rp0wGwd5gvryshQ-A",
+        "title": "relax anime",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/AXiZZdwMs1c/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/AXiZZdwMs1c/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/AXiZZdwMs1c/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/AXiZZdwMs1c/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/AXiZZdwMs1c/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "Andrea326",
+        "localized": {
+          "title": "relax anime",
+          "description": ""
+        }
+      },
+      "contentDetails": {
+        "itemCount": 3
+      }
+    },
+    {
+      "kind": "youtube#playlist",
+      "etag": "w5ZP5sR8oUPM5dyTXmXBj-Bllm4",
+      "id": "PLsizmByY7_uVA4VRiVF3mMxmJHBItBg6h",
+      "snippet": {
+        "publishedAt": "2020-04-01T18:24:56Z",
+        "channelId": "UCzzit8rp0wGwd5gvryshQ-A",
+        "title": "canzoni (:",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/SnXkhkEvNIM/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/SnXkhkEvNIM/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/SnXkhkEvNIM/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/SnXkhkEvNIM/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/SnXkhkEvNIM/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "Andrea326",
+        "localized": {
+          "title": "canzoni (:",
+          "description": ""
+        }
+      },
+      "contentDetails": {
+        "itemCount": 12
+      }
+    },
+    {
+      "kind": "youtube#playlist",
+      "etag": "2DwwcyNC9oTDUrII5QyAGdQn84g",
+      "id": "PLsizmByY7_uX44Ff31aWvg7WY6CZzswvu",
+      "snippet": {
+        "publishedAt": "2019-10-16T18:03:38Z",
+        "channelId": "UCzzit8rp0wGwd5gvryshQ-A",
+        "title": "sad",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/TYoxHskCnSo/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/TYoxHskCnSo/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/TYoxHskCnSo/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "Andrea326",
+        "localized": {
+          "title": "sad",
+          "description": ""
+        }
+      },
+      "contentDetails": {
+        "itemCount": 2
+      }
+    },
+    {
+      "kind": "youtube#playlist",
+      "etag": "wDT-bzxlda5WT1A-acEDZPwAKyE",
+      "id": "PLsizmByY7_uWmSW5DEvuKWsj6vllcEYc-",
+      "snippet": {
+        "publishedAt": "2019-04-30T17:48:31Z",
+        "channelId": "UCzzit8rp0wGwd5gvryshQ-A",
+        "title": "mike da guardare",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/h9ZYPRpD098/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/h9ZYPRpD098/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/h9ZYPRpD098/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/h9ZYPRpD098/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/h9ZYPRpD098/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "Andrea326",
+        "localized": {
+          "title": "mike da guardare",
+          "description": ""
+        }
+      },
+      "contentDetails": {
+        "itemCount": 3
+      }
+    },
+    {
+      "kind": "youtube#playlist",
+      "etag": "OxO5dLnSyE-g4uUM9G3Ib05G3dw",
+      "id": "FLzzit8rp0wGwd5gvryshQ-A",
+      "snippet": {
+        "publishedAt": "2013-12-27T00:12:45Z",
+        "channelId": "UCzzit8rp0wGwd5gvryshQ-A",
+        "title": "Favorites",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/kCOnV12B56w/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/kCOnV12B56w/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/kCOnV12B56w/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/kCOnV12B56w/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/kCOnV12B56w/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "Andrea326",
+        "defaultLanguage": "en",
+        "localized": {
+          "title": "Favorites",
+          "description": ""
+        }
+      },
+      "contentDetails": {
+        "itemCount": 26
+      }
+    }
+  ]
+}

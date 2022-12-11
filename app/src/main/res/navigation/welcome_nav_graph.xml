@@ -6,7 +6,7 @@
     app:startDestination="@id/fragment_login">
     <fragment
         android:id="@+id/fragment_login"
-        android:name="it.unimib.exercise.andrea.mediahandler.fragment_login"
+        android:name="it.unimib.exercise.andrea.mediahandler.ui.fragment_login"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
@@ -15,7 +15,7 @@
     </fragment>
     <activity
         android:id="@+id/activityMain"
-        android:name="it.unimib.exercise.andrea.mediahandler.ActivityMain"
+        android:name="it.unimib.exercise.andrea.mediahandler.ui.ActivityMain"
         android:label="activity_main"
         tools:layout="@layout/activity_main" />
 </navigation>

@@ -16,4 +16,5 @@
     <string name="bottom_nav_text1">first</string>
     <string name="bottom_nav_text2">second</string>
     <string name="delete">Delete</string>
+    <string name="error_retrieving_playlist">error retrieving plalysts</string>
 </resources>

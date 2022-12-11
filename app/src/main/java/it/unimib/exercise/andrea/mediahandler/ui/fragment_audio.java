@@ -1,23 +1,21 @@
-package it.unimib.exercise.andrea.mediahandler;
+package it.unimib.exercise.andrea.mediahandler.ui;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.material.navigation.NavigationBarView;
+import it.unimib.exercise.andrea.mediahandler.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link fragment_main#newInstance} factory method to
+ * Use the {@link fragment_audio#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class fragment_main extends Fragment {
+public class fragment_audio extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -28,7 +26,7 @@ public class fragment_main extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public fragment_main() {
+    public fragment_audio() {
         // Required empty public constructor
     }
 
@@ -38,11 +36,11 @@ public class fragment_main extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment fragment_main.
+     * @return A new instance of fragment fragment_audio.
      */
     // TODO: Rename and change types and number of parameters
-    public static fragment_main newInstance(String param1, String param2) {
-        fragment_main fragment = new fragment_main();
+    public static fragment_audio newInstance(String param1, String param2) {
+        fragment_audio fragment = new fragment_audio();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -63,11 +61,6 @@ public class fragment_main extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_main, container, false);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        return inflater.inflate(R.layout.fragment_audio, container, false);
     }
 }

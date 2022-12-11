@@ -1,4 +1,4 @@
-package it.unimib.exercise.andrea.mediahandler;
+package it.unimib.exercise.andrea.mediahandler.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -10,6 +10,8 @@ import androidx.navigation.ui.NavigationUI;
 import android.os.Bundle;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import it.unimib.exercise.andrea.mediahandler.R;
 
 public class ActivityMain extends AppCompatActivity {
 

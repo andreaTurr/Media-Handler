@@ -1,8 +1,10 @@
-package it.unimib.exercise.andrea.mediahandler;
+package it.unimib.exercise.andrea.mediahandler.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import it.unimib.exercise.andrea.mediahandler.R;
 
 public class ActivityWelcome extends AppCompatActivity {
 

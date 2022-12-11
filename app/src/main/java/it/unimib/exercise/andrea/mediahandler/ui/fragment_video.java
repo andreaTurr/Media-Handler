@@ -1,4 +1,4 @@
-package it.unimib.exercise.andrea.mediahandler;
+package it.unimib.exercise.andrea.mediahandler.ui;
 
 import android.os.Bundle;
 
@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import it.unimib.exercise.andrea.mediahandler.R;
 
 /**
  * A simple {@link Fragment} subclass.
