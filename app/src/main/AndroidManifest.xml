@@ -17,7 +17,7 @@
         android:theme="@style/Theme.MediaHandler"
         tools:targetApi="31">
         <activity
-            android:name=".ui.Activity_login_google"
+            android:name=".ui.ActivityLoginGoogle"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

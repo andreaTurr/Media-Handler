@@ -12,10 +12,10 @@ import it.unimib.exercise.andrea.mediahandler.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link fragment_settings#newInstance} factory method to
+ * Use the {@link FragmentSettings#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class fragment_settings extends Fragment {
+public class FragmentSettings extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,7 +26,7 @@ public class fragment_settings extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public fragment_settings() {
+    public FragmentSettings() {
         // Required empty public constructor
     }
 
@@ -39,8 +39,8 @@ public class fragment_settings extends Fragment {
      * @return A new instance of fragment fragment_settings.
      */
     // TODO: Rename and change types and number of parameters
-    public static fragment_settings newInstance(String param1, String param2) {
-        fragment_settings fragment = new fragment_settings();
+    public static FragmentSettings newInstance(String param1, String param2) {
+        FragmentSettings fragment = new FragmentSettings();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);

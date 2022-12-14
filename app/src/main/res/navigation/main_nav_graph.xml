@@ -6,22 +6,22 @@
     app:startDestination="@id/fragment_main">
     <fragment
         android:id="@+id/fragment_main"
-        android:name="it.unimib.exercise.andrea.mediahandler.ui.fragment_main"
+        android:name="it.unimib.exercise.andrea.mediahandler.ui.FragmentMain"
         android:label="fragment_main"
         tools:layout="@layout/fragment_main" />
     <fragment
         android:id="@+id/fragment_audio"
-        android:name="it.unimib.exercise.andrea.mediahandler.ui.fragment_audio"
+        android:name="it.unimib.exercise.andrea.mediahandler.ui.FragmentAudio"
         android:label="fragment_audio"
         tools:layout="@layout/fragment_audio" />
     <fragment
         android:id="@+id/fragment_video"
-        android:name="it.unimib.exercise.andrea.mediahandler.ui.fragment_video"
+        android:name="it.unimib.exercise.andrea.mediahandler.ui.FragmentVideo"
         android:label="fragment_video"
         tools:layout="@layout/fragment_video" />
     <fragment
         android:id="@+id/fragment_settings"
-        android:name="it.unimib.exercise.andrea.mediahandler.ui.fragment_settings"
+        android:name="it.unimib.exercise.andrea.mediahandler.ui.FragmentSettings"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
 </navigation>

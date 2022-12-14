@@ -17,9 +17,9 @@ import it.unimib.exercise.andrea.mediahandler.R;
 /**
  * create an instance of this fragment.
  */
-public class fragment_login extends Fragment {
+public class FragmentLogin extends Fragment {
 
-    public fragment_login() {
+    public FragmentLogin() {
         // Required empty public constructor
     }
 
@@ -49,7 +49,7 @@ public class fragment_login extends Fragment {
         });
         Button buttonForgot = view.findViewById(R.id.button_forgot_password);
         buttonForgot.setOnClickListener(view1 -> {
-            Navigation.findNavController(requireView()).navigate(R.id.action_fragment_login_to_activity_login_google);
+            Navigation.findNavController(requireView()).navigate(R.id.action_fragment_login_to_fragmen_login_google);
         });
 
     }

@@ -3,10 +3,11 @@ package it.unimib.exercise.andrea.mediahandler.ui;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,12 +19,16 @@ import it.unimib.exercise.andrea.mediahandler.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link fragment_main#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class fragment_main extends Fragment {
+public class FragmentPlaylist extends Fragment {
+    private static final String TAG = FragmentPlaylist.class.getSimpleName();
 
-    public fragment_main() {
+    // TODO: Rename and change types of parameters
+    private String mParam1;
+    private String mParam2;
+
+    public FragmentPlaylist() {
         // Required empty public constructor
     }
 
@@ -36,23 +41,28 @@ public class fragment_main extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_main, container, false);
-    }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
         requireActivity().addMenuProvider(new MenuProvider() {
             @Override
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
                 menu.clear();
+                // It adds the menu item in the toolbar
+                menuInflater.inflate(R.menu.top_app_bar, menu);
             }
 
             @Override
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                if (menuItem.getItemId() == R.id.delete) {
+                    //newsViewModel.deleteAllFavoriteNews();
+                    Log.d(TAG, "Delete selected");
+                }
                 return false;
             }
-        });
+            // Use getViewLifecycleOwner() to avoid that the listener
+            // associated with a menu icon is called twice
+        }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
 
+
+        return inflater.inflate(R.layout.fragment_playlist, container, false);
     }
 }

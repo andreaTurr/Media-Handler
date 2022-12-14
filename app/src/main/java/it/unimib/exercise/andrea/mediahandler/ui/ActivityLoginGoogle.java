@@ -1,7 +1,12 @@
 package it.unimib.exercise.andrea.mediahandler.ui;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,9 +21,9 @@ import com.google.android.gms.tasks.Task;
 
 import it.unimib.exercise.andrea.mediahandler.R;
 
-public class Activity_login_google extends AppCompatActivity implements View.OnClickListener {
+public class ActivityLoginGoogle extends AppCompatActivity implements View.OnClickListener {
     private static final int RC_SIGN_IN = 1000;
-    private static final String TAG = Activity_login_google.class.getSimpleName();
+    private static final String TAG = ActivityLoginGoogle.class.getSimpleName();
     GoogleSignInClient mGoogleSignInClient = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +61,24 @@ public class Activity_login_google extends AppCompatActivity implements View.OnC
 
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, RC_SIGN_IN);
+        //startActivityForResult(signInIntent, RC_SIGN_IN);
+        someActivityResultLauncher.launch(signInIntent);
     }
+
+    ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        // There are no request codes
+                        Intent data = result.getData();
+                        Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+                        handleSignInResult(task);
+                    }
+                }
+            });
+    /*
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -70,6 +91,8 @@ public class Activity_login_google extends AppCompatActivity implements View.OnC
             handleSignInResult(task);
         }
     }
+    */
+
 
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {

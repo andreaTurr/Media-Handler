@@ -6,25 +6,25 @@
     app:startDestination="@id/fragment_login">
     <fragment
         android:id="@+id/fragment_login"
-        android:name="it.unimib.exercise.andrea.mediahandler.ui.fragment_login"
+        android:name="it.unimib.exercise.andrea.mediahandler.ui.FragmentLogin"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
             android:id="@+id/action_fragment_login_to_activityMain"
             app:destination="@id/activityMain" />
         <action
-            android:id="@+id/action_fragment_login_to_activity_login_google"
-            app:destination="@id/activity_login_google" />
+            android:id="@+id/action_fragment_login_to_fragmen_login_google"
+            app:destination="@id/fragmen_login_google" />
     </fragment>
     <activity
         android:id="@+id/activityMain"
         android:name="it.unimib.exercise.andrea.mediahandler.ui.ActivityMain"
         android:label="activity_main"
         tools:layout="@layout/activity_main" />
+    <fragment
+        android:id="@+id/fragmen_login_google"
+        android:name="it.unimib.exercise.andrea.mediahandler.ui.FragmenLoginGoogle"
+        android:label="fragment_login_google"
+        tools:layout="@layout/fragment_login_google" />
 
-    <activity
-        android:id="@+id/activity_login_google"
-        android:name="it.unimib.exercise.andrea.mediahandler.ui.Activity_login_google"
-        android:label="activity_login_google"
-        tools:layout="@layout/activity_login_google" />
 </navigation>
