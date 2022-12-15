@@ -15,6 +15,9 @@
         <action
             android:id="@+id/action_fragment_login_to_fragmen_login_google"
             app:destination="@id/fragmen_login_google" />
+        <action
+            android:id="@+id/action_fragment_login_to_fragmentLoginAuth"
+            app:destination="@id/fragmentLoginAuth" />
     </fragment>
     <activity
         android:id="@+id/activityMain"
@@ -26,5 +29,10 @@
         android:name="it.unimib.exercise.andrea.mediahandler.ui.FragmenLoginGoogle"
         android:label="fragment_login_google"
         tools:layout="@layout/fragment_login_google" />
+    <fragment
+        android:id="@+id/fragmentLoginAuth"
+        android:name="it.unimib.exercise.andrea.mediahandler.ui.FragmentLoginAuth"
+        android:label="fragment_login_auth"
+        tools:layout="@layout/fragment_login_auth" />
 
 </navigation>

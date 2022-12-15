@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-package it.unimib.exercise.andrea.mediahandler.service;
+package it.unimib.exercise.andrea.mediahandler.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;

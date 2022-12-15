@@ -49,7 +49,7 @@ public class FragmentLogin extends Fragment {
         });
         Button buttonForgot = view.findViewById(R.id.button_forgot_password);
         buttonForgot.setOnClickListener(view1 -> {
-            Navigation.findNavController(requireView()).navigate(R.id.action_fragment_login_to_fragmen_login_google);
+            Navigation.findNavController(requireView()).navigate(R.id.action_fragment_login_to_fragmentLoginAuth);
         });
 
     }
