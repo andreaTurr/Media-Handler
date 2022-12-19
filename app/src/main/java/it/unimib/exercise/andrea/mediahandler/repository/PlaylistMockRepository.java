@@ -27,7 +27,7 @@ public class PlaylistMockRepository implements IPlaylistRepository{
 
 
     @Override
-    public void fetchPlaylist(String username, int page, long lastUpdate) {
+    public void fetchPlaylist() {
         PlaylistApiResponse playlistApiResponse = null;
         JSONParserUtil jsonParserUtil = new JSONParserUtil(application);
 

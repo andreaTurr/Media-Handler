@@ -9,4 +9,5 @@
     <string name="login_failed">Accesso fallito</string>
     <string name="txt_or">oppure</string>
     <string name="forgot_password">Password dimenticata?</string>
+    <string name="api_key_error">errore nell\'ottenimento delle Playlist</string>
 </resources>

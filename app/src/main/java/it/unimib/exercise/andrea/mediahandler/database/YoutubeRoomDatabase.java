@@ -17,7 +17,7 @@ import it.unimib.exercise.andrea.mediahandler.models.playlist.Playlist;
 @Database(entities = {Playlist.class}, version = DATABASE_VERSION)
 public abstract class YoutubeRoomDatabase extends RoomDatabase {
 
-    public abstract PlaylistDao newsDao();
+    public abstract PlaylistDao playlistDao();
 
     private static volatile YoutubeRoomDatabase INSTANCE;
     private static final int NUMBER_OF_THREADS = Runtime.getRuntime().availableProcessors();

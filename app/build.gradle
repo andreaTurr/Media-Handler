@@ -25,6 +25,7 @@ android {
         resValue "string", "end_session_redirect_uri", properties.getProperty("end_session_redirect_uri", "")
         resValue "string", "authorization_scope", properties.getProperty("authorization_scope", "")
         resValue "string", "discovery_uri", properties.getProperty("discovery_uri", "")
+        resValue "bool", "debug_mode", properties.getProperty("debug_mode", "false")
 
         // Make sure this is consistent with the redirect URI used in res/raw/auth_config.json,
         // or specify additional redirect URIs in local.properties

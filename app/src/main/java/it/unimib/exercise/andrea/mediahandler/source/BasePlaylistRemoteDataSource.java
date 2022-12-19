@@ -6,7 +6,7 @@ package it.unimib.exercise.andrea.mediahandler.source;
 public abstract class BasePlaylistRemoteDataSource {
     protected PlaylistCallback newsCallback;
 
-    public void setNewsCallback(PlaylistCallback newsCallback) {this.newsCallback = newsCallback;}
+    public void setPlaylistCallback(PlaylistCallback newsCallback) {this.newsCallback = newsCallback;}
 
-    public abstract void getPlaylist(String user);
+    public abstract void getPlaylist();
 }

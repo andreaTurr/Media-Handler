@@ -15,6 +15,7 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -31,12 +32,12 @@ import net.openid.appauth.AuthorizationRequest;
 import net.openid.appauth.AuthorizationResponse;
 import net.openid.appauth.AuthorizationService;
 import net.openid.appauth.AuthorizationServiceConfiguration;
+import net.openid.appauth.EndSessionRequest;
 import net.openid.appauth.ResponseTypeValues;
 import net.openid.appauth.TokenResponse;
 
 import org.json.JSONObject;
 
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -69,12 +70,62 @@ public class FragmentLoginAuth extends Fragment {
 
         if (mStateManager != null && mStateManager.getCurrent().isAuthorized()){
             Log.d(TAG, "Auth Done") ;
+        }
+
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Button btnFragAuth = view.findViewById(R.id.bttnFragAuth) ;
+        Button bttToken = view.findViewById(R.id.bttnToken);
+        Button bttLogOut = view.findViewById(R.id.bttnLogOut);
+        btnFragAuth.setOnClickListener(view1 -> {
+
+            if (mStateManager != null && mStateManager.getCurrent().isAuthorized()) {
+                Log.d(TAG, "onViewCreated: already authorized");
+            }else{
+                AuthorizationServiceConfiguration serviceConfig = new AuthorizationServiceConfiguration(
+                        Uri.parse("https://accounts.google.com/o/oauth2/v2/auth"), // authorization endpoint
+                        Uri.parse("https://www.googleapis.com/oauth2/v4/token") // token endpoint
+                );
+                String clientId = String.valueOf(R.string.client_id);
+                Uri redirectUri = Uri.parse(String.valueOf(R.string.redirect_uri)) ;
+                clientId = "363443980550-0n72kud3dh999u8nuuf0p9n168371sni.apps.googleusercontent.com";
+                redirectUri = Uri.parse("com.googleusercontent.apps.363443980550-0n72kud3dh999u8nuuf0p9n168371sni:/oauth2redirect");
+                AuthorizationRequest.Builder builder = new AuthorizationRequest.Builder(
+                        serviceConfig,
+                        clientId,
+                        ResponseTypeValues.CODE,
+                        redirectUri
+                );
+                Log.d(TAG, "onViewCreated: service config: " + serviceConfig +
+                        " client_id:" + clientId +
+                        " redirectUri:" + redirectUri);
+                //builder.setScopes(String.valueOf(R.string.authorization_scope));
+                builder.setScopes(String.valueOf("https://www.googleapis.com/auth/youtube"));
+
+                AuthorizationRequest authRequest = builder.build() ;
+                AuthorizationService authService = new AuthorizationService(getActivity()) ;
+                executorService.submit(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent authIntent = authService.getAuthorizationRequestIntent(authRequest) ;
+                        authResponseActivityResultLauncher.launch(authIntent);
+                    }
+                });
+
+                Log.d(TAG, "End onViewCreate");
+            }
+        });
+        bttToken.setOnClickListener(view1 -> {
+            Log.d(TAG, "onViewCreated: bttnToken");
             if (mAuthService != null){
                 mStateManager.getCurrent().performActionWithFreshTokens(mAuthService, new AuthState.AuthStateAction() {
                     @Override
                     public void execute(@Nullable String accessToken,
-                            @Nullable String idToken,
-                            @Nullable AuthorizationException ex) {
+                                        @Nullable String idToken,
+                                        @Nullable AuthorizationException ex) {
                         executorService.execute(new Runnable() {
                             @Override
                             public void run() {
@@ -97,57 +148,11 @@ public class FragmentLoginAuth extends Fragment {
                     }
                 });
 
-            }
-
-
-        }
-
-    }
-
-
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        Button btnFragAuth = view.findViewById(R.id.bttnFragAuth) ;
-        btnFragAuth.setOnClickListener(view1 -> {
-
-            if (mStateManager != null && mStateManager.getCurrent().isAuthorized()) {
-
             }else{
-                AuthorizationServiceConfiguration serviceConfig = new AuthorizationServiceConfiguration(
-                        Uri.parse("https://accounts.google.com/o/oauth2/v2/auth"), // authorization endpoint
-                        Uri.parse("https://www.googleapis.com/oauth2/v4/token") // token endpoint
-                );
-                String clientId = String.valueOf(R.string.client_id);
-                Uri redirectUri = Uri.parse(String.valueOf(R.string.redirect_uri)) ;
-                //taken out for comm
-                AuthorizationRequest.Builder builder = new AuthorizationRequest.Builder(
-                        serviceConfig,
-                        clientId,
-                        ResponseTypeValues.CODE,
-                        redirectUri
-                );
-                Log.d(TAG, "onViewCreated: service config: " + serviceConfig +
-                        " client_id:" + clientId +
-                        " client_id2:" + R.string.client_id +
-                        " redirectUri:" + redirectUri);
-                //builder.setScopes(String.valueOf(R.string.authorization_scope));
-                builder.setScopes(String.valueOf("https://www.googleapis.com/auth/youtube"));
-
-                AuthorizationRequest authRequest = builder.build() ;
-                AuthorizationService authService = new AuthorizationService(getActivity()) ;
-                executorService.submit(new Runnable() {
-                    @Override
-                    public void run() {
-                        Intent authIntent = authService.getAuthorizationRequestIntent(authRequest) ;
-                        someActivityResultLauncher.launch(authIntent);
-                    }
-                });
-
-                Log.d(TAG, "End onViewCreate");
+                Log.d(TAG, "onViewCreated: no auth avaiable");
             }
         });
+        bttLogOut.setOnClickListener(view1 -> endSession());
     }
 
     @Override
@@ -159,7 +164,7 @@ public class FragmentLoginAuth extends Fragment {
 
 
 
-    ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
+    ActivityResultLauncher<Intent> authResponseActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
                 @Override
@@ -171,6 +176,7 @@ public class FragmentLoginAuth extends Fragment {
                         AuthorizationException ex = AuthorizationException.fromIntent(result.getData());
                         // … process the response or exception …
                         if (resp != null){
+                            Log.d(TAG, "onActivityResult: save mAuth");
                             mAuthService = new AuthorizationService(getActivity());
                             mStateManager.updateAfterAuthorization(resp, ex);
                             mAuthService.performTokenRequest(
@@ -187,7 +193,7 @@ public class FragmentLoginAuth extends Fragment {
                                                     public void run() {
                                                         OkHttpClient client = new OkHttpClient();
                                                         Request request = new Request.Builder()
-                                                                .url("https://www.googleapis.com/youtube/v3/playlists")
+                                                                .url("https://www.googleapis.com/youtube/v3/playlists?mine=true")
                                                                 .addHeader("Authorization", String.format("Bearer %s", resp.accessToken))
                                                                 .build() ;
                                                         try {
@@ -206,8 +212,8 @@ public class FragmentLoginAuth extends Fragment {
                                         }
                                     });
                         }
-                        if (mStateManager != null && mStateManager.getCurrent().isAuthorized()) {
-
+                        /*if (mStateManager != null && mStateManager.getCurrent().isAuthorized()) {
+                            Log.d(TAG, "onActivityResult: perform userinfo?");
                             mStateManager.getCurrent().performActionWithFreshTokens(mAuthService, new AuthState.AuthStateAction() {
                                 @Override public void execute(
                                         String accessToken,
@@ -239,9 +245,54 @@ public class FragmentLoginAuth extends Fragment {
                                     // use the access token to do something ...
                                 }
                             });
-                        }
+                        }*/
                     }
                 }
             });
+
+
+
+    @MainThread
+    private void endSession() {
+        AuthState currentState = mStateManager.getCurrent();
+        AuthorizationServiceConfiguration config =
+                currentState.getAuthorizationServiceConfiguration();
+        if (config.endSessionEndpoint != null) {
+            Intent endSessionIntent = mAuthService.getEndSessionRequestIntent(
+                    new EndSessionRequest.Builder(config)
+                            .setIdTokenHint(currentState.getIdToken())
+                            .setPostLogoutRedirectUri(Uri.parse("it.unimib.exercise.andrea.mediahandler:/oauth2redirect"))
+                            .build());
+            endSessionActivityResultLauncher.launch(endSessionIntent);
+        } else {
+            signOut();
+        }
+    }
+
+    ActivityResultLauncher<Intent> endSessionActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    Log.d(TAG, "ActivityResult: " + result.getResultCode());
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        signOut();
+                    }
+                }
+            });
+
+    @MainThread
+    private void signOut() {
+        // discard the authorization and token state, but retain the configuration and
+        // dynamic client registration (if applicable), to save from retrieving them again.
+        AuthState currentState = mStateManager.getCurrent();
+        AuthState clearedState =
+                new AuthState(currentState.getAuthorizationServiceConfiguration());
+        if (currentState.getLastRegistrationResponse() != null) {
+            clearedState.update(currentState.getLastRegistrationResponse());
+        }
+        mStateManager.replace(clearedState);
+        Log.d(TAG, "signOut: ");
+    }
 
 }

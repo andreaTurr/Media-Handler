@@ -24,7 +24,7 @@ public class Constants {
     // Constants for YOUTUBE_API https://www.googleapis.com/youtube/v3
     public static final String YOUTUBE_API_BASE_URL = "“https://www.googleapis.com/youtube/v3";
     public static final String TOP_SEARCH_ENDPOINT = "/search/";
-    public static final String TOP_PLAYLIST_ENDPOINT = "/playlists";
+    public static final String PLAYLIST_ENDPOINT = "/playlists?part=snippet%2CcontentDetails&maxResults=25&mine=true";
 
     public static final String TOP_HEADLINES_COUNTRY_PARAMETER = "country";
     public static final String TOP_HEADLINES_PAGE_SIZE_PARAMETER = "pageSize";

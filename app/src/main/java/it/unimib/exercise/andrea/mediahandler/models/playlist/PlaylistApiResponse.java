@@ -36,7 +36,8 @@ public class PlaylistApiResponse implements Parcelable {
         this.playlistList = source.createTypedArrayList(Playlist.CREATOR);
     }
 
-    public PlaylistApiResponse() {
+    public PlaylistApiResponse(List<Playlist> playlistList) {
+        this.playlistList = playlistList;
     }
 
     protected PlaylistApiResponse(Parcel in) {

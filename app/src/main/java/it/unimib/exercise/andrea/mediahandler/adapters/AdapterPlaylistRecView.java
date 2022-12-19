@@ -1,5 +1,6 @@
 package it.unimib.exercise.andrea.mediahandler.adapters;
 
+import android.app.Application;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -8,11 +9,22 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.List;
+
 import it.unimib.exercise.andrea.mediahandler.R;
 import it.unimib.exercise.andrea.mediahandler.models.playlist.Playlist;
 
-public class adapter_playlist extends
-        RecyclerView.Adapter<adapter_playlist.ViewHolder> {
+public class AdapterPlaylistRecView extends
+        RecyclerView.Adapter<AdapterPlaylistRecView.ViewHolder> {
+    List<Playlist> playlistList;
+    Application application;
+    OnItemClickListener onItemClickListener;
+
+    public AdapterPlaylistRecView(List<Playlist> playlistList, Application application, OnItemClickListener onItemClickListener) {
+        this.playlistList = playlistList;
+        this.application = application;
+        this.onItemClickListener = onItemClickListener;
+    }
 
     /**
      * Interface to associate a click listener with
@@ -24,12 +36,12 @@ public class adapter_playlist extends
 
     @NonNull
     @Override
-    public adapter_playlist.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public AdapterPlaylistRecView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return null;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull adapter_playlist.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull AdapterPlaylistRecView.ViewHolder holder, int position) {
 
     }
 
