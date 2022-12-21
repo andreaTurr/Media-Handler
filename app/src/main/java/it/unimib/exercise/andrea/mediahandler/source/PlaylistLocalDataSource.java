@@ -1,11 +1,10 @@
 package it.unimib.exercise.andrea.mediahandler.source;
 
-
 import java.util.List;
 
 import it.unimib.exercise.andrea.mediahandler.database.PlaylistDao;
 import it.unimib.exercise.andrea.mediahandler.database.YoutubeRoomDatabase;
-import it.unimib.exercise.andrea.mediahandler.util.SharedPreferencesUtil;
+import it.unimib.exercise.andrea.mediahandler.models.playlist.Playlist;
 
 /**
  * Class to get news from local database using Room.
@@ -13,12 +12,9 @@ import it.unimib.exercise.andrea.mediahandler.util.SharedPreferencesUtil;
 public class PlaylistLocalDataSource extends BasePlaylistLocalDataSource {
 
     private final PlaylistDao playlistDao;
-    private final SharedPreferencesUtil sharedPreferencesUtil;
 
-    public PlaylistLocalDataSource(YoutubeRoomDatabase youtubeRoomDatabase,
-                                   SharedPreferencesUtil sharedPreferencesUtil) {
+    public PlaylistLocalDataSource(YoutubeRoomDatabase youtubeRoomDatabase) {
         this.playlistDao = youtubeRoomDatabase.playlistDao();
-        this.sharedPreferencesUtil = sharedPreferencesUtil;
     }
 
     /**
@@ -32,4 +28,18 @@ public class PlaylistLocalDataSource extends BasePlaylistLocalDataSource {
             playlistCallback.onSuccessFromLocal(playlistDao.getAll());
         });
     }
+
+    @Override
+    public void insertPlaylists(List<Playlist> playlistList) {
+        YoutubeRoomDatabase.databaseWriteExecutor.execute(() -> {
+            // Reads the news from the database
+            List<Playlist> allPlaylists = playlistDao.getAll();
+            if (!playlistList.equals(allPlaylists)) {
+                playlistDao.insertPlaylistList(playlistList);
+                playlistCallback.onSuccessFromLocal(playlistList);
+            }
+        });
+    }
+
+
 }

@@ -2,6 +2,8 @@ package it.unimib.exercise.andrea.mediahandler.util;
 
 import android.app.Application;
 
+import net.openid.appauth.AuthorizationService;
+
 import it.unimib.exercise.andrea.mediahandler.R;
 import it.unimib.exercise.andrea.mediahandler.database.YoutubeRoomDatabase;
 import it.unimib.exercise.andrea.mediahandler.repository.IPlaylistRepositoryWithLiveData;
@@ -20,6 +22,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
  *  used in the application.
  */
 public class ServiceLocator {
+    private AuthorizationService mAuthService = null ;
+    private AuthStateManager mStateManager = null;
 
     private static volatile ServiceLocator INSTANCE = null;
 
@@ -44,7 +48,7 @@ public class ServiceLocator {
      * Returns an instance of NewsApiService class using Retrofit.
      * @return an instance of NewsApiService.
      */
-    public YoutubeApiService getNewsApiService() {
+    public YoutubeApiService getYoutubeApiService() {
         Retrofit retrofit = new Retrofit.Builder().baseUrl(Constants.YOUTUBE_API_BASE_URL).
                 addConverterFactory(GsonConverterFactory.create()).build();
         return retrofit.create(YoutubeApiService.class);
@@ -66,9 +70,11 @@ public class ServiceLocator {
      * @return An instance of IPlaylistRepositoryWithLiveData.
      */
     public IPlaylistRepositoryWithLiveData getNewsRepository(Application application, boolean debugMode) {
+        mStateManager = AuthStateManager.getInstance(application.getApplicationContext()) ;
+        mAuthService = new AuthorizationService(application.getApplicationContext()) ;
+
         BasePlaylistRemoteDataSource playlistRemoteDataSource;
         BasePlaylistLocalDataSource playlistLocalDataSource;
-        SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(application);
 
         if (debugMode) {
             JSONParserUtil jsonParserUtil = new JSONParserUtil(application);
@@ -76,11 +82,12 @@ public class ServiceLocator {
                     new PlaylistMockRemoteDataSource(jsonParserUtil);
         } else {
             playlistRemoteDataSource =
-                    new PlaylistRemoteDataSource(application.getString(R.string.WEBSERVER_API_KEY_VALUE));
+                    new PlaylistRemoteDataSource(
+                            application.getString(R.string.WEBSERVER_API_KEY_VALUE),
+                            application.getApplicationContext());
         }
 
-        playlistLocalDataSource = new PlaylistLocalDataSource(getNewsDao(application), sharedPreferencesUtil);
-
+        playlistLocalDataSource = new PlaylistLocalDataSource(getNewsDao(application));
         return new PlaylistRepositoryWithLiveData(playlistRemoteDataSource, playlistLocalDataSource);
     }
 }

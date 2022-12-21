@@ -39,7 +39,7 @@ public class PlaylistMockRepository implements IPlaylistRepository{
         if (playlistApiResponse != null) {
             saveDataInDatabase(playlistApiResponse.getPlaylistList());
         } else {
-            responseCallback.onFailure(application.getString(R.string.error_retrieving_playlist));
+            responseCallback.onFailure(application.getString(R.string.error_retrieving_playlists));
         }
     }
 

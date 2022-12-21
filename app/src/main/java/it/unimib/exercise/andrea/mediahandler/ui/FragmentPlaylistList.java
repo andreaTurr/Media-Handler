@@ -66,7 +66,7 @@ public class FragmentPlaylistList extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        requireActivity().addMenuProvider(new MenuProvider() {
+        /*requireActivity().addMenuProvider(new MenuProvider() {
             @Override
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
                 menu.clear();
@@ -76,7 +76,7 @@ public class FragmentPlaylistList extends Fragment {
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
                 return false;
             }
-        });
+        });*/
 
         RecyclerView recyclerViewCountryNews = view.findViewById(R.id.recyclerview_playlist_list);
         RecyclerView.LayoutManager layoutManager =

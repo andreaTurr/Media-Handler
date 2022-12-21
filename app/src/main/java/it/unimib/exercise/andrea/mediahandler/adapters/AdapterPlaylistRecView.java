@@ -1,6 +1,7 @@
 package it.unimib.exercise.andrea.mediahandler.adapters;
 
 import android.app.Application;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -16,6 +17,14 @@ import it.unimib.exercise.andrea.mediahandler.models.playlist.Playlist;
 
 public class AdapterPlaylistRecView extends
         RecyclerView.Adapter<AdapterPlaylistRecView.ViewHolder> {
+    /**
+     * Interface to associate a click listener with
+     * a RecyclerView item.
+     */
+    public interface OnItemClickListener {
+        void onPlaylistClick(Playlist playlist);
+    }
+
     List<Playlist> playlistList;
     Application application;
     OnItemClickListener onItemClickListener;
@@ -26,27 +35,26 @@ public class AdapterPlaylistRecView extends
         this.onItemClickListener = onItemClickListener;
     }
 
-    /**
-     * Interface to associate a click listener with
-     * a RecyclerView item.
-     */
-    public interface OnItemClickListener {
-        void onPlaylistClick(Playlist playlist);
-    }
+
 
     @NonNull
     @Override
-    public AdapterPlaylistRecView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).
+                inflate(R.layout.layout_playlist_item, parent, false);
+        return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull AdapterPlaylistRecView.ViewHolder holder, int position) {
-
+        holder.bind(playlistList.get(position));
     }
 
     @Override
     public int getItemCount() {
+        if (playlistList != null){
+            return playlistList.size();
+        }
         return 0;
     }
 
@@ -71,6 +79,11 @@ public class AdapterPlaylistRecView extends
         @Override
         public void onClick(View view) {
 
+        }
+
+        public void bind(Playlist playlist) {
+            playlist_name.setText(playlist.getSnippet().getTitle().toString());
+            //imageViewThumbnail = ;
         }
     }
 }

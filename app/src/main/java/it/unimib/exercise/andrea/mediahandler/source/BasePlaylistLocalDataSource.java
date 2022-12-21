@@ -17,5 +17,5 @@ public abstract class BasePlaylistLocalDataSource {
     }
 
     public abstract void getPlaylist();
-    public void insertPlaylists(List<Playlist> playlistList) {}
+    public abstract void insertPlaylists(List<Playlist> playlistList);
 }

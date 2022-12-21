@@ -89,10 +89,10 @@ public class FragmentLoginAuth extends Fragment {
                         Uri.parse("https://accounts.google.com/o/oauth2/v2/auth"), // authorization endpoint
                         Uri.parse("https://www.googleapis.com/oauth2/v4/token") // token endpoint
                 );
-                String clientId = String.valueOf(R.string.client_id);
-                Uri redirectUri = Uri.parse(String.valueOf(R.string.redirect_uri)) ;
-                clientId = "363443980550-0n72kud3dh999u8nuuf0p9n168371sni.apps.googleusercontent.com";
-                redirectUri = Uri.parse("com.googleusercontent.apps.363443980550-0n72kud3dh999u8nuuf0p9n168371sni:/oauth2redirect");
+                String clientId = getString(R.string.client_id);
+                Uri redirectUri = Uri.parse(getString(R.string.redirect_uri)) ;
+                //clientId = "363443980550-0n72kud3dh999u8nuuf0p9n168371sni.apps.googleusercontent.com";
+                //redirectUri = Uri.parse("com.googleusercontent.apps.363443980550-0n72kud3dh999u8nuuf0p9n168371sni:/oauth2redirect");
                 AuthorizationRequest.Builder builder = new AuthorizationRequest.Builder(
                         serviceConfig,
                         clientId,
@@ -212,40 +212,6 @@ public class FragmentLoginAuth extends Fragment {
                                         }
                                     });
                         }
-                        /*if (mStateManager != null && mStateManager.getCurrent().isAuthorized()) {
-                            Log.d(TAG, "onActivityResult: perform userinfo?");
-                            mStateManager.getCurrent().performActionWithFreshTokens(mAuthService, new AuthState.AuthStateAction() {
-                                @Override public void execute(
-                                        String accessToken,
-                                        String idToken,
-                                        AuthorizationException ex) {
-                                    if (ex != null) {
-                                        // negotiation for fresh tokens failed, check ex for more details
-                                        //ProfileTask.execute(accessToken) ;
-                                        executorService.execute(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                OkHttpClient client = new OkHttpClient();
-                                                Request request = new Request.Builder()
-                                                        .url("https://www.googleapis.com/oauth2/v3/userinfo")
-                                                        .addHeader("Authorization", String.format("Bearer %s", accessToken))
-                                                        .build() ;
-                                                try {
-                                                    Response response = client.newCall(request).execute();
-                                                    String jsonBody  = response.body().string() ;
-                                                    Log.i(TAG, String.format("User Info Response %s", jsonBody)) ;
-                                                    objectJSON = new JSONObject(jsonBody) ;
-                                                }catch (Exception e) {
-                                                    Log.w(TAG, e);
-                                                }
-                                            }
-                                        });
-                                        return;
-                                    }
-                                    // use the access token to do something ...
-                                }
-                            });
-                        }*/
                     }
                 }
             });

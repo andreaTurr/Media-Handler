@@ -33,6 +33,15 @@
         android:id="@+id/fragmentLoginAuth"
         android:name="it.unimib.exercise.andrea.mediahandler.ui.FragmentLoginAuth"
         android:label="fragment_login_auth"
-        tools:layout="@layout/fragment_login_auth" />
+        tools:layout="@layout/fragment_login_auth" >
+        <action
+            android:id="@+id/action_fragmentLoginAuth_to_fragmentPlaylistList"
+            app:destination="@id/fragmentPlaylistList" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentPlaylistList"
+        android:name="it.unimib.exercise.andrea.mediahandler.ui.FragmentPlaylistList"
+        android:label="fragment_playlist_list"
+        tools:layout="@layout/fragment_playlist_list" />
 
 </navigation>
