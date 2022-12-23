@@ -1,5 +1,6 @@
 package it.unimib.exercise.andrea.mediahandler.ui;
 
+import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,6 +21,13 @@ import android.view.ViewGroup;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import net.openid.appauth.AuthorizationException;
+import net.openid.appauth.AuthorizationResponse;
+import net.openid.appauth.AuthorizationService;
+import net.openid.appauth.TokenResponse;
+
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +36,7 @@ import it.unimib.exercise.andrea.mediahandler.adapters.AdapterPlaylistRecView;
 import it.unimib.exercise.andrea.mediahandler.models.playlist.Playlist;
 import it.unimib.exercise.andrea.mediahandler.models.playlist.Result;
 import it.unimib.exercise.andrea.mediahandler.repository.IPlaylistRepositoryWithLiveData;
+import it.unimib.exercise.andrea.mediahandler.util.AuthStateManager;
 import it.unimib.exercise.andrea.mediahandler.util.ErrorMessagesUtil;
 import it.unimib.exercise.andrea.mediahandler.util.ServiceLocator;
 
@@ -38,6 +48,8 @@ public class FragmentPlaylistList extends Fragment {
     private List<Playlist> playlistList;
     private AdapterPlaylistRecView adapterPlaylistRecView;
     private ViewModelPlaylist viewModelPlaylist;
+    private AuthStateManager mStateManager = null;
+    private static final String TAG = FragmentPlaylistList.class.getSimpleName();
 
     public FragmentPlaylistList() {
         // Required empty public constructor
@@ -45,6 +57,13 @@ public class FragmentPlaylistList extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate: start");
+        AuthorizationResponse resp = AuthorizationResponse.fromIntent(getActivity().getIntent());
+        AuthorizationException ex = AuthorizationException.fromIntent(getActivity().getIntent());
+        if (resp != null){
+            Log.d(TAG, "onActivityResult: save mAuth");
+            mStateManager.updateAfterAuthorization(resp, ex);
+        }
         IPlaylistRepositoryWithLiveData playlistRepositoryWithLiveData =
                 ServiceLocator.getInstance().getNewsRepository(
                         requireActivity().getApplication(),

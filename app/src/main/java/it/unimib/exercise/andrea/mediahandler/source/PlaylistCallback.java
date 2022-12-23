@@ -6,6 +6,7 @@ import it.unimib.exercise.andrea.mediahandler.models.playlist.Playlist;
 import it.unimib.exercise.andrea.mediahandler.models.playlist.PlaylistApiResponse;
 
 public interface PlaylistCallback {
+    void onSuccessFromAuth();
     void onSuccessFromRemote(PlaylistApiResponse newsApiResponse);
     void onFailureFromRemote(Exception exception);
     void onSuccessFromLocal(List<Playlist> newsList);

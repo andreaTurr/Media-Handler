@@ -22,7 +22,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
  *  used in the application.
  */
 public class ServiceLocator {
-    private AuthorizationService mAuthService = null ;
     private AuthStateManager mStateManager = null;
 
     private static volatile ServiceLocator INSTANCE = null;
@@ -63,6 +62,13 @@ public class ServiceLocator {
         return YoutubeRoomDatabase.getDatabase(application);
     }
 
+
+
+    //menagement of AuthStateManager is inside the class itself
+    public AuthStateManager getmStateManager(Application application) {
+        return AuthStateManager.getInstance(application.getApplicationContext()) ;
+    }
+
     /**
      * Returns an instance of IPlaylistRepositoryWithLiveData.
      * @param application Param for accessing the global application state.
@@ -71,7 +77,6 @@ public class ServiceLocator {
      */
     public IPlaylistRepositoryWithLiveData getNewsRepository(Application application, boolean debugMode) {
         mStateManager = AuthStateManager.getInstance(application.getApplicationContext()) ;
-        mAuthService = new AuthorizationService(application.getApplicationContext()) ;
 
         BasePlaylistRemoteDataSource playlistRemoteDataSource;
         BasePlaylistLocalDataSource playlistLocalDataSource;
@@ -82,9 +87,7 @@ public class ServiceLocator {
                     new PlaylistMockRemoteDataSource(jsonParserUtil);
         } else {
             playlistRemoteDataSource =
-                    new PlaylistRemoteDataSource(
-                            application.getString(R.string.WEBSERVER_API_KEY_VALUE),
-                            application.getApplicationContext());
+                    new PlaylistRemoteDataSource( application.getApplicationContext(), mStateManager);
         }
 
         playlistLocalDataSource = new PlaylistLocalDataSource(getNewsDao(application));

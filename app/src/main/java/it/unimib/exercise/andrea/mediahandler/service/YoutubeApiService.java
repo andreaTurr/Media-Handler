@@ -14,6 +14,8 @@ import retrofit2.http.Query;
 public interface YoutubeApiService {
     @GET(PLAYLIST_ENDPOINT)
     Call<PlaylistApiResponse> getPlaylists(
-            @Header("Authorization") String apiKey);
+            @Header("Authorization") String token);
+
+
 }
 //  'https://youtube.googleapis.com/youtube/v3/playlists?part=snippet%2CcontentDetails&maxResults=25&mine=true&key=[YOUR_API_KEY]' \

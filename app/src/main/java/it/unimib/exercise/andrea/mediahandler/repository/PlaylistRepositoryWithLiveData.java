@@ -35,6 +35,11 @@ public class PlaylistRepositoryWithLiveData implements IPlaylistRepositoryWithLi
     }
 
     @Override
+    public void onSuccessFromAuth() {
+        //todo start request with token
+    }
+
+    @Override
     public void onSuccessFromRemote(PlaylistApiResponse playlistApiResponse) {
         playlistLocalDataSource.insertPlaylists(playlistApiResponse.getPlaylistList());
     }
