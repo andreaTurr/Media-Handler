@@ -9,7 +9,7 @@ import androidx.room.Update;
 
 import java.util.List;
 
-import it.unimib.exercise.andrea.mediahandler.models.playlist.Playlist;
+import it.unimib.exercise.andrea.mediahandler.models.playlist.*;
 
 /**
  * Data Access Object (DAO) that provides methods that can be used to query,
@@ -26,7 +26,7 @@ public interface PlaylistDao {
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    List<Long> insertPlaylistList(List<Playlist> playlistList);
+    void insertPlaylistList(List<Playlist> playlistList);
 
     @Insert
     void insertAll(Playlist... playlist);

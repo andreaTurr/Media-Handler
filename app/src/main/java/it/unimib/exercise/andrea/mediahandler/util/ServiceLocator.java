@@ -2,9 +2,6 @@ package it.unimib.exercise.andrea.mediahandler.util;
 
 import android.app.Application;
 
-import net.openid.appauth.AuthorizationService;
-
-import it.unimib.exercise.andrea.mediahandler.R;
 import it.unimib.exercise.andrea.mediahandler.database.YoutubeRoomDatabase;
 import it.unimib.exercise.andrea.mediahandler.repository.IPlaylistRepositoryWithLiveData;
 import it.unimib.exercise.andrea.mediahandler.repository.PlaylistRepositoryWithLiveData;
@@ -14,6 +11,8 @@ import it.unimib.exercise.andrea.mediahandler.source.BasePlaylistRemoteDataSourc
 import it.unimib.exercise.andrea.mediahandler.source.PlaylistLocalDataSource;
 import it.unimib.exercise.andrea.mediahandler.source.PlaylistMockRemoteDataSource;
 import it.unimib.exercise.andrea.mediahandler.source.PlaylistRemoteDataSource;
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -48,8 +47,12 @@ public class ServiceLocator {
      * @return an instance of NewsApiService.
      */
     public YoutubeApiService getYoutubeApiService() {
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(interceptor).build();
         Retrofit retrofit = new Retrofit.Builder().baseUrl(Constants.YOUTUBE_API_BASE_URL).
-                addConverterFactory(GsonConverterFactory.create()).build();
+                addConverterFactory(GsonConverterFactory.create()).client(client).build();
         return retrofit.create(YoutubeApiService.class);
     }
 
@@ -75,7 +78,7 @@ public class ServiceLocator {
      * @param debugMode Param to establish if the application is run in debug mode.
      * @return An instance of IPlaylistRepositoryWithLiveData.
      */
-    public IPlaylistRepositoryWithLiveData getNewsRepository(Application application, boolean debugMode) {
+    public IPlaylistRepositoryWithLiveData getPlaylistRepository(Application application, boolean debugMode) {
         mStateManager = AuthStateManager.getInstance(application.getApplicationContext()) ;
 
         BasePlaylistRemoteDataSource playlistRemoteDataSource;

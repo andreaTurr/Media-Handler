@@ -10,8 +10,8 @@ import java.util.List;
 import it.unimib.exercise.andrea.mediahandler.R;
 import it.unimib.exercise.andrea.mediahandler.database.PlaylistDao;
 import it.unimib.exercise.andrea.mediahandler.database.YoutubeRoomDatabase;
-import it.unimib.exercise.andrea.mediahandler.models.playlist.PlaylistApiResponse;
 import it.unimib.exercise.andrea.mediahandler.models.playlist.Playlist;
+import it.unimib.exercise.andrea.mediahandler.models.playlist.PlaylistApiResponse;
 import it.unimib.exercise.andrea.mediahandler.util.JSONParserUtil;
 
 public class PlaylistMockRepository implements IPlaylistRepository{
@@ -55,7 +55,7 @@ public class PlaylistMockRepository implements IPlaylistRepository{
      * @param playlistList the list of news to be written in the local database.
      */
     private void saveDataInDatabase(List<Playlist> playlistList) {
-        YoutubeRoomDatabase.databaseWriteExecutor.execute(() -> {
+        /*YoutubeRoomDatabase.databaseWriteExecutor.execute(() -> {
             // Reads the news from the database
             List<Playlist> allNews = playlistDao.getAll();
 
@@ -76,7 +76,7 @@ public class PlaylistMockRepository implements IPlaylistRepository{
             }
 
             // Writes the news in the database and gets the associated primary keys
-            List<Long> insertedNewsIds = playlistDao.insertPlaylistList(playlistList);
+            playlistDao.insertPlaylistList(playlistList);
             for (int i = 0; i < playlistList.size(); i++) {
                 // Adds the primary key to the corresponding object News just downloaded so that
                 // if the user marks the news as favorite (and vice-versa), we can use its id
@@ -85,7 +85,7 @@ public class PlaylistMockRepository implements IPlaylistRepository{
             }
 
             responseCallback.onSuccess(playlistList, System.currentTimeMillis());
-        });
+        });*/
     }
 
     /**

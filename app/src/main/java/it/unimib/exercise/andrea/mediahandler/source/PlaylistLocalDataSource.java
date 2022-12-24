@@ -1,16 +1,19 @@
 package it.unimib.exercise.andrea.mediahandler.source;
 
+import android.util.Log;
+
 import java.util.List;
 
 import it.unimib.exercise.andrea.mediahandler.database.PlaylistDao;
 import it.unimib.exercise.andrea.mediahandler.database.YoutubeRoomDatabase;
 import it.unimib.exercise.andrea.mediahandler.models.playlist.Playlist;
+import it.unimib.exercise.andrea.mediahandler.models.playlist.PlaylistApiResponse;
 
 /**
  * Class to get news from local database using Room.
  */
 public class PlaylistLocalDataSource extends BasePlaylistLocalDataSource {
-
+    private static final String TAG = PlaylistLocalDataSource.class.getSimpleName();
     private final PlaylistDao playlistDao;
 
     public PlaylistLocalDataSource(YoutubeRoomDatabase youtubeRoomDatabase) {
@@ -24,20 +27,20 @@ public class PlaylistLocalDataSource extends BasePlaylistLocalDataSource {
      */
     @Override
     public void getPlaylist() {
+        Log.d(TAG, "getPlaylist: ");
         YoutubeRoomDatabase.databaseWriteExecutor.execute(() ->{
             playlistCallback.onSuccessFromLocal(playlistDao.getAll());
         });
     }
 
     @Override
-    public void insertPlaylists(List<Playlist> playlistList) {
+    public void insertPlaylists(PlaylistApiResponse playlistApiResponse) {
         YoutubeRoomDatabase.databaseWriteExecutor.execute(() -> {
-            // Reads the news from the database
-            List<Playlist> allPlaylists = playlistDao.getAll();
-            if (!playlistList.equals(allPlaylists)) {
-                playlistDao.insertPlaylistList(playlistList);
-                playlistCallback.onSuccessFromLocal(playlistList);
-            }
+
+            List<Playlist> playlistList = playlistApiResponse.getPlaylistList();
+            playlistDao.insertPlaylistList(playlistList);
+            Log.d(TAG, "insertPlaylists: " + playlistList);
+            playlistCallback.onSuccessFromLocal(playlistList);
         });
     }
 

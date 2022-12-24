@@ -12,7 +12,8 @@ import it.unimib.exercise.andrea.mediahandler.repository.IPlaylistRepositoryWith
  * for the PlaylistViewModel class.
  */
 public class ViewModelPlaylistFactory implements ViewModelProvider.Factory {
-private IPlaylistRepositoryWithLiveData iPlaylistRepositoryWithLiveData;
+
+    private IPlaylistRepositoryWithLiveData iPlaylistRepositoryWithLiveData;
 
     public ViewModelPlaylistFactory(IPlaylistRepositoryWithLiveData iPlaylistRepositoryWithLiveData) {
         this.iPlaylistRepositoryWithLiveData = iPlaylistRepositoryWithLiveData;
@@ -21,6 +22,6 @@ private IPlaylistRepositoryWithLiveData iPlaylistRepositoryWithLiveData;
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        return ViewModelProvider.Factory.super.create(modelClass);
+        return (T) new ViewModelPlaylist(iPlaylistRepositoryWithLiveData) ;
     }
 }

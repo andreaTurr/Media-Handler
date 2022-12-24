@@ -28,7 +28,9 @@ public abstract class YoutubeRoomDatabase extends RoomDatabase {
             synchronized (YoutubeRoomDatabase.class) {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                            YoutubeRoomDatabase.class, YOUTUBE_DATABASE_NAME).build();
+                            YoutubeRoomDatabase.class, YOUTUBE_DATABASE_NAME)
+                            .fallbackToDestructiveMigration()
+                            .build();
                 }
             }
         }

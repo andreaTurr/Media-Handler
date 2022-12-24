@@ -9,12 +9,12 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.gson.Gson;
+
 import net.openid.appauth.AuthState;
 import net.openid.appauth.AuthorizationException;
 import net.openid.appauth.AuthorizationService;
 import net.openid.appauth.TokenResponse;
-
-import org.json.JSONObject;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -23,14 +23,12 @@ import it.unimib.exercise.andrea.mediahandler.models.playlist.PlaylistApiRespons
 import it.unimib.exercise.andrea.mediahandler.service.YoutubeApiService;
 import it.unimib.exercise.andrea.mediahandler.util.AuthStateManager;
 import it.unimib.exercise.andrea.mediahandler.util.ServiceLocator;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * Class to get news from a remote source using Retrofit.
+ * Class to get playlist from a remote source using Retrofit.
  */
 public class PlaylistRemoteDataSource extends BasePlaylistRemoteDataSource {
     private static final String TAG = PlaylistRemoteDataSource.class.getSimpleName();
@@ -55,7 +53,10 @@ public class PlaylistRemoteDataSource extends BasePlaylistRemoteDataSource {
         // token and/or ID token.
         // -----------------------------------------------------------------------------------------
         Log.d(TAG, "getAuthToken: start");
-        if (mStateManager != null && mAuthService != null){
+        if (mStateManager != null && mStateManager.getCurrent().isAuthorized()) {
+            Log.d(TAG, "getAuthToken: already authorized");
+            //mStateManager.getCurrent().update(mStateManager.getCurrent().getLastRegistrationResponse());
+        }else if (mStateManager != null && mAuthService != null){
             mAuthService.performTokenRequest(
                     //resp.createTokenExchangeRequest(),
                     mStateManager.getCurrent().getLastAuthorizationResponse().createTokenExchangeRequest(),
@@ -81,6 +82,11 @@ public class PlaylistRemoteDataSource extends BasePlaylistRemoteDataSource {
 
     @Override
     public void getPlaylist() {
+
+        /*if (mStateManager.getCurrent().getLastAuthorizationResponse().accessToken == null){
+            return ;
+        }*/
+        Log.d(TAG, TAG + ": start ");
         if (mAuthService != null) {
             //--------------------------------------------------------------------------------------
             //  Oauth2 Step 4. Using access tokens derived from the refresh token to interact with a
@@ -91,53 +97,30 @@ public class PlaylistRemoteDataSource extends BasePlaylistRemoteDataSource {
                 public void execute(@Nullable String accessToken,
                                     @Nullable String idToken,
                                     @Nullable AuthorizationException ex) {
-                    Call<PlaylistApiResponse> newsResponseCall = youtubeApiService.getPlaylists(
-                            String.format("Bearer %s", mStateManager.getCurrent().getLastAuthorizationResponse().accessToken));
-                    newsResponseCall.enqueue(new Callback<PlaylistApiResponse>() {
-
+                    Call<PlaylistApiResponse> playlistApiResponse = youtubeApiService.getPlaylists(
+                            String.format("Bearer %s", accessToken));
+                    playlistApiResponse.enqueue(new Callback<PlaylistApiResponse>() {
                         @Override
                         public void onResponse(@NonNull Call<PlaylistApiResponse> call,
                                                @NonNull Response<PlaylistApiResponse> response) {
-
                             if (response.body() != null && response.isSuccessful()) {
                                 newsCallback.onSuccessFromRemote(response.body());
-
                             } else {
+                                Log.d(TAG, "onResponse: " + response.raw() + "   " + accessToken );
                                 newsCallback.onFailureFromRemote(new Exception(API_KEY_ERROR));
                             }
                         }
-
                         @Override
                         public void onFailure(@NonNull Call<PlaylistApiResponse> call, @NonNull Throwable t) {
+                            String message = t.getMessage();
+                            Log.d("failure", message);
                             newsCallback.onFailureFromRemote(new Exception(RETROFIT_ERROR));
                         }
                     });
-                    //method with OkHttpClient
-                    /*executorService.execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            Log.d(TAG, "onCreate run");
-                            OkHttpClient client = new OkHttpClient();
-                            Request request = new Request.Builder()
-                                    .url("https://youtube.googleapis.com/youtube/v3/playlists?part=snippet%2CcontentDetails&maxResults=25&mine=true") //  'https://youtube.googleapis.com/youtube/v3/playlists?part=snippet%2CcontentDetails&maxResults=25&mine=true&key=[YOUR_API_KEY]' \
-                                    .addHeader("Authorization", String.format("Bearer %s", accessToken))
-                                    .build();
-                            try {
-                                okhttp3.Response response = client.newCall(request).execute();
-                                String jsonBody = response.body().string();
-                                Log.i(TAG, String.format("User Info Response %s", jsonBody));
-                                //objectJSON = new JSONObject(jsonBody);
-                            } catch (Exception e) {
-                                Log.w(TAG, e);
-                            }
-                        }
-                    });*/
                 }
             });
         }else{
             Log.d(TAG, "getPlaylist: mAuthService == null");
         }
-        
-
     }
 }

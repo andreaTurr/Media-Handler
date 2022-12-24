@@ -105,7 +105,7 @@ public class FragmentLoginAuth extends Fragment {
                 authService.performAuthorizationRequest(
                         authRequest,
                         PendingIntent.getActivity(getContext(), 0,
-                                new Intent(getContext(), FragmentPlaylistList.class), 0), //completed intent
+                                new Intent(getContext(), FragmentPlayListList.class), 0), //completed intent
                         PendingIntent.getActivity(getContext(), 0,
                                 new Intent(getContext(), FragmentLoginAuth.class), 0)); //cancelled intent
 
@@ -127,57 +127,6 @@ public class FragmentLoginAuth extends Fragment {
         return inflater.inflate(R.layout.fragment_login_auth, container, false);
     }
 
-    /*ActivityResultLauncher<Intent> authResponseActivityResultLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-                    Log.d(TAG, "ActivityResult: " + result.getResultCode());
-                    if (result.getResultCode() == Activity.RESULT_OK) {
-
-                        AuthorizationResponse resp = AuthorizationResponse.fromIntent(result.getData());
-                        AuthorizationException ex = AuthorizationException.fromIntent(result.getData());
-                        // … process the response or exception …
-                        if (resp != null){
-                            Log.d(TAG, "onActivityResult: save mAuth");
-                            mAuthService = new AuthorizationService(getActivity());
-                            mStateManager.updateAfterAuthorization(resp, ex);
-                            mAuthService.performTokenRequest(
-                                    resp.createTokenExchangeRequest(),
-                                    new AuthorizationService.TokenResponseCallback() {
-                                        @Override public void onTokenRequestCompleted(
-                                                TokenResponse resp, AuthorizationException ex) {
-                                            if (resp != null) {
-                                                // exchange succeeded
-                                                mStateManager.updateAfterTokenResponse(resp, ex) ;
-                                                Log.d(TAG,"accessToken" + resp.accessToken) ;
-                                                executorService.execute(new Runnable() {
-                                                    @Override
-                                                    public void run() {
-                                                        OkHttpClient client = new OkHttpClient();
-                                                        Request request = new Request.Builder()
-                                                                .url("https://www.googleapis.com/youtube/v3/playlists?mine=true")
-                                                                .addHeader("Authorization", String.format("Bearer %s", resp.accessToken))
-                                                                .build() ;
-                                                        try {
-                                                            Response response = client.newCall(request).execute();
-                                                            String jsonBody  = response.body().string() ;
-                                                            Log.i(TAG, String.format("User Info Response %s", jsonBody)) ;
-                                                            objectJSON = new JSONObject(jsonBody) ;
-                                                        }catch (Exception e) {
-                                                            Log.w(TAG, e);
-                                                        }
-                                                    }
-                                                });
-                                            } else {
-                                                // authorization failed, check ex for more details
-                                            }
-                                        }
-                                    });
-                        }
-                    }
-                }
-            });*/
 
     @MainThread
     private void endSession() {

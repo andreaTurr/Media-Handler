@@ -1,10 +1,11 @@
 package it.unimib.exercise.andrea.mediahandler.ui;
 
+import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import it.unimib.exercise.andrea.mediahandler.models.playlist.Result;
-import it.unimib.exercise.andrea.mediahandler.repository.IPlaylistRepository;
 import it.unimib.exercise.andrea.mediahandler.repository.IPlaylistRepositoryWithLiveData;
 
 public class ViewModelPlaylist extends ViewModel {
@@ -24,6 +25,7 @@ public class ViewModelPlaylist extends ViewModel {
     }
 
     private void fetchPlaylistList() {
+        Log.d(TAG, "fetchPlaylistList: ");
         playlistListLiveData = playlistRepositoryWithLiveData.fetchPlaylist();
     }
 }

@@ -3,13 +3,20 @@ package it.unimib.exercise.andrea.mediahandler.models.playlist;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.room.Entity;
+
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 /**
- * Class to represent the news of youtube playlist API
+ * Class to represent the playlist of youtube playlist API
  */
+
 public class PlaylistApiResponse implements Parcelable {
     private PlaylistPageInfo pageInfo;
+
+    @SerializedName("items")
     private List<Playlist> playlistList;
 
     public List<Playlist> getPlaylistList() {

@@ -22,9 +22,9 @@ public class Constants {
     public static final String PLAYLIST_API_TEST_JSON_FILE = "playlist.json";
 
     // Constants for YOUTUBE_API https://www.googleapis.com/youtube/v3
-    public static final String YOUTUBE_API_BASE_URL = "“https://www.googleapis.com/youtube/v3";
-    public static final String TOP_SEARCH_ENDPOINT = "/search/";
-    public static final String PLAYLIST_ENDPOINT = "/playlists?part=snippet%2CcontentDetails&maxResults=25&mine=true";
+    public static final String YOUTUBE_API_BASE_URL = "https://youtube.googleapis.com/youtube/v3/";
+    public static final String TOP_SEARCH_ENDPOINT = "search/";
+    public static final String PLAYLIST_ENDPOINT = "playlists?part=snippet%2CcontentDetails&maxResults=25&mine=true";
 
     public static final String TOP_HEADLINES_COUNTRY_PARAMETER = "country";
     public static final String TOP_HEADLINES_PAGE_SIZE_PARAMETER = "pageSize";
@@ -36,7 +36,7 @@ public class Constants {
 
     // Constants for Room database
     public static final String NEWS_DATABASE_NAME = "news_db";
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
     public static final String YOUTUBE_DATABASE_NAME = "youtube_db";
 
     public static final String RETROFIT_ERROR = "retrofit_error";

@@ -1,5 +1,7 @@
 package it.unimib.exercise.andrea.mediahandler.repository;
 
+import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
 
 import java.util.List;
@@ -15,6 +17,7 @@ public class PlaylistRepositoryWithLiveData implements IPlaylistRepositoryWithLi
     private final MutableLiveData<Result> allPlaylistsMutableLiveData;
     private final BasePlaylistRemoteDataSource playlistRemoteDataSource;
     private final BasePlaylistLocalDataSource playlistLocalDataSource;
+    private static final String TAG = PlaylistRepositoryWithLiveData.class.getSimpleName();
     public PlaylistRepositoryWithLiveData(BasePlaylistRemoteDataSource playlistRemoteDataSource,
                                           BasePlaylistLocalDataSource playlistLocalDataSource) {
 
@@ -26,11 +29,13 @@ public class PlaylistRepositoryWithLiveData implements IPlaylistRepositoryWithLi
     }
     @Override
     public MutableLiveData<Result> fetchPlaylist() {
-        if (allPlaylistsMutableLiveData == null){
+        Log.d(TAG, "fetchPlaylist: ");
+        playlistRemoteDataSource.getPlaylist();
+        /*if (allPlaylistsMutableLiveData == null){
             playlistRemoteDataSource.getPlaylist();
         }else{
             playlistLocalDataSource.getPlaylist();
-        }
+        }*/
         return allPlaylistsMutableLiveData;
     }
 
@@ -41,16 +46,17 @@ public class PlaylistRepositoryWithLiveData implements IPlaylistRepositoryWithLi
 
     @Override
     public void onSuccessFromRemote(PlaylistApiResponse playlistApiResponse) {
-        playlistLocalDataSource.insertPlaylists(playlistApiResponse.getPlaylistList());
+        Log.d(TAG, "onSuccessFromRemote: ");
+        playlistLocalDataSource.insertPlaylists(playlistApiResponse);
     }
 
     @Override
     public void onFailureFromRemote(Exception exception) {
+        Log.d(TAG, "onFailureFromRemote: ");
         Result.Error result = new Result.Error(exception.getMessage());
         allPlaylistsMutableLiveData.postValue(result);
     }
 
-    @Override
     public void onSuccessFromLocal(List<Playlist> playlistList) {
         Result.Success result = new Result.Success(new PlaylistApiResponse(playlistList));
         allPlaylistsMutableLiveData.postValue(result);

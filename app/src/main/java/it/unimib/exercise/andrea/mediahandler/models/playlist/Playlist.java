@@ -4,6 +4,7 @@ package it.unimib.exercise.andrea.mediahandler.models.playlist;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.NonNull;
 import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -17,8 +18,9 @@ import com.google.gson.annotations.SerializedName;
 public class Playlist implements Parcelable {
 
     // Used for Room
-    @PrimaryKey(autoGenerate = true)
-    private long id;
+    @PrimaryKey
+    @NonNull
+    private String id;
     @Embedded
     private PlaylistSnippet snippet;
     @Embedded
@@ -26,10 +28,10 @@ public class Playlist implements Parcelable {
 
     //getter and setters
 
-    public long getId() {
+    public String getId() {
         return id;
     }
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
     public PlaylistSnippet getSnippet() {

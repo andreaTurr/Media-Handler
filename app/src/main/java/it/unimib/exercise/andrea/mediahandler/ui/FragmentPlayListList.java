@@ -1,11 +1,9 @@
 package it.unimib.exercise.andrea.mediahandler.ui;
 
-import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -13,9 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -23,10 +18,6 @@ import com.google.android.material.snackbar.Snackbar;
 
 import net.openid.appauth.AuthorizationException;
 import net.openid.appauth.AuthorizationResponse;
-import net.openid.appauth.AuthorizationService;
-import net.openid.appauth.TokenResponse;
-
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,14 +35,14 @@ import it.unimib.exercise.andrea.mediahandler.util.ServiceLocator;
  * A simple {@link Fragment} subclass.
  * create an instance of this fragment.
  */
-public class FragmentPlaylistList extends Fragment {
+public class FragmentPlayListList extends Fragment {
     private List<Playlist> playlistList;
     private AdapterPlaylistRecView adapterPlaylistRecView;
     private ViewModelPlaylist viewModelPlaylist;
     private AuthStateManager mStateManager = null;
-    private static final String TAG = FragmentPlaylistList.class.getSimpleName();
+    private static final String TAG = FragmentPlayListList.class.getSimpleName();
 
-    public FragmentPlaylistList() {
+    public FragmentPlayListList() {
         // Required empty public constructor
     }
     @Override
@@ -65,13 +56,21 @@ public class FragmentPlaylistList extends Fragment {
             mStateManager.updateAfterAuthorization(resp, ex);
         }
         IPlaylistRepositoryWithLiveData playlistRepositoryWithLiveData =
-                ServiceLocator.getInstance().getNewsRepository(
+                ServiceLocator.getInstance().getPlaylistRepository(
                         requireActivity().getApplication(),
                         requireActivity().getApplication().getResources().getBoolean(R.bool.debug_mode)
                 );
-        viewModelPlaylist = new ViewModelProvider(
-                requireActivity(),
-                new ViewModelPlaylistFactory(playlistRepositoryWithLiveData)).get(ViewModelPlaylist.class);
+        if (playlistRepositoryWithLiveData != null) {
+            // This is the way to create a ViewModel with custom parameters
+            // (see NewsViewModelFactory class for the implementation details)
+            viewModelPlaylist = new ViewModelProvider(
+                    requireActivity(),
+                    new ViewModelPlaylistFactory(playlistRepositoryWithLiveData)).get(ViewModelPlaylist.class);
+        } else {
+            Snackbar.make(requireActivity().findViewById(android.R.id.content),
+                    getString(R.string.unexpected_error), Snackbar.LENGTH_SHORT).show();
+        }
+
 
         playlistList = new ArrayList<>();
     }
@@ -127,6 +126,7 @@ public class FragmentPlaylistList extends Fragment {
                 Snackbar.make(view, errorMessagesUtil.
                                 getErrorMessage(((Result.Error)result).getMessage()),
                         Snackbar.LENGTH_SHORT).show();
+                Log.d(TAG, "observe: not success");
             }
         });
     }

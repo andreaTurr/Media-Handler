@@ -40,7 +40,7 @@
     </fragment>
     <fragment
         android:id="@+id/fragmentPlaylistList"
-        android:name="it.unimib.exercise.andrea.mediahandler.ui.FragmentPlaylistList"
+        android:name="it.unimib.exercise.andrea.mediahandler.ui.FragmentPlayListList"
         android:label="fragment_playlist_list"
         tools:layout="@layout/fragment_playlist_list" />
 

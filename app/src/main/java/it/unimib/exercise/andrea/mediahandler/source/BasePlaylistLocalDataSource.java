@@ -1,9 +1,7 @@
 package it.unimib.exercise.andrea.mediahandler.source;
 
 
-import java.util.List;
-
-import it.unimib.exercise.andrea.mediahandler.models.playlist.Playlist;
+import it.unimib.exercise.andrea.mediahandler.models.playlist.PlaylistApiResponse;
 
 /**
  * Base class to get news from a local source.
@@ -17,5 +15,5 @@ public abstract class BasePlaylistLocalDataSource {
     }
 
     public abstract void getPlaylist();
-    public abstract void insertPlaylists(List<Playlist> playlistList);
+    public abstract void insertPlaylists(PlaylistApiResponse playlistList);
 }
