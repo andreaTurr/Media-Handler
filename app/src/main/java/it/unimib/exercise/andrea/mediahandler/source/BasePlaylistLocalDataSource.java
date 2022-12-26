@@ -1,7 +1,7 @@
 package it.unimib.exercise.andrea.mediahandler.source;
 
 
-import it.unimib.exercise.andrea.mediahandler.models.playlist.PlaylistApiResponse;
+import it.unimib.exercise.andrea.mediahandler.models.playlists.PlaylistApiResponse;
 
 /**
  * Base class to get news from a local source.

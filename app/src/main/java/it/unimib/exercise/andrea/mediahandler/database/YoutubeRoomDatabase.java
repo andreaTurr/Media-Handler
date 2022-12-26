@@ -12,7 +12,7 @@ import androidx.room.RoomDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import it.unimib.exercise.andrea.mediahandler.models.playlist.Playlist;
+import it.unimib.exercise.andrea.mediahandler.models.playlists.Playlist;
 
 @Database(entities = {Playlist.class}, version = DATABASE_VERSION)
 public abstract class YoutubeRoomDatabase extends RoomDatabase {

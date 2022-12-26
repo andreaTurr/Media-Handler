@@ -1,6 +1,6 @@
 package it.unimib.exercise.andrea.mediahandler.repository;
 
-import it.unimib.exercise.andrea.mediahandler.models.playlist.Playlist;
+import it.unimib.exercise.andrea.mediahandler.models.playlists.Playlist;
 
 public interface IPlaylistRepository {
     void fetchPlaylist();

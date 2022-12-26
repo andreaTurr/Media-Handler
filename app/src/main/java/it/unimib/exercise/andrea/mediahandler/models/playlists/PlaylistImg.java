@@ -1,4 +1,4 @@
-package it.unimib.exercise.andrea.mediahandler.models.playlist;
+package it.unimib.exercise.andrea.mediahandler.models.playlists;
 
 import android.os.Parcel;
 import android.os.Parcelable;

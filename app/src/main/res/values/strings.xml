@@ -13,8 +13,10 @@
     <string name="forgot_password">forgot password?</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="bottom_nav_text1">first</string>
-    <string name="bottom_nav_text2">second</string>
+    <string name="bottom_nav_playlists">Playlists</string>
+    <string name="bottom_nav_video">Video</string>
+    <string name="bottom_nav_musica">Audio</string>
+    <string name="bottom_nav_setting">Setting</string>
     <string name="delete">Delete</string>
     <string name="error_retrieving_playlists">Error in retrieving the playlists</string>
     <string name="api_key_error">API Key not valid or maximum number of requests reached</string>

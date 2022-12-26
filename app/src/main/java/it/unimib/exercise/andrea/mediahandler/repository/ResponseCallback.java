@@ -2,7 +2,7 @@ package it.unimib.exercise.andrea.mediahandler.repository;
 
 import java.util.List;
 
-import it.unimib.exercise.andrea.mediahandler.models.playlist.Playlist;
+import it.unimib.exercise.andrea.mediahandler.models.playlists.Playlist;
 
 /**
  * Interface to send data from Repositories that implement

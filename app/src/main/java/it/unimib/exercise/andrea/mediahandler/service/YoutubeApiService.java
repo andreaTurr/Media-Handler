@@ -2,7 +2,7 @@ package it.unimib.exercise.andrea.mediahandler.service;
 
 import static it.unimib.exercise.andrea.mediahandler.util.Constants.PLAYLIST_ENDPOINT;
 
-import it.unimib.exercise.andrea.mediahandler.models.playlist.PlaylistApiResponse;
+import it.unimib.exercise.andrea.mediahandler.models.playlists.PlaylistApiResponse;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Header;

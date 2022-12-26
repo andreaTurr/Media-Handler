@@ -5,7 +5,7 @@ import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import it.unimib.exercise.andrea.mediahandler.models.playlist.Result;
+import it.unimib.exercise.andrea.mediahandler.models.playlists.Result;
 import it.unimib.exercise.andrea.mediahandler.repository.IPlaylistRepositoryWithLiveData;
 
 public class ViewModelPlaylist extends ViewModel {
@@ -17,15 +17,15 @@ public class ViewModelPlaylist extends ViewModel {
         this.playlistRepositoryWithLiveData = playlistRepositoryWithLiveData;
     }
 
-    public MutableLiveData<Result> getPlaylistList() {
+    public MutableLiveData<Result> getPlaylistList(long lastUpdate) {
         if (playlistListLiveData == null){
-            fetchPlaylistList();
+            fetchPlaylistList(lastUpdate);
         }
         return playlistListLiveData;
     }
 
-    private void fetchPlaylistList() {
+    private void fetchPlaylistList(long LastUpdate) {
         Log.d(TAG, "fetchPlaylistList: ");
-        playlistListLiveData = playlistRepositoryWithLiveData.fetchPlaylist();
+        playlistListLiveData = playlistRepositoryWithLiveData.fetchPlaylist(LastUpdate);
     }
 }

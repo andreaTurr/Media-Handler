@@ -9,7 +9,6 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.google.gson.Gson;
 
 import net.openid.appauth.AuthState;
 import net.openid.appauth.AuthorizationException;
@@ -19,7 +18,7 @@ import net.openid.appauth.TokenResponse;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import it.unimib.exercise.andrea.mediahandler.models.playlist.PlaylistApiResponse;
+import it.unimib.exercise.andrea.mediahandler.models.playlists.PlaylistApiResponse;
 import it.unimib.exercise.andrea.mediahandler.service.YoutubeApiService;
 import it.unimib.exercise.andrea.mediahandler.util.AuthStateManager;
 import it.unimib.exercise.andrea.mediahandler.util.ServiceLocator;
@@ -32,7 +31,7 @@ import retrofit2.Response;
  */
 public class PlaylistRemoteDataSource extends BasePlaylistRemoteDataSource {
     private static final String TAG = PlaylistRemoteDataSource.class.getSimpleName();
-    private AuthStateManager mStateManager = null;
+    private AuthStateManager mStateManager ;
     private final YoutubeApiService youtubeApiService;
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private Context context = null;

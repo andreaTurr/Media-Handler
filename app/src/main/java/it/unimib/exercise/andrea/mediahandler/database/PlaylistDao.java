@@ -9,7 +9,7 @@ import androidx.room.Update;
 
 import java.util.List;
 
-import it.unimib.exercise.andrea.mediahandler.models.playlist.*;
+import it.unimib.exercise.andrea.mediahandler.models.playlists.*;
 
 /**
  * Data Access Object (DAO) that provides methods that can be used to query,

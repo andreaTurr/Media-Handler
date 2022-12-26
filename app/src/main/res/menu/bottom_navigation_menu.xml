@@ -4,18 +4,18 @@
         android:id="@+id/fragment_main"
         android:enabled="true"
         android:icon="@drawable/ic_launcher_foreground"
-        android:title="@string/bottom_nav_text1" />
+        android:title="@string/bottom_nav_playlists" />
     <item
         android:id="@+id/fragment_audio"
         android:enabled="true"
         android:icon="@drawable/ic_launcher_foreground"
-        android:title="@string/bottom_nav_text2" />
+        android:title="@string/bottom_nav_video" />
     <item
         android:id="@+id/fragment_video"
         android:icon="@drawable/ic_launcher_foreground"
-        android:title="third" />
+        android:title="@string/bottom_nav_musica" />
     <item
         android:id="@+id/fragment_settings"
         android:icon="@drawable/ic_launcher_foreground"
-        android:title="fourth" />
+        android:title="@string/bottom_nav_setting" />
 </menu>

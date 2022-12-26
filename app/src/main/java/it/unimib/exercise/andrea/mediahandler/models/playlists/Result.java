@@ -1,4 +1,4 @@
-package it.unimib.exercise.andrea.mediahandler.models.playlist;
+package it.unimib.exercise.andrea.mediahandler.models.playlists;
 
 /**
  * Class that represents the result of an action that requires

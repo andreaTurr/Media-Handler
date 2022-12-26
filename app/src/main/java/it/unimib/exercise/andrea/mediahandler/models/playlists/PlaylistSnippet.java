@@ -1,11 +1,9 @@
-package it.unimib.exercise.andrea.mediahandler.models.playlist;
+package it.unimib.exercise.andrea.mediahandler.models.playlists;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.room.Embedded;
-
-import com.google.gson.annotations.SerializedName;
 
 public class PlaylistSnippet implements Parcelable {
     private String publishedAt;

@@ -1,14 +1,16 @@
 package it.unimib.exercise.andrea.mediahandler.repository;
 
+import static it.unimib.exercise.andrea.mediahandler.util.Constants.FRESH_TIMEOUT;
+
 import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
 import java.util.List;
 
-import it.unimib.exercise.andrea.mediahandler.models.playlist.Playlist;
-import it.unimib.exercise.andrea.mediahandler.models.playlist.PlaylistApiResponse;
-import it.unimib.exercise.andrea.mediahandler.models.playlist.Result;
+import it.unimib.exercise.andrea.mediahandler.models.playlists.Playlist;
+import it.unimib.exercise.andrea.mediahandler.models.playlists.PlaylistApiResponse;
+import it.unimib.exercise.andrea.mediahandler.models.playlists.Result;
 import it.unimib.exercise.andrea.mediahandler.source.BasePlaylistLocalDataSource;
 import it.unimib.exercise.andrea.mediahandler.source.BasePlaylistRemoteDataSource;
 import it.unimib.exercise.andrea.mediahandler.source.PlaylistCallback;
@@ -28,20 +30,14 @@ public class PlaylistRepositoryWithLiveData implements IPlaylistRepositoryWithLi
         this.playlistLocalDataSource.setPlaylistCallback(this);
     }
     @Override
-    public MutableLiveData<Result> fetchPlaylist() {
+    public MutableLiveData<Result> fetchPlaylist(long lastUpdate) {
+        long currentTime = System.currentTimeMillis();
         Log.d(TAG, "fetchPlaylist: ");
-        playlistRemoteDataSource.getPlaylist();
-        /*if (allPlaylistsMutableLiveData == null){
+        if(currentTime - lastUpdate > FRESH_TIMEOUT)
             playlistRemoteDataSource.getPlaylist();
-        }else{
+        else
             playlistLocalDataSource.getPlaylist();
-        }*/
         return allPlaylistsMutableLiveData;
-    }
-
-    @Override
-    public void onSuccessFromAuth() {
-        //todo start request with token
     }
 
     @Override

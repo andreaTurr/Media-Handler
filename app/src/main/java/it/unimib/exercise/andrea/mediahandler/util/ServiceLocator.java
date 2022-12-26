@@ -80,6 +80,7 @@ public class ServiceLocator {
      */
     public IPlaylistRepositoryWithLiveData getPlaylistRepository(Application application, boolean debugMode) {
         mStateManager = AuthStateManager.getInstance(application.getApplicationContext()) ;
+        SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(application);
 
         BasePlaylistRemoteDataSource playlistRemoteDataSource;
         BasePlaylistLocalDataSource playlistLocalDataSource;
@@ -93,7 +94,9 @@ public class ServiceLocator {
                     new PlaylistRemoteDataSource( application.getApplicationContext(), mStateManager);
         }
 
-        playlistLocalDataSource = new PlaylistLocalDataSource(getNewsDao(application));
+        playlistLocalDataSource = new PlaylistLocalDataSource(
+                getNewsDao(application),
+                sharedPreferencesUtil);
         return new PlaylistRepositoryWithLiveData(playlistRemoteDataSource, playlistLocalDataSource);
     }
 }

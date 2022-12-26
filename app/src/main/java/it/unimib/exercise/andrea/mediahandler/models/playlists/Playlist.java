@@ -1,4 +1,4 @@
-package it.unimib.exercise.andrea.mediahandler.models.playlist;
+package it.unimib.exercise.andrea.mediahandler.models.playlists;
 
 
 import android.os.Parcel;
@@ -8,8 +8,6 @@ import androidx.annotation.NonNull;
 import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-
-import com.google.gson.annotations.SerializedName;
 
 /**
  * Class to represent the playlist of youtube API v3

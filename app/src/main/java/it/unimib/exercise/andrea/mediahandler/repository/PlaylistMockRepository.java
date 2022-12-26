@@ -10,8 +10,8 @@ import java.util.List;
 import it.unimib.exercise.andrea.mediahandler.R;
 import it.unimib.exercise.andrea.mediahandler.database.PlaylistDao;
 import it.unimib.exercise.andrea.mediahandler.database.YoutubeRoomDatabase;
-import it.unimib.exercise.andrea.mediahandler.models.playlist.Playlist;
-import it.unimib.exercise.andrea.mediahandler.models.playlist.PlaylistApiResponse;
+import it.unimib.exercise.andrea.mediahandler.models.playlists.Playlist;
+import it.unimib.exercise.andrea.mediahandler.models.playlists.PlaylistApiResponse;
 import it.unimib.exercise.andrea.mediahandler.util.JSONParserUtil;
 
 public class PlaylistMockRepository implements IPlaylistRepository{

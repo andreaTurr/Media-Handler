@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import it.unimib.exercise.andrea.mediahandler.R;
-import it.unimib.exercise.andrea.mediahandler.models.playlist.Playlist;
+import it.unimib.exercise.andrea.mediahandler.models.playlists.Playlist;
 
 public class AdapterPlaylistRecView extends
         RecyclerView.Adapter<AdapterPlaylistRecView.ViewHolder> {

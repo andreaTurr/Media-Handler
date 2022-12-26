@@ -1,5 +1,8 @@
 package it.unimib.exercise.andrea.mediahandler.ui;
 
+import static it.unimib.exercise.andrea.mediahandler.util.Constants.LAST_UPDATE;
+import static it.unimib.exercise.andrea.mediahandler.util.Constants.SHARED_PREFERENCES_FILE_NAME;
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -24,12 +27,13 @@ import java.util.List;
 
 import it.unimib.exercise.andrea.mediahandler.R;
 import it.unimib.exercise.andrea.mediahandler.adapters.AdapterPlaylistRecView;
-import it.unimib.exercise.andrea.mediahandler.models.playlist.Playlist;
-import it.unimib.exercise.andrea.mediahandler.models.playlist.Result;
+import it.unimib.exercise.andrea.mediahandler.models.playlists.Playlist;
+import it.unimib.exercise.andrea.mediahandler.models.playlists.Result;
 import it.unimib.exercise.andrea.mediahandler.repository.IPlaylistRepositoryWithLiveData;
 import it.unimib.exercise.andrea.mediahandler.util.AuthStateManager;
 import it.unimib.exercise.andrea.mediahandler.util.ErrorMessagesUtil;
 import it.unimib.exercise.andrea.mediahandler.util.ServiceLocator;
+import it.unimib.exercise.andrea.mediahandler.util.SharedPreferencesUtil;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -41,6 +45,7 @@ public class FragmentPlayListList extends Fragment {
     private ViewModelPlaylist viewModelPlaylist;
     private AuthStateManager mStateManager = null;
     private static final String TAG = FragmentPlayListList.class.getSimpleName();
+    private SharedPreferencesUtil sharedPreferencesUtil;
 
     public FragmentPlayListList() {
         // Required empty public constructor
@@ -112,8 +117,16 @@ public class FragmentPlayListList extends Fragment {
                 });
         recyclerViewCountryNews.setLayoutManager(layoutManager);
         recyclerViewCountryNews.setAdapter(adapterPlaylistRecView);
+        sharedPreferencesUtil = new SharedPreferencesUtil(requireActivity().getApplication());
+        String lastUpdate = "0";
+        if (sharedPreferencesUtil.readStringData(
+                SHARED_PREFERENCES_FILE_NAME, LAST_UPDATE) != null) {
+            lastUpdate = sharedPreferencesUtil.readStringData(
+                    SHARED_PREFERENCES_FILE_NAME, LAST_UPDATE);
+        }
 
-        viewModelPlaylist.getPlaylistList().observe(getViewLifecycleOwner(), result -> {
+
+        viewModelPlaylist.getPlaylistList(Long.parseLong(lastUpdate)).observe(getViewLifecycleOwner(), result -> {
             if (result.isSuccess()){
                 int initialSize = this.playlistList.size();
                 this.playlistList.clear();

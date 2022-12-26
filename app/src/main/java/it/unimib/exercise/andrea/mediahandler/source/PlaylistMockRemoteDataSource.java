@@ -5,7 +5,7 @@ import static it.unimib.exercise.andrea.mediahandler.util.Constants.PLAYLIST_API
 
 import java.io.IOException;
 
-import it.unimib.exercise.andrea.mediahandler.models.playlist.PlaylistApiResponse;
+import it.unimib.exercise.andrea.mediahandler.models.playlists.PlaylistApiResponse;
 import it.unimib.exercise.andrea.mediahandler.util.JSONParserUtil;
 
 public class PlaylistMockRemoteDataSource extends BasePlaylistRemoteDataSource {

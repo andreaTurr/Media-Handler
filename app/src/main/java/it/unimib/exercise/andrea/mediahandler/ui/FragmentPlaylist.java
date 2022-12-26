@@ -24,14 +24,6 @@ import it.unimib.exercise.andrea.mediahandler.R;
 public class FragmentPlaylist extends Fragment {
     private static final String TAG = FragmentPlaylist.class.getSimpleName();
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public FragmentPlaylist() {
-        // Required empty public constructor
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
