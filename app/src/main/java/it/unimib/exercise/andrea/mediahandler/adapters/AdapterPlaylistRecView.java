@@ -46,6 +46,9 @@ public class AdapterPlaylistRecView extends RecyclerView.Adapter<AdapterPlaylist
 
     @Override
     public int getItemCount() {
+        if(videoList != null){
+            return videoList.size();
+        }
         return 0;
     }
 

@@ -103,7 +103,7 @@ public class FragmentPlayListList extends Fragment {
         });*/
 
         RecyclerView recyclerViewPlaylistList = view.findViewById(R.id.recyclerview_playlist_list);
-        RecyclerView.LayoutManager layoutManager =
+        LinearLayoutManager layoutManager =
                 new LinearLayoutManager(requireContext(),
                         LinearLayoutManager.VERTICAL, false);
 
@@ -117,8 +117,12 @@ public class FragmentPlayListList extends Fragment {
 
                         // method to pass argument between fragments of navigation components
                         // https://developer.android.com/guide/navigation/navigation-pass-data#samples
+                        Log.d(TAG, "onPlaylistClick playlistId: " + playlist.getId());
                         FragmentPlayListListDirections.ActionFragmentPlaylistListToFragmentPlaylist action =
-                                FragmentPlayListListDirections.actionFragmentPlaylistListToFragmentPlaylist(playlist.getId());
+                                FragmentPlayListListDirections.actionFragmentPlaylistListToFragmentPlaylist(
+                                        playlist.getId(),
+                                        playlist.getSnippet().getTitle());
+                        //action.setPlaylistId(playlist.getId());
                         Navigation.findNavController(view).navigate(action);
                     }
                 });

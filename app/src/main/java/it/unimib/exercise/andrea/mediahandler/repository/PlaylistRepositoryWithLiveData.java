@@ -57,6 +57,7 @@ public class PlaylistRepositoryWithLiveData implements IPlaylistRepositoryWithLi
         return allPlaylistItemMutableLiveData;
     }
 
+    //PlaylistList callback
     @Override
     public void onSuccessFromRemotePlaylistList(PlaylistApiResponse playlistApiResponse) {
         Log.d(TAG, "onSuccessFromRemote: ");
@@ -83,6 +84,7 @@ public class PlaylistRepositoryWithLiveData implements IPlaylistRepositoryWithLi
         allPlaylistsListMutableLiveData.postValue(resultError);
     }
 
+    //PlaylistItem callback
     @Override
     public void onSuccessFromRemotePlaylistItem(PlaylistItemApiResponse response) {
         Log.d(TAG, "onSuccessFromRemotePlaylistItem: ");

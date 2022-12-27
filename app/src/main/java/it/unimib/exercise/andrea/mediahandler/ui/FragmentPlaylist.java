@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,7 +18,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
@@ -78,11 +81,14 @@ public class FragmentPlaylist extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //get value passed from originating action fragment
-        String playlistId = FragmentPlaylistArgs.fromBundle(getArguments()).getPlaylistID();
+        String playlistId = FragmentPlaylistArgs.fromBundle(getArguments()).getPlaylistId();
+        String playlistTitle = FragmentPlaylistArgs.fromBundle(getArguments()).getPlaylistTitle();
 
+        TextView titleOfPlaylist = view.findViewById(R.id.playlistTitle);
+        titleOfPlaylist.setText(playlistTitle);
 
         RecyclerView recyclerViewPlaylistItems = view.findViewById(R.id.recyclerview_playlist);
-        RecyclerView.LayoutManager layoutManager =
+        LinearLayoutManager layoutManager =
                 new LinearLayoutManager(requireContext(),
                         LinearLayoutManager.VERTICAL, false);
 
@@ -104,14 +110,24 @@ public class FragmentPlaylist extends Fragment {
             lastUpdate = sharedPreferencesUtil.readStringData(
                     SHARED_PREFERENCES_FILE_NAME, LAST_UPDATE_PLAYLIST_ITEMS);
         }
+        //divider between items of recycle view
+        recyclerViewPlaylistItems.addItemDecoration(new DividerItemDecoration(getContext(),
+                layoutManager.getOrientation()));
+
+
         viewModelPlaylist.getPlaylistFromId(0, playlistId).observe(getViewLifecycleOwner(), result -> {
             if (result.isSuccess()){
-                Log.d(TAG, "onViewCreated: result.isSuccess");
+                Log.d(TAG, "onViewCreated: isSuccess");
                 int initialSize = this.videoList.size();
+                Log.d(TAG, "result.isSuccess: " + videoList);
                 this.videoList.clear();
+                Log.d(TAG, "result.isSuccess: " + videoList);
                 //this.videoList.addAll(((Result.Success) result).getData().getPlaylist());
                 this.videoList.addAll(((ResultPlaylistItem.Success) result).getData().getVideoList());
+                Log.d(TAG, "result.isSuccess: " + videoList);
+                adapterPlaylistRecView.notifyItemRangeRemoved(0, initialSize);
                 adapterPlaylistRecView.notifyItemRangeInserted(initialSize, this.videoList.size());
+                //Log.d(TAG, "onViewCreated: " + videoList);
                 //progressBar.setVisibility(View.GONE);
             }else {
                 ErrorMessagesUtil errorMessagesUtil =
@@ -122,6 +138,11 @@ public class FragmentPlaylist extends Fragment {
                 Log.d(TAG, "observe: not success");
             }
         } );
+    }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        adapterPlaylistRecView.notifyItemRangeRemoved(0, videoList.size());
     }
 }

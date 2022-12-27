@@ -37,7 +37,6 @@ public class PlaylistItemApiResponse implements Parcelable {
         return Objects.hash(videoList);
     }
 
-
     @Override
     public int describeContents() {
         return 0;

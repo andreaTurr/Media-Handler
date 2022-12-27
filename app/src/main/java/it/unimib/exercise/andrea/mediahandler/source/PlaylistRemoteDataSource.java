@@ -144,11 +144,8 @@ public class PlaylistRemoteDataSource extends BasePlaylistRemoteDataSource {
                         public void onResponse(@NonNull Call<PlaylistItemApiResponse> call,
                                                @NonNull Response<PlaylistItemApiResponse> response) {
                             if (response.body() != null && response.isSuccessful()) {
-                                //newsCallback.onSuccessFromRemote(response.body());
                                 playlistCallback.onSuccessFromRemotePlaylistItem(response.body());
                             } else {
-                                //Log.d(TAG, "onResponse: " + response.raw() + "   " + accessToken );
-                                //newsCallback.onFailureFromRemote(new Exception(API_KEY_ERROR));
                                 playlistCallback.onFailureFromRemotePlaylistList(
                                         new Exception(API_KEY_ERROR));
                             }
@@ -157,7 +154,8 @@ public class PlaylistRemoteDataSource extends BasePlaylistRemoteDataSource {
                         public void onFailure(@NonNull Call<PlaylistItemApiResponse> call, @NonNull Throwable t) {
                             String message = t.getMessage();
                             Log.d("failure", message);
-                            //newsCallback.onFailureFromRemote(new Exception(RETROFIT_ERROR));
+                            playlistCallback.onFailureFromRemotePlaylistList(
+                                    new Exception(RETROFIT_ERROR));
                         }
                     });
                 }

@@ -1,0 +1,266 @@
+{
+  "kind": "youtube#playlistItemListResponse",
+  "etag": "vdRQJhOXl-l1QVpatWIO8yd9lX0",
+  "nextPageToken": "EAAaBlBUOkNBVQ",
+  "items": [
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "fzvymdcrqWJCZXueCjHQU-EEUgs",
+      "id": "UExzaXptQnlZN191VjBKN2ZlWVg0cHRhXzA1U1Y1U2tKci41NkI0NEY2RDEwNTU3Q0M2",
+      "snippet": {
+        "publishedAt": "2021-09-26T16:12:02Z",
+        "channelId": "UCzzit8rp0wGwd5gvryshQ-A",
+        "title": "Android Development for Beginners - Full Course",
+        "description": "Learn how to develop an android app from scratch in this full course for beginners. No prior programming experience required!\nHere is the 2nd part of this course (also free!): https://youtu.be/RcSHAkpwXAQ\n\nIn this course, you will learn how to build a real-word Android application from scratch using Java. On the way to building an Android app, you will learn the basics of programming in Java and object-oriented programming.\n\n✏️ Course from MeiCode. Check out his YouTube channel: https://www.youtube.com/channel/UCE3wAhsfp4wGRgHXIQjVx0w\n\nExtended 55-hour course: https://courses.meicode.org/courses/android2020\n\n⭐️ Course Contents ⭐️\n⌨️ (0:00) Course Introduction\n⌨️ (3:12) Setup The Environment\n⌨️ (18:52) Create Your First Application (Part 1)\n⌨️ (43:53) Create Your First Application (Part 2)\n⌨️ (59:20) Challenge\n⌨️ (1:07:19) Variables and Arithmetic Operators\n⌨️ (1:31:12) Relational and Logical Operators) Conditional Statements\n⌨️ (1:47:43) Loops\n⌨️ (2:04:13) Challenge (Create a Game)\n⌨️ (2:16:00) Simple Arrays\n⌨️ (2:27:51) Object Oriented Programming (Part 1)\n⌨️ (2:49:30) Object Oriented Programming (Part 2)\n⌨️ (3:06:02) Object Oriented Programming (Part 3)\n⌨️ (3:19:41) OOP Challenge\n⌨️ (3:43:56) Collections in Java\n⌨️ (4:06:14) Static Keyword - Inner Classes\n⌨️ (4:17:04) Interfaces and Abstract Classes\n⌨️ (4:35:26) Concurrency - Exceptions\n⌨️ (4:46:05) Singleton Pattern\n⌨️ (4:56:00) Challenge (Part 1)\n⌨️ (5:18:16) Challenge (Part 2)\n⌨️ (5:39:40) User Interface Basics (Part 1)\n⌨️ (6:04:21) User Interface Basics (Part 2)\n⌨️ (6:33:09) User Interface Basics (Part 3)\n⌨️ (6:58:39) Layouts\n⌨️ (7:26:53) Images\n⌨️ (7:37:32) ListView and Spinner\n⌨️ (8:00:57) Different XML Files (Part 1)\n⌨️ (8:29:41) Different XML Files (Part 2)\n⌨️ (8:41:09) Material Design\n⌨️ (8:59:58) Snackbar and CardView\n⌨️ (9:16:51) RecyclerView (Part 1)\n⌨️ (9:39:02) RecyclerView (Part 2)\n⌨️ (10:03:50) RecyclerView (Part 3)\n⌨️ (10:22:26) Fonts\n⌨️ (10:38:35) Challenge (Part 1)\n⌨️ (10:57:16) Challenge (Part 2)\n⌨️ (10:13:18) Create App's First Page - Intents\n⌨️ ⭐️ More in part 2: https://youtu.be/RcSHAkpwXAQ",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/fis26HvvDII/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/fis26HvvDII/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/fis26HvvDII/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/fis26HvvDII/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/fis26HvvDII/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "Andrea326",
+        "playlistId": "PLsizmByY7_uV0J7feYX4pta_05SV5SkJr",
+        "position": 0,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "fis26HvvDII"
+        },
+        "videoOwnerChannelTitle": "freeCodeCamp.org",
+        "videoOwnerChannelId": "UC8butISFwT-Wl7EV0hUK0BQ"
+      },
+      "contentDetails": {
+        "videoId": "fis26HvvDII",
+        "videoPublishedAt": "2020-05-26T16:06:03Z"
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "8eVPhL5jdwbrI4Ui_8-LxJzhuoY",
+      "id": "UExzaXptQnlZN191VjBKN2ZlWVg0cHRhXzA1U1Y1U2tKci4yODlGNEE0NkRGMEEzMEQy",
+      "snippet": {
+        "publishedAt": "2021-09-28T13:04:15Z",
+        "channelId": "UCzzit8rp0wGwd5gvryshQ-A",
+        "title": "Android Development for Beginners - Full Course (Part 2)",
+        "description": "This is part 2 of a 15-hour course to learn Android app development. Make sure to watch part 1 first: https://youtu.be/fis26HvvDII\n\n⭐️ Course Contents for Part 2 ⭐️\n⌨️ (0:00) Create Book's RecyclerView\n⌨️ (21:40) Expandable CardView\n⌨️ (39:33) Create Book Activity\n⌨️ (50:28) Create Utils Class\n⌨️ (1:13:33) Add Books to Different Lists\n⌨️ (1:43:27) Create a Delete Button\n⌨️ (2:00:32) Show Your Website in a WebView\n⌨️ (2:13:05) Animations - Up Button\n⌨️ (2:28:16) Persist Data with SharedPreferences and Gson\n⌨️ (2:57:41) Finish Rewriting Utils Class",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/RcSHAkpwXAQ/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/RcSHAkpwXAQ/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/RcSHAkpwXAQ/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/RcSHAkpwXAQ/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/RcSHAkpwXAQ/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "Andrea326",
+        "playlistId": "PLsizmByY7_uV0J7feYX4pta_05SV5SkJr",
+        "position": 1,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "RcSHAkpwXAQ"
+        },
+        "videoOwnerChannelTitle": "freeCodeCamp.org",
+        "videoOwnerChannelId": "UC8butISFwT-Wl7EV0hUK0BQ"
+      },
+      "contentDetails": {
+        "videoId": "RcSHAkpwXAQ",
+        "videoPublishedAt": "2020-05-22T18:28:10Z"
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "cLePK_GZOESURWm2Mly1FZYg0k8",
+      "id": "UExzaXptQnlZN191VjBKN2ZlWVg0cHRhXzA1U1Y1U2tKci4wMTcyMDhGQUE4NTIzM0Y5",
+      "snippet": {
+        "publishedAt": "2022-02-27T12:05:25Z",
+        "channelId": "UCzzit8rp0wGwd5gvryshQ-A",
+        "title": "Lost Ark | Ultimate Bard Guide | From Beginner to Endgame (NA/EU)",
+        "description": "Take control of the Bard in this Lost Ark Ultimate Bard Guide. Livid breaks down the class, the move set, and the builds that will help you get an edge while leveling, or taking on the end game. \n\n0:00 - Intro\n0:25 - Legacy Class Guides\n1:02 - Why Play The Bard?\n2:24 - Types of Builds\n2:55 - Mobbing Build\n9:55 - Awakening Abilities\n10:50 - Support Build\n16:25 - Additional Spells\n18:11 - Identity Skills\n19:08 - Playstyle\n21:16 - Engravings\n22:30 - Final Thoughts / Stats & Summary\n23:40 - Join The Guild\n\nJoin this channel to get access to perks:\nhttps://www.youtube.com/channel/UCmlqW3C9C0_gA0LufzbHfKg/join\n\n--- Follow Legacy Gaming ---\nTwitch // https://bit.ly/3lQlhLJ\nDiscord // https://discord.gg/legacygaming \nTwitter // https://bit.ly/3brkiN6\nInstagram // https://bit.ly/39KHc0Y\n\n--- Support Legacy Gaming ---\nBecome A Member // https://bit.ly/3mxC6vD\nBuy Cheap Games // https://bit.ly/2lCg8ME\nWant awesome music from Epidemic Sound, use our referral code! //\nhttps://www.epidemicsound.com/referral/b3np3e/\n\n--- Business Inquirers ---\nPlease email legacygamingus@gmail.com\n\n- - - - -\n♪ ♫ Credit ♫ ♪\nSong: John Kenza - Wicked [NCS Release]\nSong: Phantom Sage - When I’m Gone [NCS Release]\nSong: TARI & Yix - Bliss [NCS Release]\nMusic provided by NoCopyrightSounds\n- - - - -\n#LegacyGaming #LeaveALegacy #LostArk #LostArk2022 #Smilegate #AmazonGameStudios",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/rmp3J_DPOGg/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/rmp3J_DPOGg/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/rmp3J_DPOGg/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/rmp3J_DPOGg/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/rmp3J_DPOGg/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "Andrea326",
+        "playlistId": "PLsizmByY7_uV0J7feYX4pta_05SV5SkJr",
+        "position": 2,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "rmp3J_DPOGg"
+        },
+        "videoOwnerChannelTitle": "Legacy Gaming",
+        "videoOwnerChannelId": "UCmlqW3C9C0_gA0LufzbHfKg"
+      },
+      "contentDetails": {
+        "videoId": "rmp3J_DPOGg",
+        "videoPublishedAt": "2022-02-09T14:11:35Z"
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "KpdpsaNkH2fLaBTctHStkJXa1Qw",
+      "id": "UExzaXptQnlZN191VjBKN2ZlWVg0cHRhXzA1U1Y1U2tKci41MjE1MkI0OTQ2QzJGNzNG",
+      "snippet": {
+        "publishedAt": "2022-03-13T11:46:46Z",
+        "channelId": "UCzzit8rp0wGwd5gvryshQ-A",
+        "title": "Leftist Disrespects YoungRippa59 On His Show.... and Here's The Response (Monetize Your Haters)",
+        "description": "Grab some comics from my comic book company at: https://www.Rippaverse.com\nSupport and become a website Mack at: https://ericdjuly.com\nFollow the entertainment channel over at: https://www.youtube.com/channel/UCSFD56YY5pcR18lZZGT0img\nYou can also view ALL of my videos at: https://odysee.com/@YoungRippa59\nVisit www.ForCanonSake.com to listen to all of the episodes of my podcast.\nFor all things related to my band, BackWordz, visit www.BackWordzMusic.com\nCome and hang out in our Mack Guilded server: https://www.guilded.gg/i/kgN5KX32",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/8cmjl1S5K6A/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/8cmjl1S5K6A/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/8cmjl1S5K6A/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/8cmjl1S5K6A/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/8cmjl1S5K6A/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "Andrea326",
+        "playlistId": "PLsizmByY7_uV0J7feYX4pta_05SV5SkJr",
+        "position": 3,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "8cmjl1S5K6A"
+        },
+        "videoOwnerChannelTitle": "YoungRippa59",
+        "videoOwnerChannelId": "UCoykA7vQjXcZa7zo7GorLlg"
+      },
+      "contentDetails": {
+        "videoId": "8cmjl1S5K6A",
+        "videoPublishedAt": "2019-12-25T08:01:34Z"
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "t5_AfB8bz8pNMNF5UYCYD3tKQsc",
+      "id": "UExzaXptQnlZN191VjBKN2ZlWVg0cHRhXzA1U1Y1U2tKci4wOTA3OTZBNzVEMTUzOTMy",
+      "snippet": {
+        "publishedAt": "2022-03-13T20:54:21Z",
+        "channelId": "UCzzit8rp0wGwd5gvryshQ-A",
+        "title": "NOFUNdMe , Affidavit of Stan Dahlin, and Ty Beard Joins for a State of the Case",
+        "description": "GOFUNDME: https://www.gofundme.com/f/vic-kicks-back\n\nJUSTICE CHAT: https://streamlabs.com/rekietalaw\n\nMERCH: https://teespring.com/stores/rekieta-law\n\nGoFundMe says all those names were FREE!  I address it tonight.\n\nWe'll also have the Affidavit of Stan Dahlin, it's short, it's sweet, it's very important.  Let's read it.\n\nThen Ty Beard will join me to discuss the State of the Case and just how many times it has been lost up unto this point.\n\nGrab some whiskey and join me.\n\nCheck me out on:\nhttps://newproject2.com/rekietalaw/\nhttps://Patreon.com/lawsplaining\nhttps://www.instagram.com/rekietalaw/?hl=en\nhttps://Facebook.com/rekietalaw\nhttps://twitter.com/NickRekieta\nhttps://gab.ai/lawsplaining\nhttps://soundcloud.com/lawsplaining\nhttps://www.minds.com/Nickrek\nhttps://rekietalaw.tumblr.com\nhttps://twitch.tv/rekietalaw\n\nMailing things:\nUSPS: PO Box 97, Spicer, MN 56288\n\nemailing things: Rekietalaw@rekieta.org\n\nAlso on itunes and google play, just search for lawsplaining.\n\nThanks, as always, to twitter.com/RipDove for the thumbnail\n\nThanks to Uncle Buck for the Rocking Intro Music!\nOUTRO SONG CAN BE FOUND HERE: https://soundcloud.com/myroomrecords/the-whiskey-drinking-lawyer",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/ZI9F-Zrpo-8/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/ZI9F-Zrpo-8/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/ZI9F-Zrpo-8/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/ZI9F-Zrpo-8/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/ZI9F-Zrpo-8/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "Andrea326",
+        "playlistId": "PLsizmByY7_uV0J7feYX4pta_05SV5SkJr",
+        "position": 4,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "ZI9F-Zrpo-8"
+        },
+        "videoOwnerChannelTitle": "Rekieta Law",
+        "videoOwnerChannelId": "UCbkjX3E0IhuUfPzL0FjSPaw"
+      },
+      "contentDetails": {
+        "videoId": "ZI9F-Zrpo-8",
+        "videoPublishedAt": "2019-07-19T08:48:17Z"
+      }
+    }
+  ],
+  "pageInfo": {
+    "totalResults": 6,
+    "resultsPerPage": 5
+  }
+}

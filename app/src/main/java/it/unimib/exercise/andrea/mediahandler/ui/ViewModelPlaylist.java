@@ -32,9 +32,7 @@ public class ViewModelPlaylist extends ViewModel {
     }
 
     public MutableLiveData<ResultPlaylistItem> getPlaylistFromId(long lastUpdate, String playlistId) {
-        if (playlistLiveData == null){
-            fetchPlaylistFromId(lastUpdate, playlistId);
-        }
+        fetchPlaylistFromId(lastUpdate, playlistId);
         return playlistLiveData;
     }
 

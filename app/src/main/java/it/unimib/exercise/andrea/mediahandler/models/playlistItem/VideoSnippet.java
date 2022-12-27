@@ -9,9 +9,9 @@ import java.util.Objects;
 
 public class VideoSnippet implements Parcelable {
     private String title;
-    private List<VideoThumbnail> thumbnails;
+    private VideoThumbnail thumbnails;
 
-    public VideoSnippet(String title, List<VideoThumbnail> thumbnails) {
+    public VideoSnippet(String title, VideoThumbnail thumbnails) {
         this.title = title;
         this.thumbnails = thumbnails;
     }
@@ -24,11 +24,11 @@ public class VideoSnippet implements Parcelable {
         this.title = title;
     }
 
-    public List<VideoThumbnail> getThumbnails() {
+    public VideoThumbnail getThumbnails() {
         return thumbnails;
     }
 
-    public void setThumbnails(List<VideoThumbnail> thumbnails) {
+    public void setThumbnails(VideoThumbnail thumbnails) {
         this.thumbnails = thumbnails;
     }
 
@@ -38,6 +38,14 @@ public class VideoSnippet implements Parcelable {
         if (o == null || getClass() != o.getClass()) return false;
         VideoSnippet that = (VideoSnippet) o;
         return Objects.equals(title, that.title) && Objects.equals(thumbnails, that.thumbnails);
+    }
+
+    @Override
+    public String toString() {
+        return "VideoSnippet{" +
+                "title='" + title + '\'' +
+                ", thumbnails=" + thumbnails +
+                '}';
     }
 
     @Override
@@ -54,22 +62,20 @@ public class VideoSnippet implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.title);
-        dest.writeList(this.thumbnails);
+        dest.writeParcelable(this.thumbnails, flags);
     }
 
     public void readFromParcel(Parcel source) {
         this.title = source.readString();
-        this.thumbnails = new ArrayList<VideoThumbnail>();
-        source.readList(this.thumbnails, VideoThumbnail.class.getClassLoader());
+        this.thumbnails = source.readParcelable(VideoThumbnail.class.getClassLoader());
     }
 
     protected VideoSnippet(Parcel in) {
         this.title = in.readString();
-        this.thumbnails = new ArrayList<VideoThumbnail>();
-        in.readList(this.thumbnails, VideoThumbnail.class.getClassLoader());
+        this.thumbnails = in.readParcelable(VideoThumbnail.class.getClassLoader());
     }
 
-    public static final Parcelable.Creator<VideoSnippet> CREATOR = new Parcelable.Creator<VideoSnippet>() {
+    public static final Creator<VideoSnippet> CREATOR = new Creator<VideoSnippet>() {
         @Override
         public VideoSnippet createFromParcel(Parcel source) {
             return new VideoSnippet(source);

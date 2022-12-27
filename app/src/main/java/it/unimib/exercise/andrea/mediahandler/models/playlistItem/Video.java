@@ -46,6 +46,14 @@ public class Video implements Parcelable {
         ContentDetails = contentDetails;
     }
 
+    @Override
+    public String toString() {
+        return "Video{" +
+                "id='" + id + '\'' +
+                ", snippet=" + snippet +
+                ", ContentDetails=" + ContentDetails +
+                '}';
+    }
 
     @Override
     public int describeContents() {
