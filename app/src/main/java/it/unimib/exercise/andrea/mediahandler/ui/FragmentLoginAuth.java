@@ -6,7 +6,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import it.unimib.exercise.andrea.mediahandler.R ;
+import it.unimib.exercise.andrea.mediahandler.databinding.FragmentLoginAuthBinding;
 import it.unimib.exercise.andrea.mediahandler.util.AuthStateManager;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 
 import androidx.activity.result.ActivityResult;
@@ -26,11 +30,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import net.openid.appauth.AuthState;
+import net.openid.appauth.AuthorizationException;
 import net.openid.appauth.AuthorizationRequest;
+import net.openid.appauth.AuthorizationResponse;
 import net.openid.appauth.AuthorizationService;
 import net.openid.appauth.AuthorizationServiceConfiguration;
 import net.openid.appauth.EndSessionRequest;
 import net.openid.appauth.ResponseTypeValues;
+import net.openid.appauth.TokenResponse;
 
 import org.json.JSONObject;
 
@@ -48,12 +55,7 @@ public class FragmentLoginAuth extends Fragment {
     private AuthStateManager mStateManager = null;
     private Button bttnFragAuth = null ;
     private JSONObject objectJSON = null ;
-    Runnable runnable = new Runnable() {
-        @Override
-        public void run() {
-
-        }
-    };
+    private FragmentLoginAuthBinding fragmentLoginAuthBinding;
 
     public FragmentLoginAuth() {
         // Required empty public constructor
@@ -64,6 +66,51 @@ public class FragmentLoginAuth extends Fragment {
         //mStateManager = AuthStateManager.getInstance(getActivity()) ;
         mStateManager = AuthStateManager.getInstance(getActivity()) ;
         //mAuthService = new AuthorizationService(getActivity()) ;
+
+        if (mStateManager != null && mStateManager.getCurrent().isAuthorized()) {
+            Log.d(TAG, "onViewCreated: already authorized");
+            //Navigation.findNavController(requireView()).navigate(R.id.action_fragmentLoginAuth_to_fragmentPlaylistList);
+        }else{
+            AuthorizationServiceConfiguration serviceConfig = new AuthorizationServiceConfiguration(
+                    Uri.parse("https://accounts.google.com/o/oauth2/v2/auth"), // authorization endpoint
+                    Uri.parse("https://www.googleapis.com/oauth2/v4/token") // token endpoint
+            );
+            String clientId = getString(R.string.client_id) ;
+            Uri redirectUri = Uri.parse(getString(R.string.redirect_uri)) ;
+            AuthorizationRequest.Builder builder = new AuthorizationRequest.Builder(
+                    serviceConfig,
+                    clientId,
+                    ResponseTypeValues.CODE,
+                    redirectUri
+            );
+            Log.d(TAG, "onViewCreated: service config: " + serviceConfig +
+                    " client_id:" + clientId +
+                    " redirectUri:" + redirectUri);
+            //builder.setScopes(String.valueOf(R.string.authorization_scope));
+            builder.setScopes(String.valueOf("https://www.googleapis.com/auth/youtube"));
+
+            AuthorizationRequest authRequest = builder.build() ;
+            AuthorizationService authService = new AuthorizationService(getActivity()) ;
+
+            // -------------------------------------------------------------------------------------
+            // Step 2. Authorizing the user, via a browser, in order to obtain an authorization
+            // code.
+            // -------------------------------------------------------------------------------------
+            executorService.submit(new Runnable() {
+                @Override
+                public void run() {
+                    Intent authIntent = authService.getAuthorizationRequestIntent(authRequest) ;
+                    authResponseActivityResultLauncher.launch(authIntent);
+                    /*authService.performAuthorizationRequest(
+                            authRequest,
+                            PendingIntent.getActivity(getContext(), 0,
+                                    new Intent(getContext(), FragmentPlayListList.class), 0), //completed intent
+                            PendingIntent.getActivity(getContext(), 0,
+                                    new Intent(getContext(), FragmentLoginAuth.class), 0));   //cancelled intent*/
+                }
+            });
+            Log.d(TAG, "End btnFragAuth.setOnClickListener");
+        }
     }
 
     @Override
@@ -102,21 +149,30 @@ public class FragmentLoginAuth extends Fragment {
                 // Step 2. Authorizing the user, via a browser, in order to obtain an authorization
                 // code.
                 // -------------------------------------------------------------------------------------
-                authService.performAuthorizationRequest(
-                        authRequest,
-                        PendingIntent.getActivity(getContext(), 0,
-                                new Intent(getContext(), FragmentPlayListList.class), 0), //completed intent
-                        PendingIntent.getActivity(getContext(), 0,
-                                new Intent(getContext(), FragmentLoginAuth.class), 0)); //cancelled intent
+                executorService.submit(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent authIntent = authService.getAuthorizationRequestIntent(authRequest) ;
+                        authResponseActivityResultLauncher.launch(authIntent);
+                        authService.performAuthorizationRequest(
+                                authRequest,
+                                PendingIntent.getActivity(getContext(), 0,
+                                        new Intent(getContext(), FragmentPlayListList.class), 0), //completed intent
+                                PendingIntent.getActivity(getContext(), 0,
+                                        new Intent(getContext(), FragmentLoginAuth.class), 0));   //cancelled intent
+                    }
+                });
+
 
                 Log.d(TAG, "End btnFragAuth.setOnClickListener");
             }
         });
+
         if (mStateManager != null && mStateManager.getCurrent().isAuthorized()){
             Log.d(TAG, "Auth Done") ;
             Navigation.findNavController(requireView()).navigate(R.id.action_fragmentLoginAuth_to_fragmentPlaylistList);
-            //TODO transition from here to FragmentPlaylistList
-            //Navigation.findNavController(requireView()).navigate(R.id.);
+        }else{
+            Log.d(TAG, "Auth not Done " + mStateManager.getCurrent().isAuthorized()) ;
         }
     }
 
@@ -124,8 +180,64 @@ public class FragmentLoginAuth extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_login_auth, container, false);
+        //return inflater.inflate(R.layout.fragment_login_auth, container, false);
+        fragmentLoginAuthBinding = FragmentLoginAuthBinding.inflate(inflater, container, false);
+        return fragmentLoginAuthBinding.getRoot();
     }
+
+    ActivityResultLauncher<Intent> authResponseActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    Log.d(TAG, "ActivityResult: " + result.getResultCode());
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+
+                        AuthorizationResponse resp = AuthorizationResponse.fromIntent(result.getData());
+                        AuthorizationException ex = AuthorizationException.fromIntent(result.getData());
+                        // … process the response or exception …
+                        if (resp != null){
+                            Log.d(TAG, "onActivityResult: save mAuth");
+                            mAuthService = new AuthorizationService(getActivity());
+                            mStateManager.updateAfterAuthorization(resp, ex);
+                            Navigation.findNavController(requireView()).navigate(R.id.action_fragmentLoginAuth_to_fragmentPlaylistList);
+                            /*mAuthService.performTokenRequest(
+                                    resp.createTokenExchangeRequest(),
+                                    new AuthorizationService.TokenResponseCallback() {
+                                        @Override public void onTokenRequestCompleted(
+                                                TokenResponse resp, AuthorizationException ex) {
+                                            if (resp != null) {
+                                                // exchange succeeded
+                                                mStateManager.updateAfterTokenResponse(resp, ex) ;
+                                                Log.d(TAG,"accessToken" + resp.accessToken) ;
+                                                executorService.execute(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        OkHttpClient client = new OkHttpClient();
+                                                        Request request = new Request.Builder()
+                                                                .url("https://www.googleapis.com/youtube/v3/playlists?mine=true")
+                                                                .addHeader("Authorization", String.format("Bearer %s", resp.accessToken))
+                                                                .build() ;
+                                                        try {
+                                                            Response response = client.newCall(request).execute();
+                                                            String jsonBody  = response.body().string() ;
+                                                            Log.i(TAG, String.format("User Info Response %s", jsonBody)) ;
+                                                            objectJSON = new JSONObject(jsonBody) ;
+                                                        }catch (Exception e) {
+                                                            Log.w(TAG, e);
+                                                        }
+                                                    }
+                                                });
+                                            } else {
+                                                // authorization failed, check ex for more details
+                                            }
+                                        }
+                                    });*/
+                        }
+                    }
+                }
+            });
+
 
 
     @MainThread

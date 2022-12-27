@@ -24,14 +24,16 @@ public class Constants {
     // Constants for YOUTUBE_API https://www.googleapis.com/youtube/v3
     public static final String YOUTUBE_API_BASE_URL = "https://youtube.googleapis.com/youtube/v3/";
     public static final String TOP_SEARCH_ENDPOINT = "search/";
-    public static final String PLAYLIST_ENDPOINT = "playlists?part=snippet%2CcontentDetails&maxResults=25&mine=true";
-
+    public static final String PLAYLIST_LIST_ENDPOINT = "playlists?part=snippet%2CcontentDetails&maxResults=25&mine=true";
+    public static final String PLAYLIST_ITEMS_ENDPOINT = "playlistItems?part=snippet%2CcontentDetails&maxResults=25";
+//playlistItems?part=snippet%2CcontentDetails&playlistId=PLsizmByY7_uV0J7feYX4pta_05SV5SkJr&key
     public static final String TOP_HEADLINES_COUNTRY_PARAMETER = "country";
     public static final String TOP_HEADLINES_PAGE_SIZE_PARAMETER = "pageSize";
     public static final int TOP_HEADLINES_PAGE_SIZE_VALUE = 100;
 
     // Constants for refresh rate of news
-    public static final String LAST_UPDATE = "last_update";
+    public static final String LAST_UPDATE_PLAYLIST_LIST = "last_update";
+    public static final String LAST_UPDATE_PLAYLIST_ITEMS = "last_update";
     public static final int FRESH_TIMEOUT = 60*60*1000; // 1 hour in milliseconds
 
     // Constants for Room database

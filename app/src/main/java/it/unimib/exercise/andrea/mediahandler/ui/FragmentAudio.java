@@ -12,7 +12,6 @@ import it.unimib.exercise.andrea.mediahandler.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link FragmentAudio#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class FragmentAudio extends Fragment {

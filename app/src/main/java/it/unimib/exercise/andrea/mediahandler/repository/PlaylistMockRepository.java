@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.List;
 
 import it.unimib.exercise.andrea.mediahandler.R;
-import it.unimib.exercise.andrea.mediahandler.database.PlaylistDao;
+import it.unimib.exercise.andrea.mediahandler.database.PlaylistListDao;
 import it.unimib.exercise.andrea.mediahandler.database.YoutubeRoomDatabase;
 import it.unimib.exercise.andrea.mediahandler.models.playlists.Playlist;
 import it.unimib.exercise.andrea.mediahandler.models.playlists.PlaylistApiResponse;
@@ -17,12 +17,12 @@ import it.unimib.exercise.andrea.mediahandler.util.JSONParserUtil;
 public class PlaylistMockRepository implements IPlaylistRepository{
     private final Application application;
     private final ResponseCallback responseCallback;
-    private final PlaylistDao playlistDao;
+    private final PlaylistListDao playlistListDao;
 
-    public PlaylistMockRepository(Application application, ResponseCallback responseCallback, PlaylistDao playlistDao) {
+    public PlaylistMockRepository(Application application, ResponseCallback responseCallback, PlaylistListDao playlistListDao) {
         this.application = application;
         this.responseCallback = responseCallback;
-        this.playlistDao = playlistDao;
+        this.playlistListDao = playlistListDao;
     }
 
 
@@ -95,7 +95,7 @@ public class PlaylistMockRepository implements IPlaylistRepository{
      */
     private void readDataFromDatabase(long lastUpdate) {
         YoutubeRoomDatabase.databaseWriteExecutor.execute(() -> {
-            responseCallback.onSuccess(playlistDao.getAll(), lastUpdate);
+            responseCallback.onSuccess(playlistListDao.getAll(), lastUpdate);
         });
     }
 

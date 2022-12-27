@@ -5,19 +5,23 @@
     android:id="@+id/main_nav_graph"
     app:startDestination="@id/fragment_video">
     <fragment
-        android:id="@+id/fragmentLoginAuth"
+        android:id="@+id/fragment_login_auth"
         android:name="it.unimib.exercise.andrea.mediahandler.ui.FragmentLoginAuth"
         android:label="fragment_login_auth"
         tools:layout="@layout/fragment_login_auth">
         <action
             android:id="@+id/action_fragmentLoginAuth_to_fragmentPlaylistList"
-            app:destination="@id/fragmentPlaylistList" />
+            app:destination="@id/fragment_playlist_list" />
     </fragment>
     <fragment
-        android:id="@+id/fragmentPlaylistList"
+        android:id="@+id/fragment_playlist_list"
         android:name="it.unimib.exercise.andrea.mediahandler.ui.FragmentPlayListList"
         android:label="fragment_playlist_list"
-        tools:layout="@layout/fragment_playlist_list" />
+        tools:layout="@layout/fragment_playlist_list" >
+        <action
+            android:id="@+id/action_fragment_playlist_list_to_fragmentPlaylist"
+            app:destination="@id/fragmentPlaylist" />
+    </fragment>
     <fragment
         android:id="@+id/fragment_audio"
         android:name="it.unimib.exercise.andrea.mediahandler.ui.FragmentAudio"
@@ -33,4 +37,13 @@
         android:name="it.unimib.exercise.andrea.mediahandler.ui.FragmentSettings"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/fragmentPlaylist"
+        android:name="it.unimib.exercise.andrea.mediahandler.ui.FragmentPlaylist"
+        android:label="fragment_playlist"
+        tools:layout="@layout/fragment_playlist" >
+        <argument
+            android:name="PlaylistID"
+            app:argType="string" />
+    </fragment>
 </navigation>

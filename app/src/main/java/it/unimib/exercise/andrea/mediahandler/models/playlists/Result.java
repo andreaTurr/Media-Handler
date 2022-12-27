@@ -20,12 +20,12 @@ public abstract class Result {
      * with a Web Service or a local database.
      */
     public static final class Success extends Result {
-        private final PlaylistApiResponse newsResponse;
-        public Success(PlaylistApiResponse newsResponse) {
-            this.newsResponse = newsResponse;
+        private final PlaylistApiResponse playlistApiResponse;
+        public Success(PlaylistApiResponse playlistApiResponse) {
+            this.playlistApiResponse = playlistApiResponse;
         }
         public PlaylistApiResponse getData() {
-            return newsResponse;
+            return playlistApiResponse;
         }
     }
 

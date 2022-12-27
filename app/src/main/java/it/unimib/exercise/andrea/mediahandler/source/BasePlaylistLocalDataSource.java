@@ -14,6 +14,9 @@ public abstract class BasePlaylistLocalDataSource {
         this.playlistCallback = playlistCallback;
     }
 
-    public abstract void getPlaylist();
+    public abstract void getPlaylistList();
+    public abstract void insertPlaylistsList(PlaylistApiResponse playlistList);
+
+    public abstract void getPlaylist(String playlistId);
     public abstract void insertPlaylists(PlaylistApiResponse playlistList);
 }

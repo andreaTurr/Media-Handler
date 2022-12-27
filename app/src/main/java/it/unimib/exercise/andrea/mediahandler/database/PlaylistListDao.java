@@ -17,7 +17,7 @@ import it.unimib.exercise.andrea.mediahandler.models.playlists.*;
  * https://developer.android.com/training/data-storage/room/accessing-data
  */
 @Dao
-public interface PlaylistDao {
+public interface PlaylistListDao {
     @Query("SELECT * FROM playlist ORDER BY id DESC")
     List<Playlist> getAll();
 

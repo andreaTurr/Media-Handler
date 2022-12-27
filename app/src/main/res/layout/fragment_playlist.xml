@@ -8,7 +8,7 @@
     tools:context=".ui.FragmentPlaylist">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerview_youtube_playlist"
+        android:id="@+id/recyclerview_playlist"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"

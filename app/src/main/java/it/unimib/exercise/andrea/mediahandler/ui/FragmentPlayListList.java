@@ -1,6 +1,6 @@
 package it.unimib.exercise.andrea.mediahandler.ui;
 
-import static it.unimib.exercise.andrea.mediahandler.util.Constants.LAST_UPDATE;
+import static it.unimib.exercise.andrea.mediahandler.util.Constants.LAST_UPDATE_PLAYLIST_LIST;
 import static it.unimib.exercise.andrea.mediahandler.util.Constants.SHARED_PREFERENCES_FILE_NAME;
 
 import android.os.Bundle;
@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.unimib.exercise.andrea.mediahandler.R;
-import it.unimib.exercise.andrea.mediahandler.adapters.AdapterPlaylistRecView;
+import it.unimib.exercise.andrea.mediahandler.adapters.AdapterPlaylistsListRecView;
 import it.unimib.exercise.andrea.mediahandler.models.playlists.Playlist;
 import it.unimib.exercise.andrea.mediahandler.models.playlists.Result;
 import it.unimib.exercise.andrea.mediahandler.repository.IPlaylistRepositoryWithLiveData;
@@ -41,7 +42,7 @@ import it.unimib.exercise.andrea.mediahandler.util.SharedPreferencesUtil;
  */
 public class FragmentPlayListList extends Fragment {
     private List<Playlist> playlistList;
-    private AdapterPlaylistRecView adapterPlaylistRecView;
+    private AdapterPlaylistsListRecView adapterPlaylistsListRecView;
     private ViewModelPlaylist viewModelPlaylist;
     private AuthStateManager mStateManager = null;
     private static final String TAG = FragmentPlayListList.class.getSimpleName();
@@ -53,13 +54,13 @@ public class FragmentPlayListList extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "onCreate: start");
+        /*Log.d(TAG, "onCreate: start");
         AuthorizationResponse resp = AuthorizationResponse.fromIntent(getActivity().getIntent());
         AuthorizationException ex = AuthorizationException.fromIntent(getActivity().getIntent());
         if (resp != null){
             Log.d(TAG, "onActivityResult: save mAuth");
             mStateManager.updateAfterAuthorization(resp, ex);
-        }
+        }*/
         IPlaylistRepositoryWithLiveData playlistRepositoryWithLiveData =
                 ServiceLocator.getInstance().getPlaylistRepository(
                         requireActivity().getApplication(),
@@ -101,43 +102,50 @@ public class FragmentPlayListList extends Fragment {
             }
         });*/
 
-        RecyclerView recyclerViewCountryNews = view.findViewById(R.id.recyclerview_playlist_list);
+        RecyclerView recyclerViewPlaylistList = view.findViewById(R.id.recyclerview_playlist_list);
         RecyclerView.LayoutManager layoutManager =
                 new LinearLayoutManager(requireContext(),
                         LinearLayoutManager.VERTICAL, false);
 
-        adapterPlaylistRecView = new AdapterPlaylistRecView(playlistList,
+        adapterPlaylistsListRecView = new AdapterPlaylistsListRecView(playlistList,
                 requireActivity().getApplication(),
-                new AdapterPlaylistRecView.OnItemClickListener(){
-
+                new AdapterPlaylistsListRecView.OnItemClickListener(){
                     @Override
                     public void onPlaylistClick(Playlist playlist) {
+                        Snackbar.make(view, playlist.getSnippet().getTitle(), Snackbar.LENGTH_SHORT).show();
+                        //Navigation.findNavController(requireView()).navigate(R.id.action_fragment_playlist_list_to_fragmentPlaylist);
 
+                        // method to pass argument between fragments of navigation components
+                        // https://developer.android.com/guide/navigation/navigation-pass-data#samples
+                        FragmentPlayListListDirections.ActionFragmentPlaylistListToFragmentPlaylist action =
+                                FragmentPlayListListDirections.actionFragmentPlaylistListToFragmentPlaylist(playlist.getId());
+                        Navigation.findNavController(view).navigate(action);
                     }
                 });
-        recyclerViewCountryNews.setLayoutManager(layoutManager);
-        recyclerViewCountryNews.setAdapter(adapterPlaylistRecView);
+        recyclerViewPlaylistList.setLayoutManager(layoutManager);
+        recyclerViewPlaylistList.setAdapter(adapterPlaylistsListRecView);
         sharedPreferencesUtil = new SharedPreferencesUtil(requireActivity().getApplication());
         String lastUpdate = "0";
         if (sharedPreferencesUtil.readStringData(
-                SHARED_PREFERENCES_FILE_NAME, LAST_UPDATE) != null) {
+                SHARED_PREFERENCES_FILE_NAME, LAST_UPDATE_PLAYLIST_LIST) != null) {
             lastUpdate = sharedPreferencesUtil.readStringData(
-                    SHARED_PREFERENCES_FILE_NAME, LAST_UPDATE);
+                    SHARED_PREFERENCES_FILE_NAME, LAST_UPDATE_PLAYLIST_LIST);
         }
 
 
         viewModelPlaylist.getPlaylistList(Long.parseLong(lastUpdate)).observe(getViewLifecycleOwner(), result -> {
             if (result.isSuccess()){
+                Log.d(TAG, "onViewCreated: result.isSuccess");
                 int initialSize = this.playlistList.size();
                 this.playlistList.clear();
                 this.playlistList.addAll(((Result.Success) result).getData().getPlaylistList());
-                adapterPlaylistRecView.notifyItemRangeInserted(initialSize, this.playlistList.size());
+                adapterPlaylistsListRecView.notifyItemRangeInserted(initialSize, this.playlistList.size());
                 //progressBar.setVisibility(View.GONE);
             }else {
                 ErrorMessagesUtil errorMessagesUtil =
                         new ErrorMessagesUtil(requireActivity().getApplication());
-                Snackbar.make(view, errorMessagesUtil.
-                                getErrorMessage(((Result.Error)result).getMessage()),
+                Snackbar.make(view, errorMessagesUtil.getErrorMessage(((
+                        Result.Error)result).getMessage()),
                         Snackbar.LENGTH_SHORT).show();
                 Log.d(TAG, "observe: not success");
             }

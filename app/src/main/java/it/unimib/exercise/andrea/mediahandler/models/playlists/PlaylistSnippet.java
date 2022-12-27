@@ -54,6 +54,17 @@ public class PlaylistSnippet implements Parcelable {
     }
 
     @Override
+    public String toString() {
+        return "PlaylistSnippet{" +
+                "publishedAt='" + publishedAt + '\'' +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", thumbnails=" + thumbnails +
+                ", channelTitle='" + channelTitle + '\'' +
+                '}';
+    }
+
+    @Override
     public int describeContents() {
         return 0;
     }

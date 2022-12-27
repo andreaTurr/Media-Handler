@@ -25,7 +25,7 @@ public class ActivityMain extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        //setContentView(R.layout.activity_main);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
 
@@ -40,8 +40,9 @@ public class ActivityMain extends AppCompatActivity {
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
 
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.fragmentLoginAuth, R.id.fragment_video,
-                R.id.fragment_audio, R.id.fragment_settings).build();
+                R.id.fragment_login_auth, R.id.fragment_video,
+                R.id.fragment_audio, R.id.fragment_settings,
+                R.id.fragment_playlist_list).build();
 
         // For the Toolbar
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);

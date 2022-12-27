@@ -64,6 +64,15 @@ public class Playlist implements Parcelable {
     public Playlist() {
     }
 
+    @Override
+    public String toString() {
+        return "Playlist{" +
+                "id='" + id + '\'' +
+                ", snippet=" + snippet +
+                ", contentDetails=" + contentDetails +
+                '}';
+    }
+
     protected Playlist(Parcel in) {
         this.snippet = in.readParcelable(PlaylistSnippet.class.getClassLoader());
         this.contentDetails = in.readParcelable(PlaylistContentDetails.class.getClassLoader());

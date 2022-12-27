@@ -18,6 +18,7 @@ import net.openid.appauth.TokenResponse;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import it.unimib.exercise.andrea.mediahandler.models.playlistItem.PlaylistItemApiResponse;
 import it.unimib.exercise.andrea.mediahandler.models.playlists.PlaylistApiResponse;
 import it.unimib.exercise.andrea.mediahandler.service.YoutubeApiService;
 import it.unimib.exercise.andrea.mediahandler.util.AuthStateManager;
@@ -80,12 +81,12 @@ public class PlaylistRemoteDataSource extends BasePlaylistRemoteDataSource {
 
 
     @Override
-    public void getPlaylist() {
+    public void getPlaylistList() {
 
         /*if (mStateManager.getCurrent().getLastAuthorizationResponse().accessToken == null){
             return ;
         }*/
-        Log.d(TAG, TAG + ": start ");
+        Log.d(TAG, "getPlaylistList remote");
         if (mAuthService != null) {
             //--------------------------------------------------------------------------------------
             //  Oauth2 Step 4. Using access tokens derived from the refresh token to interact with a
@@ -96,24 +97,67 @@ public class PlaylistRemoteDataSource extends BasePlaylistRemoteDataSource {
                 public void execute(@Nullable String accessToken,
                                     @Nullable String idToken,
                                     @Nullable AuthorizationException ex) {
-                    Call<PlaylistApiResponse> playlistApiResponse = youtubeApiService.getPlaylists(
+                    Call<PlaylistApiResponse> playlistApiResponse = youtubeApiService.getPlaylistsList(
                             String.format("Bearer %s", accessToken));
                     playlistApiResponse.enqueue(new Callback<PlaylistApiResponse>() {
                         @Override
                         public void onResponse(@NonNull Call<PlaylistApiResponse> call,
                                                @NonNull Response<PlaylistApiResponse> response) {
                             if (response.body() != null && response.isSuccessful()) {
-                                newsCallback.onSuccessFromRemote(response.body());
+                                playlistCallback.onSuccessFromRemotePlaylistList(response.body());
                             } else {
                                 Log.d(TAG, "onResponse: " + response.raw() + "   " + accessToken );
-                                newsCallback.onFailureFromRemote(new Exception(API_KEY_ERROR));
+                                playlistCallback.onFailureFromRemotePlaylistList(new Exception(API_KEY_ERROR));
                             }
                         }
                         @Override
                         public void onFailure(@NonNull Call<PlaylistApiResponse> call, @NonNull Throwable t) {
                             String message = t.getMessage();
                             Log.d("failure", message);
-                            newsCallback.onFailureFromRemote(new Exception(RETROFIT_ERROR));
+                            playlistCallback.onFailureFromRemotePlaylistList(new Exception(RETROFIT_ERROR));
+                        }
+                    });
+                }
+            });
+        }else{
+            Log.d(TAG, "getPlaylistList: mAuthService == null");
+        }
+    }
+
+    @Override
+    public void getPlaylist(String playlistId) {
+        Log.d(TAG, "getPlaylist remote");
+        if (mAuthService != null) {
+            //--------------------------------------------------------------------------------------
+            //  Oauth2 Step 4. Using access tokens derived from the refresh token to interact with a
+            //  resource server for further access to user data.
+            //--------------------------------------------------------------------------------------
+            mStateManager.getCurrent().performActionWithFreshTokens(mAuthService, new AuthState.AuthStateAction() {
+                @Override
+                public void execute(@Nullable String accessToken,
+                                    @Nullable String idToken,
+                                    @Nullable AuthorizationException ex) {
+                    Call<PlaylistItemApiResponse> playlistItemApiResponseCall = youtubeApiService.getPlaylists(
+                            playlistId, String.format("Bearer %s", accessToken) );
+                    playlistItemApiResponseCall.enqueue(new Callback<PlaylistItemApiResponse>() {
+                        @Override
+                        public void onResponse(@NonNull Call<PlaylistItemApiResponse> call,
+                                               @NonNull Response<PlaylistItemApiResponse> response) {
+                            if (response.body() != null && response.isSuccessful()) {
+                                //newsCallback.onSuccessFromRemote(response.body());
+                                playlistCallback.onSuccessFromRemotePlaylistItem(response.body());
+                            } else {
+                                //Log.d(TAG, "onResponse: " + response.raw() + "   " + accessToken );
+                                //newsCallback.onFailureFromRemote(new Exception(API_KEY_ERROR));
+                                playlistCallback.onFailureFromRemotePlaylistList(
+                                        new Exception(API_KEY_ERROR));
+                            }
+                        }
+                        @Override
+                        public void onFailure(@NonNull Call<PlaylistItemApiResponse> call, @NonNull Throwable t) {
+                            String message = t.getMessage();
+                            Log.d("failure", message);
+                            //newsCallback.onFailureFromRemote(new Exception(RETROFIT_ERROR));
                         }
                     });
                 }

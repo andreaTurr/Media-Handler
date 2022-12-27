@@ -16,7 +16,7 @@ public class PlaylistMockRemoteDataSource extends BasePlaylistRemoteDataSource {
     }
 
     @Override
-    public void getPlaylist() {
+    public void getPlaylistList() {
         PlaylistApiResponse playlistApiResponse = null;
         try {
             playlistApiResponse = jsonParserUtil.parseJSONFileWithGSon(PLAYLIST_API_TEST_JSON_FILE);
@@ -25,9 +25,14 @@ public class PlaylistMockRemoteDataSource extends BasePlaylistRemoteDataSource {
         }
 
         if (playlistApiResponse != null) {
-            newsCallback.onSuccessFromRemote(playlistApiResponse);
+            playlistCallback.onSuccessFromRemotePlaylistList(playlistApiResponse);
         } else {
-            newsCallback.onFailureFromRemote(new Exception(API_KEY_ERROR));
+            playlistCallback.onFailureFromRemotePlaylistList(new Exception(API_KEY_ERROR));
         }
+    }
+
+    @Override
+    public void getPlaylist(String playlistId) {
+
     }
 }
