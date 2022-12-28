@@ -7,5 +7,5 @@ import it.unimib.exercise.andrea.mediahandler.models.playlists.Result;
 
 public interface IPlaylistRepositoryWithLiveData {
     MutableLiveData<Result> fetchPlaylistList(long lastUpdate);
-    MutableLiveData<ResultPlaylistItem> fetchPlaylist(long lastUpdate, String playlistId);
+    MutableLiveData<ResultPlaylistItem> fetchVideoList(long lastUpdate, String playlistId);
 }

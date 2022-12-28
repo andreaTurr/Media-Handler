@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -135,6 +136,9 @@ public class FragmentPlayListList extends Fragment {
             lastUpdate = sharedPreferencesUtil.readStringData(
                     SHARED_PREFERENCES_FILE_NAME, LAST_UPDATE_PLAYLIST_LIST);
         }
+        //divider between items of recycle view
+        recyclerViewPlaylistList.addItemDecoration(new DividerItemDecoration(getContext(),
+                layoutManager.getOrientation()));
 
 
         viewModelPlaylist.getPlaylistList(Long.parseLong(lastUpdate)).observe(getViewLifecycleOwner(), result -> {

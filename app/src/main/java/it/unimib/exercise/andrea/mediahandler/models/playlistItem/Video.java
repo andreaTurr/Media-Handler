@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
+import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -11,9 +12,18 @@ import androidx.room.PrimaryKey;
 public class Video implements Parcelable {
     @PrimaryKey
     @NonNull
+    // The ID that YouTube uses to uniquely identify the playlist item.
     private String id;
+    @Embedded
     private VideoSnippet snippet;
-    private VideoContentDetails ContentDetails;
+    @Embedded
+    private VideoContentDetails contentDetails;
+
+    public Video(@NonNull String id, VideoSnippet snippet, VideoContentDetails contentDetails) {
+        this.id = id;
+        this.snippet = snippet;
+        this.contentDetails = contentDetails;
+    }
 
     @NonNull
     public String getId() {
@@ -33,25 +43,21 @@ public class Video implements Parcelable {
     }
 
     public VideoContentDetails getContentDetails() {
-        return ContentDetails;
+        return contentDetails;
     }
 
     public void setContentDetails(VideoContentDetails contentDetails) {
-        ContentDetails = contentDetails;
+        this.contentDetails = contentDetails;
     }
 
-    public Video(@NonNull String id, VideoSnippet snippet, VideoContentDetails contentDetails) {
-        this.id = id;
-        this.snippet = snippet;
-        ContentDetails = contentDetails;
-    }
+
 
     @Override
     public String toString() {
         return "Video{" +
                 "id='" + id + '\'' +
                 ", snippet=" + snippet +
-                ", ContentDetails=" + ContentDetails +
+                ", ContentDetails=" + contentDetails +
                 '}';
     }
 
@@ -64,19 +70,19 @@ public class Video implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.id);
         dest.writeParcelable((Parcelable) this.snippet, flags);
-        dest.writeParcelable(this.ContentDetails, flags);
+        dest.writeParcelable(this.contentDetails, flags);
     }
 
     public void readFromParcel(Parcel source) {
         this.id = source.readString();
         this.snippet = source.readParcelable(VideoSnippet.class.getClassLoader());
-        this.ContentDetails = source.readParcelable(VideoContentDetails.class.getClassLoader());
+        this.contentDetails = source.readParcelable(VideoContentDetails.class.getClassLoader());
     }
 
     protected Video(Parcel in) {
         this.id = in.readString();
         this.snippet = in.readParcelable(VideoSnippet.class.getClassLoader());
-        this.ContentDetails = in.readParcelable(VideoContentDetails.class.getClassLoader());
+        this.contentDetails = in.readParcelable(VideoContentDetails.class.getClassLoader());
     }
 
     public static final Parcelable.Creator<Video> CREATOR = new Parcelable.Creator<Video>() {

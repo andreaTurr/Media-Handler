@@ -32,7 +32,7 @@ public class PlaylistMockRemoteDataSource extends BasePlaylistRemoteDataSource {
     }
 
     @Override
-    public void getPlaylist(String playlistId) {
+    public void getVideoList(String playlistId) {
 
     }
 }

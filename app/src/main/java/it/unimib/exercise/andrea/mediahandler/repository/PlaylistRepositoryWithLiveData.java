@@ -6,12 +6,8 @@ import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
-import java.util.List;
-
 import it.unimib.exercise.andrea.mediahandler.models.playlistItem.PlaylistItemApiResponse;
 import it.unimib.exercise.andrea.mediahandler.models.playlistItem.ResultPlaylistItem;
-import it.unimib.exercise.andrea.mediahandler.models.playlistItem.Video;
-import it.unimib.exercise.andrea.mediahandler.models.playlists.Playlist;
 import it.unimib.exercise.andrea.mediahandler.models.playlists.PlaylistApiResponse;
 import it.unimib.exercise.andrea.mediahandler.models.playlists.Result;
 import it.unimib.exercise.andrea.mediahandler.source.BasePlaylistLocalDataSource;
@@ -39,6 +35,8 @@ public class PlaylistRepositoryWithLiveData implements IPlaylistRepositoryWithLi
     public MutableLiveData<Result> fetchPlaylistList(long lastUpdate) {
         long currentTime = System.currentTimeMillis();
         Log.d(TAG, "fetchPlaylist: ");
+
+        //todo check if database empty, if so the retrieve data from remote
         if(currentTime - lastUpdate > FRESH_TIMEOUT)
             playlistRemoteDataSource.getPlaylistList();
         else
@@ -47,13 +45,10 @@ public class PlaylistRepositoryWithLiveData implements IPlaylistRepositoryWithLi
     }
 
     @Override
-    public MutableLiveData<ResultPlaylistItem> fetchPlaylist(long lastUpdate, String playlistId) {
-        long currentTime = System.currentTimeMillis();
-        Log.d(TAG, "fetchPlaylist: ");
-        //if(currentTime - lastUpdate > FRESH_TIMEOUT)
-            playlistRemoteDataSource.getPlaylist(playlistId);
-        //else
-        //    playlistLocalDataSource.getPlaylist(playlistId);
+    public MutableLiveData<ResultPlaylistItem> fetchVideoList(long lastUpdate, String playlistId) {
+        Log.d(TAG, "fetchVideoList: ");
+        //used to get last update from server, logic continues in callback
+        playlistLocalDataSource.getPlaylistLastUpdate(playlistId);
         return allPlaylistItemMutableLiveData;
     }
 
@@ -71,9 +66,10 @@ public class PlaylistRepositoryWithLiveData implements IPlaylistRepositoryWithLi
         allPlaylistsListMutableLiveData.postValue(result);
     }
 
-    public void onSuccessFromLocalPlaylistList(List<Playlist> playlistList) {
+    @Override
+    public void onSuccessFromLocalPlaylistList(PlaylistApiResponse playlistApiResponse) {
         Log.d(TAG, "onSuccessFromLocalPlaylistList: ");
-        Result.Success result = new Result.Success(new PlaylistApiResponse(playlistList));
+        Result.Success result = new Result.Success(playlistApiResponse);
         allPlaylistsListMutableLiveData.postValue(result);
     }
 
@@ -84,18 +80,39 @@ public class PlaylistRepositoryWithLiveData implements IPlaylistRepositoryWithLi
         allPlaylistsListMutableLiveData.postValue(resultError);
     }
 
+    @Override
+    public void onSuccessFromLocalLastUpdate(Long lastUpdate, String playlistId) {
+        long currentTime = System.currentTimeMillis();
+        if(currentTime - lastUpdate > FRESH_TIMEOUT)
+            playlistRemoteDataSource.getVideoList(playlistId);
+        else
+            playlistLocalDataSource.getVideoList(playlistId);
+    }
+
     //PlaylistItem callback
     @Override
-    public void onSuccessFromRemotePlaylistItem(PlaylistItemApiResponse response) {
-        Log.d(TAG, "onSuccessFromRemotePlaylistItem: ");
+    public void onSuccessFromRemoteVideoList(PlaylistItemApiResponse response, String plalistId) {
+        Log.d(TAG, "onSuccessFromRemoteVideoList: ");
         //Result.Success result = new Result.Success(new PlaylistApiResponse(playlistList));
+        playlistLocalDataSource.insertVideoList(response, plalistId);
+    }
+
+    @Override
+    public void onFailureFromRemoteVideoList(Exception exception) {
+        ResultPlaylistItem.Error resultError = new ResultPlaylistItem.Error(exception.getMessage());
+        allPlaylistItemMutableLiveData.postValue(resultError);
+    }
+
+    @Override
+    public void onSuccessFromLocalPlaylistItem(PlaylistItemApiResponse response) {
         ResultPlaylistItem.Success result =
                 new ResultPlaylistItem.Success(new PlaylistItemApiResponse(response.getVideoList()));
         allPlaylistItemMutableLiveData.postValue(result);
     }
 
     @Override
-    public void onFailureFromRemotePlaylistItem(Exception exception) {
-
+    public void onFailureFromLocalPlaylistItem(Exception exception) {
+        ResultPlaylistItem.Error resultError = new ResultPlaylistItem.Error(exception.getMessage());
+        allPlaylistItemMutableLiveData.postValue(resultError);
     }
 }

@@ -33,12 +33,12 @@ public class Constants {
 
     // Constants for refresh rate of news
     public static final String LAST_UPDATE_PLAYLIST_LIST = "last_update";
-    public static final String LAST_UPDATE_PLAYLIST_ITEMS = "last_update";
+    public static final String LAST_UPDATE_VIDEO_LIST = "last_update";
     public static final int FRESH_TIMEOUT = 60*60*1000; // 1 hour in milliseconds
 
     // Constants for Room database
     public static final String NEWS_DATABASE_NAME = "news_db";
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 6;
     public static final String YOUTUBE_DATABASE_NAME = "youtube_db";
 
     public static final String RETROFIT_ERROR = "retrofit_error";

@@ -9,6 +9,7 @@ import androidx.room.Update;
 
 import java.util.List;
 
+import it.unimib.exercise.andrea.mediahandler.models.playlistItem.Video;
 import it.unimib.exercise.andrea.mediahandler.models.playlists.*;
 
 /**
@@ -19,14 +20,16 @@ import it.unimib.exercise.andrea.mediahandler.models.playlists.*;
 @Dao
 public interface PlaylistListDao {
     @Query("SELECT * FROM playlist ORDER BY id DESC")
-    List<Playlist> getAll();
+    List<Playlist> getAllPlaylists();
 
     @Query("SELECT * FROM playlist WHERE id = :id")
-    Playlist getPlaylist(long id);
-
+    Playlist getPlaylist(String id);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertPlaylistList(List<Playlist> playlistList);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertPlaylist(Playlist playlist);
 
     @Insert
     void insertAll(Playlist... playlist);
@@ -45,4 +48,15 @@ public interface PlaylistListDao {
 
     @Update
     int updateListFavoritePlaylist(List<Playlist> playlist);
+
+    @Query("SELECT * FROM video Where id = :playlistId ORDER BY id DESC")
+    List<Video> getVideoFromPlaylist(String playlistId);
+
+    @Query("SELECT last_update FROM playlist Where id = :playlistId")
+    Long getLastUpdateFromPlaylist(String playlistId);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertVideoList(List<Video> videoList);
+
+
 }

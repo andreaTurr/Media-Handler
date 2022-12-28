@@ -6,6 +6,8 @@ import android.os.Parcelable;
 import java.util.Objects;
 
 public class VideoContentDetails implements Parcelable {
+    // The ID that YouTube uses to uniquely identify a video.
+    // To retrieve the video resource, set the id query parameter to this value in your API request.
     private String videoId;
 
     public VideoContentDetails(String videoId) {this.videoId = videoId;}

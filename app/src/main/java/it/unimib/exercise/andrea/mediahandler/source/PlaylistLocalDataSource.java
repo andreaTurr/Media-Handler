@@ -1,5 +1,6 @@
 package it.unimib.exercise.andrea.mediahandler.source;
 
+import static it.unimib.exercise.andrea.mediahandler.util.Constants.LAST_UPDATE_VIDEO_LIST;
 import static it.unimib.exercise.andrea.mediahandler.util.Constants.LAST_UPDATE_PLAYLIST_LIST;
 import static it.unimib.exercise.andrea.mediahandler.util.Constants.SHARED_PREFERENCES_FILE_NAME;
 
@@ -9,6 +10,8 @@ import java.util.List;
 
 import it.unimib.exercise.andrea.mediahandler.database.PlaylistListDao;
 import it.unimib.exercise.andrea.mediahandler.database.YoutubeRoomDatabase;
+import it.unimib.exercise.andrea.mediahandler.models.playlistItem.PlaylistItemApiResponse;
+import it.unimib.exercise.andrea.mediahandler.models.playlistItem.Video;
 import it.unimib.exercise.andrea.mediahandler.models.playlists.Playlist;
 import it.unimib.exercise.andrea.mediahandler.models.playlists.PlaylistApiResponse;
 import it.unimib.exercise.andrea.mediahandler.util.SharedPreferencesUtil;
@@ -35,12 +38,14 @@ public class PlaylistLocalDataSource extends BasePlaylistLocalDataSource {
     public void getPlaylistList() {
         Log.d(TAG, "getPlaylist: local");
         YoutubeRoomDatabase.databaseWriteExecutor.execute(() ->{
-            List<Playlist> list = playlistListDao.getAll();
+            List<Playlist> list = playlistListDao.getAllPlaylists();
             PlaylistApiResponse playlistApiResponse = new PlaylistApiResponse(list);
             //NewsApiResponse newsApiResponse = new NewsApiResponse();
             //newsApiResponse.setNewsList(newsDao.getAll());
             Log.d(TAG, "getPlaylist: " + list);
-            playlistCallback.onSuccessFromLocalPlaylistList(playlistListDao.getAll());
+            PlaylistApiResponse playlistItemApiResponse =
+                    new PlaylistApiResponse(list);
+            playlistCallback.onSuccessFromLocalPlaylistList(playlistItemApiResponse);
         });
     }
 
@@ -48,24 +53,49 @@ public class PlaylistLocalDataSource extends BasePlaylistLocalDataSource {
     public void insertPlaylistsList(PlaylistApiResponse playlistApiResponse) {
         YoutubeRoomDatabase.databaseWriteExecutor.execute(() -> {
 
+            //todo handle playlist deleted by user and not in user account anymore
             List<Playlist> playlistList = playlistApiResponse.getPlaylistList();
             playlistListDao.insertPlaylistList(playlistList);
             Log.d(TAG, "insertPlaylists: " + playlistList);
             sharedPreferencesUtil.writeStringData(SHARED_PREFERENCES_FILE_NAME,
                     LAST_UPDATE_PLAYLIST_LIST, String.valueOf(System.currentTimeMillis()));
-            playlistCallback.onSuccessFromLocalPlaylistList(playlistList);
+            playlistCallback.onSuccessFromLocalPlaylistList(playlistApiResponse);
         });
     }
 
     @Override
-    public void getPlaylist(String playlistId) {
-
+    public void getPlaylistLastUpdate(String playlistId) {
+        YoutubeRoomDatabase.databaseWriteExecutor.execute(() -> {
+            Long lastUpdate = playlistListDao.getLastUpdateFromPlaylist(playlistId);
+            playlistCallback.onSuccessFromLocalLastUpdate(lastUpdate, playlistId);
+        });
     }
 
     @Override
-    public void insertPlaylists(PlaylistApiResponse playlistList) {
-
+    public void getVideoList(String playlistId) {
+        YoutubeRoomDatabase.databaseWriteExecutor.execute(() -> {
+            Log.d(TAG, "getVideoList: ");
+            List<Video> list = playlistListDao.getVideoFromPlaylist(playlistId);
+            it.unimib.exercise.andrea.mediahandler.models.playlistItem.PlaylistItemApiResponse playlistItemApiResponse = new it.unimib.exercise.andrea.mediahandler.models.playlistItem.PlaylistItemApiResponse(list);
+            if (list != null)
+                playlistCallback.onSuccessFromRemoteVideoList(playlistItemApiResponse, playlistId);
+            else
+                playlistCallback.onFailureFromLocalPlaylistItem(new Exception("test"));
+        });
     }
 
-
+    @Override
+    public void insertVideoList(PlaylistItemApiResponse playlistItemApiResponse, String playlistId) {
+        YoutubeRoomDatabase.databaseWriteExecutor.execute(() -> {
+            Log.d(TAG, "insertVideoList: ");
+            List<Video> videoList = playlistItemApiResponse.getVideoList();
+            playlistListDao.insertVideoList(videoList);
+            //update last update
+            Playlist playlist = playlistListDao.getPlaylist(playlistId);
+            playlist.setLastUpdate(System.currentTimeMillis());
+            playlistListDao.insertPlaylist(playlist);
+            //callback
+            playlistCallback.onSuccessFromLocalPlaylistItem(playlistItemApiResponse);
+        });
+    }
 }

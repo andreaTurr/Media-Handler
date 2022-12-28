@@ -154,12 +154,12 @@ public class FragmentLoginAuth extends Fragment {
                     public void run() {
                         Intent authIntent = authService.getAuthorizationRequestIntent(authRequest) ;
                         authResponseActivityResultLauncher.launch(authIntent);
-                        authService.performAuthorizationRequest(
+                        /*authService.performAuthorizationRequest(
                                 authRequest,
                                 PendingIntent.getActivity(getContext(), 0,
                                         new Intent(getContext(), FragmentPlayListList.class), 0), //completed intent
                                 PendingIntent.getActivity(getContext(), 0,
-                                        new Intent(getContext(), FragmentLoginAuth.class), 0));   //cancelled intent
+                                        new Intent(getContext(), FragmentLoginAuth.class), 0));   //cancelled intent*/
                     }
                 });
 

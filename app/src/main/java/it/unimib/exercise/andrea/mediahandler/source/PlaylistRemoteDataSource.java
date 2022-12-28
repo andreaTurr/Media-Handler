@@ -18,7 +18,6 @@ import net.openid.appauth.TokenResponse;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import it.unimib.exercise.andrea.mediahandler.models.playlistItem.PlaylistItemApiResponse;
 import it.unimib.exercise.andrea.mediahandler.models.playlists.PlaylistApiResponse;
 import it.unimib.exercise.andrea.mediahandler.service.YoutubeApiService;
 import it.unimib.exercise.andrea.mediahandler.util.AuthStateManager;
@@ -125,7 +124,7 @@ public class PlaylistRemoteDataSource extends BasePlaylistRemoteDataSource {
     }
 
     @Override
-    public void getPlaylist(String playlistId) {
+    public void getVideoList(String playlistId) {
         Log.d(TAG, "getPlaylist remote");
         if (mAuthService != null) {
             //--------------------------------------------------------------------------------------
@@ -137,21 +136,21 @@ public class PlaylistRemoteDataSource extends BasePlaylistRemoteDataSource {
                 public void execute(@Nullable String accessToken,
                                     @Nullable String idToken,
                                     @Nullable AuthorizationException ex) {
-                    Call<PlaylistItemApiResponse> playlistItemApiResponseCall = youtubeApiService.getPlaylists(
+                    Call<it.unimib.exercise.andrea.mediahandler.models.playlistItem.PlaylistItemApiResponse> playlistItemApiResponseCall = youtubeApiService.getPlaylists(
                             playlistId, String.format("Bearer %s", accessToken) );
-                    playlistItemApiResponseCall.enqueue(new Callback<PlaylistItemApiResponse>() {
+                    playlistItemApiResponseCall.enqueue(new Callback<it.unimib.exercise.andrea.mediahandler.models.playlistItem.PlaylistItemApiResponse>() {
                         @Override
-                        public void onResponse(@NonNull Call<PlaylistItemApiResponse> call,
-                                               @NonNull Response<PlaylistItemApiResponse> response) {
+                        public void onResponse(@NonNull Call<it.unimib.exercise.andrea.mediahandler.models.playlistItem.PlaylistItemApiResponse> call,
+                                               @NonNull Response<it.unimib.exercise.andrea.mediahandler.models.playlistItem.PlaylistItemApiResponse> response) {
                             if (response.body() != null && response.isSuccessful()) {
-                                playlistCallback.onSuccessFromRemotePlaylistItem(response.body());
+                                playlistCallback.onSuccessFromRemoteVideoList(response.body(), playlistId);
                             } else {
                                 playlistCallback.onFailureFromRemotePlaylistList(
                                         new Exception(API_KEY_ERROR));
                             }
                         }
                         @Override
-                        public void onFailure(@NonNull Call<PlaylistItemApiResponse> call, @NonNull Throwable t) {
+                        public void onFailure(@NonNull Call<it.unimib.exercise.andrea.mediahandler.models.playlistItem.PlaylistItemApiResponse> call, @NonNull Throwable t) {
                             String message = t.getMessage();
                             Log.d("failure", message);
                             playlistCallback.onFailureFromRemotePlaylistList(

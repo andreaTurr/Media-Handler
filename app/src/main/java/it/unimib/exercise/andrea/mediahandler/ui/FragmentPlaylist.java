@@ -1,7 +1,6 @@
 package it.unimib.exercise.andrea.mediahandler.ui;
 
-import static it.unimib.exercise.andrea.mediahandler.util.Constants.LAST_UPDATE_PLAYLIST_ITEMS;
-import static it.unimib.exercise.andrea.mediahandler.util.Constants.LAST_UPDATE_PLAYLIST_LIST;
+import static it.unimib.exercise.andrea.mediahandler.util.Constants.LAST_UPDATE_VIDEO_LIST;
 import static it.unimib.exercise.andrea.mediahandler.util.Constants.SHARED_PREFERENCES_FILE_NAME;
 
 import android.os.Bundle;
@@ -20,7 +19,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
@@ -30,7 +28,6 @@ import it.unimib.exercise.andrea.mediahandler.R;
 import it.unimib.exercise.andrea.mediahandler.adapters.AdapterPlaylistRecView;
 import it.unimib.exercise.andrea.mediahandler.models.playlistItem.ResultPlaylistItem;
 import it.unimib.exercise.andrea.mediahandler.models.playlistItem.Video;
-import it.unimib.exercise.andrea.mediahandler.models.playlists.Result;
 import it.unimib.exercise.andrea.mediahandler.repository.IPlaylistRepositoryWithLiveData;
 import it.unimib.exercise.andrea.mediahandler.util.ErrorMessagesUtil;
 import it.unimib.exercise.andrea.mediahandler.util.ServiceLocator;
@@ -106,16 +103,16 @@ public class FragmentPlaylist extends Fragment {
         sharedPreferencesUtil = new SharedPreferencesUtil(requireActivity().getApplication());
         String lastUpdate = "0";
         if (sharedPreferencesUtil.readStringData(
-                SHARED_PREFERENCES_FILE_NAME, LAST_UPDATE_PLAYLIST_ITEMS) != null) {
+                SHARED_PREFERENCES_FILE_NAME, LAST_UPDATE_VIDEO_LIST) != null) {
             lastUpdate = sharedPreferencesUtil.readStringData(
-                    SHARED_PREFERENCES_FILE_NAME, LAST_UPDATE_PLAYLIST_ITEMS);
+                    SHARED_PREFERENCES_FILE_NAME, LAST_UPDATE_VIDEO_LIST);
         }
         //divider between items of recycle view
         recyclerViewPlaylistItems.addItemDecoration(new DividerItemDecoration(getContext(),
                 layoutManager.getOrientation()));
 
 
-        viewModelPlaylist.getPlaylistFromId(0, playlistId).observe(getViewLifecycleOwner(), result -> {
+        viewModelPlaylist.getPlaylistFromId(Long.parseLong(lastUpdate), playlistId).observe(getViewLifecycleOwner(), result -> {
             if (result.isSuccess()){
                 Log.d(TAG, "onViewCreated: isSuccess");
                 int initialSize = this.videoList.size();

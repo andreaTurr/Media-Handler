@@ -1,6 +1,7 @@
 package it.unimib.exercise.andrea.mediahandler.source;
 
 
+import it.unimib.exercise.andrea.mediahandler.models.playlistItem.PlaylistItemApiResponse;
 import it.unimib.exercise.andrea.mediahandler.models.playlists.PlaylistApiResponse;
 
 /**
@@ -13,10 +14,12 @@ public abstract class BasePlaylistLocalDataSource {
     public void setPlaylistCallback(PlaylistCallback playlistCallback) {
         this.playlistCallback = playlistCallback;
     }
-
+    //Playlist
     public abstract void getPlaylistList();
-    public abstract void insertPlaylistsList(PlaylistApiResponse playlistList);
+    public abstract void insertPlaylistsList(PlaylistApiResponse playlistItemApiResponse);
+    public abstract void getPlaylistLastUpdate(String playlistId);
 
-    public abstract void getPlaylist(String playlistId);
-    public abstract void insertPlaylists(PlaylistApiResponse playlistList);
+    //PlaylistIte
+    public abstract void getVideoList(String playlistId);
+    public abstract void insertVideoList(PlaylistItemApiResponse playlistItemApiResponse, String playlistId);
 }

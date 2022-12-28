@@ -37,6 +37,6 @@ public class ViewModelPlaylist extends ViewModel {
     }
 
     private void fetchPlaylistFromId(long LastUpdate, String playlistId){
-        playlistLiveData = playlistRepositoryWithLiveData.fetchPlaylist(LastUpdate, playlistId);
+        playlistLiveData = playlistRepositoryWithLiveData.fetchVideoList(LastUpdate, playlistId);
     }
 }

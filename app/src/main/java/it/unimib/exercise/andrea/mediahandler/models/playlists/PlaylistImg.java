@@ -3,10 +3,14 @@ package it.unimib.exercise.andrea.mediahandler.models.playlists;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.room.ColumnInfo;
+
+import com.google.gson.annotations.SerializedName;
+
 public class PlaylistImg implements Parcelable {
-    private String url;
-    private int width;
-    private int height;
+    @SerializedName("url")
+    @ColumnInfo(name = "defImgUrl")
+    private String defImgUrl;
 
     @Override
     public int describeContents() {
@@ -15,48 +19,27 @@ public class PlaylistImg implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.url);
-        dest.writeInt(this.width);
-        dest.writeInt(this.height);
+        dest.writeString(this.defImgUrl);
     }
 
-    public String getUrl() {
-        return url;
+    public String getDefImgUrl() {
+        return defImgUrl;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setDefImgUrl(String defImgUrl) {
+        this.defImgUrl = defImgUrl;
     }
 
-    public int getWidth() {
-        return width;
-    }
-
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
-    }
 
     public void readFromParcel(Parcel source) {
-        this.url = source.readString();
-        this.width = source.readInt();
-        this.height = source.readInt();
+        this.defImgUrl = source.readString();
     }
 
     public PlaylistImg() {
     }
 
     protected PlaylistImg(Parcel in) {
-        this.url = in.readString();
-        this.width = in.readInt();
-        this.height = in.readInt();
+        this.defImgUrl = in.readString();
     }
 
     public static final Parcelable.Creator<PlaylistImg> CREATOR = new Parcelable.Creator<PlaylistImg>() {

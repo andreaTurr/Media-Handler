@@ -95,7 +95,7 @@ public class PlaylistMockRepository implements IPlaylistRepository{
      */
     private void readDataFromDatabase(long lastUpdate) {
         YoutubeRoomDatabase.databaseWriteExecutor.execute(() -> {
-            responseCallback.onSuccess(playlistListDao.getAll(), lastUpdate);
+            responseCallback.onSuccess(playlistListDao.getAllPlaylists(), lastUpdate);
         });
     }
 

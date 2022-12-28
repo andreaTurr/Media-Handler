@@ -3,7 +3,6 @@ package it.unimib.exercise.andrea.mediahandler.service;
 import static it.unimib.exercise.andrea.mediahandler.util.Constants.PLAYLIST_ITEMS_ENDPOINT;
 import static it.unimib.exercise.andrea.mediahandler.util.Constants.PLAYLIST_LIST_ENDPOINT;
 
-import it.unimib.exercise.andrea.mediahandler.models.playlistItem.PlaylistItemApiResponse;
 import it.unimib.exercise.andrea.mediahandler.models.playlists.PlaylistApiResponse;
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -19,7 +18,7 @@ public interface YoutubeApiService {
             @Header("Authorization") String token);
 
     @GET(PLAYLIST_ITEMS_ENDPOINT)
-    Call<PlaylistItemApiResponse> getPlaylists(
+    Call<it.unimib.exercise.andrea.mediahandler.models.playlistItem.PlaylistItemApiResponse> getPlaylists(
             @Query("playlistId") String playlistId,
             @Header("Authorization") String token);
 }
