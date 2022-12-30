@@ -49,7 +49,7 @@ public interface PlaylistListDao {
     @Update
     int updateListFavoritePlaylist(List<Playlist> playlist);
 
-    @Query("SELECT * FROM video Where id = :playlistId ORDER BY id DESC")
+    @Query("SELECT * FROM video Where playlistId = :playlistId")
     List<Video> getVideoFromPlaylist(String playlistId);
 
     @Query("SELECT last_update FROM playlist Where id = :playlistId")

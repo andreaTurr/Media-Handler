@@ -1,6 +1,5 @@
 package it.unimib.exercise.andrea.mediahandler.source;
 
-import static it.unimib.exercise.andrea.mediahandler.util.Constants.LAST_UPDATE_VIDEO_LIST;
 import static it.unimib.exercise.andrea.mediahandler.util.Constants.LAST_UPDATE_PLAYLIST_LIST;
 import static it.unimib.exercise.andrea.mediahandler.util.Constants.SHARED_PREFERENCES_FILE_NAME;
 
@@ -74,13 +73,14 @@ public class PlaylistLocalDataSource extends BasePlaylistLocalDataSource {
     @Override
     public void getVideoList(String playlistId) {
         YoutubeRoomDatabase.databaseWriteExecutor.execute(() -> {
-            Log.d(TAG, "getVideoList: ");
+            Log.d(TAG, "getVideoList: Local");
             List<Video> list = playlistListDao.getVideoFromPlaylist(playlistId);
-            it.unimib.exercise.andrea.mediahandler.models.playlistItem.PlaylistItemApiResponse playlistItemApiResponse = new it.unimib.exercise.andrea.mediahandler.models.playlistItem.PlaylistItemApiResponse(list);
+            PlaylistItemApiResponse playlistItemApiResponse = new PlaylistItemApiResponse(list);
+            Log.d(TAG, "getVideoList: " + list);
             if (list != null)
-                playlistCallback.onSuccessFromRemoteVideoList(playlistItemApiResponse, playlistId);
+                playlistCallback.onSuccessFromLocalVideoList(playlistItemApiResponse);
             else
-                playlistCallback.onFailureFromLocalPlaylistItem(new Exception("test"));
+                playlistCallback.onFailureFromLocalVideoList(new Exception("test"));
         });
     }
 
@@ -95,7 +95,7 @@ public class PlaylistLocalDataSource extends BasePlaylistLocalDataSource {
             playlist.setLastUpdate(System.currentTimeMillis());
             playlistListDao.insertPlaylist(playlist);
             //callback
-            playlistCallback.onSuccessFromLocalPlaylistItem(playlistItemApiResponse);
+            playlistCallback.onSuccessFromLocalVideoList(playlistItemApiResponse);
         });
     }
 }

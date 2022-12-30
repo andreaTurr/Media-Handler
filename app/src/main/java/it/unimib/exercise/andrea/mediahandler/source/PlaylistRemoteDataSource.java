@@ -125,7 +125,7 @@ public class PlaylistRemoteDataSource extends BasePlaylistRemoteDataSource {
 
     @Override
     public void getVideoList(String playlistId) {
-        Log.d(TAG, "getPlaylist remote");
+        Log.d(TAG, "getVideoList: Remote");
         if (mAuthService != null) {
             //--------------------------------------------------------------------------------------
             //  Oauth2 Step 4. Using access tokens derived from the refresh token to interact with a

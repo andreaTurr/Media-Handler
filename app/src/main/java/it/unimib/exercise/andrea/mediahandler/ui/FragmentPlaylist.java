@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.youtube.player.YouTubePlayer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,6 +82,7 @@ public class FragmentPlaylist extends Fragment {
         String playlistId = FragmentPlaylistArgs.fromBundle(getArguments()).getPlaylistId();
         String playlistTitle = FragmentPlaylistArgs.fromBundle(getArguments()).getPlaylistTitle();
 
+        Log.d(TAG, "onViewCreated: get playlist: " + playlistId);
         TextView titleOfPlaylist = view.findViewById(R.id.playlistTitle);
         titleOfPlaylist.setText(playlistTitle);
 
@@ -116,9 +118,9 @@ public class FragmentPlaylist extends Fragment {
             if (result.isSuccess()){
                 Log.d(TAG, "onViewCreated: isSuccess");
                 int initialSize = this.videoList.size();
-                Log.d(TAG, "result.isSuccess: " + videoList);
+                //Log.d(TAG, "result.isSuccess: " + videoList);
                 this.videoList.clear();
-                Log.d(TAG, "result.isSuccess: " + videoList);
+                //Log.d(TAG, "result.isSuccess: " + videoList);
                 //this.videoList.addAll(((Result.Success) result).getData().getPlaylist());
                 this.videoList.addAll(((ResultPlaylistItem.Success) result).getData().getVideoList());
                 Log.d(TAG, "result.isSuccess: " + videoList);
