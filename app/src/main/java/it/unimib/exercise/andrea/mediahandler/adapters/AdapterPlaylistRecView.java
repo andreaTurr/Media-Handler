@@ -57,6 +57,7 @@ public class AdapterPlaylistRecView extends RecyclerView.Adapter<AdapterPlaylist
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             video_name = itemView.findViewById(R.id.txtview_playlist_name);
+            itemView.setOnClickListener(this);
         }
 
         @Override

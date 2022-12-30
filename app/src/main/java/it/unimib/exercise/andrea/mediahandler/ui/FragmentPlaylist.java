@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -97,7 +98,15 @@ public class FragmentPlaylist extends Fragment {
                 new AdapterPlaylistRecView.OnItemClickListener() {
                     @Override
                     public void onVideoClick(Video video) {
-
+                        Snackbar.make(view, video.getSnippet().getTitle(), Snackbar.LENGTH_SHORT).show();
+                        // method to pass argument between fragments of navigation components
+                        // https://developer.android.com/guide/navigation/navigation-pass-data#samples
+                        Log.d(TAG, "onPlaylistClick videoId: " + video.getContentDetails().getVideoId());
+                        FragmentPlaylistDirections.ActionFragmentPlaylistToVideoPlayer action =
+                                FragmentPlaylistDirections.actionFragmentPlaylistToVideoPlayer(
+                                        video.getContentDetails().getVideoId(),
+                                        playlistId);
+                        Navigation.findNavController(view).navigate(action);
                     }
                 });
         recyclerViewPlaylistItems.setLayoutManager(layoutManager);
