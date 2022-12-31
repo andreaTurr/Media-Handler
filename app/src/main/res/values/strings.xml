@@ -21,4 +21,7 @@
     <string name="error_retrieving_playlists">Error in retrieving the playlists</string>
     <string name="api_key_error">API Key not valid or maximum number of requests reached</string>
     <string name="unexpected_error">Unexpected error</string>
+    <string name="title_activity_prova_fullsceen">ActivityProvaFullsceen</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>

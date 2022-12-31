@@ -1,0 +1,20 @@
+[33m541746b[m[33m ([m[1;36mHEAD[m[33m)[m HEAD@{0}: commit: working playlist api to recycle view
+[33meab45ef[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmaster[m[33m)[m HEAD@{1}: checkout: moving from d9d6369a48a84ca019b315427d64014c5bead8ae to eab45ef4cd0d803eb002732620fcdd8db9d613b1
+[33md9d6369[m HEAD@{2}: checkout: moving from 0f45f992e947fb8b1386839538885aaefc11c1e6 to d9d6369a48a84ca019b315427d64014c5bead8ae
+[33m0f45f99[m HEAD@{3}: checkout: moving from master to 0f45f992e947fb8b1386839538885aaefc11c1e6
+[33meab45ef[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmaster[m[33m)[m HEAD@{4}: reset: moving to HEAD
+[33meab45ef[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmaster[m[33m)[m HEAD@{5}: commit: Added readme, working on Auth integration and debugging for playlists
+[33m74384ea[m HEAD@{6}: commit: Intermidium commit
+[33md9d6369[m HEAD@{7}: commit: Implementing playlist recovery with Youtube API and their display
+[33m0f45f99[m HEAD@{8}: reset: moving to HEAD
+[33m0f45f99[m HEAD@{9}: reset: moving to HEAD
+[33m0f45f99[m HEAD@{10}: commit: First working api call to yt playlist
+[33mac74050[m HEAD@{11}: commit: mid work on auth with OAuth2 commit
+[33m1a215d0[m HEAD@{12}: commit: added google auth and start to parsing api resposnes for yt playlists
+[33m65e4353[m HEAD@{13}: commit: Work in progress commit
+[33mefa7a44[m HEAD@{14}: commit: Working navigator
+[33maa189df[m HEAD@{15}: commit: Working on graphics
+[33m2994391[m HEAD@{16}: commit (amend): Fix previous commit
+[33m92e5693[m HEAD@{17}: commit: Added and Personalised automatically generated login fragment
+[33m8775f5d[m HEAD@{18}: commit: Added and Personalised automatically generated login fragment
+[33mbb7cd63[m HEAD@{19}: commit (initial): first commit
