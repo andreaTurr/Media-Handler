@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.ActivityMain">
+    tools:context=".ui.ActivityMain"
+    android:theme="@style/themeYoutube">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/top_appbar"

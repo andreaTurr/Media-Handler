@@ -1,0 +1,44 @@
+{
+  "kind": "youtube#videoListResponse",
+  "etag": "_gCLgu_6LbE4_o7WO_OYqtHvbTg",
+  "items": [
+    {
+      "kind": "youtube#video",
+      "etag": "pzX3G8fgZbtuQrsfWsgkUzPQ5LE",
+      "id": "fis26HvvDII",
+      "contentDetails": {
+        "duration": "PT11H36M27S",
+        "dimension": "2d",
+        "definition": "hd",
+        "caption": "true",
+        "licensedContent": true,
+        "contentRating": {},
+        "projection": "rectangular"
+      }
+    },
+    {
+      "kind": "youtube#video",
+      "etag": "u7WabygFnKWCxENE4-fk3OHK5Z4",
+      "id": "hj83cwfOF3Y",
+      "contentDetails": {
+        "duration": "PT3H10M30S",
+        "dimension": "2d",
+        "definition": "hd",
+        "caption": "false",
+        "licensedContent": true,
+        "contentRating": {},
+        "projection": "rectangular"
+      }
+    }
+  ],
+  "pageInfo": {
+    "totalResults": 2,
+    "resultsPerPage": 2
+  }
+}
+
+
+GET https://youtube.googleapis.com/youtube/v3/videos?part=contentDetails&id=fis26HvvDII&id=hj83cwfOF3Y&key=[YOUR_API_KEY] HTTP/1.1
+
+Authorization: Bearer [YOUR_ACCESS_TOKEN]
+Accept: application/json

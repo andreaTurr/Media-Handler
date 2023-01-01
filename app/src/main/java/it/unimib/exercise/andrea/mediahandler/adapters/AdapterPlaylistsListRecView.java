@@ -1,6 +1,7 @@
 package it.unimib.exercise.andrea.mediahandler.adapters;
 
 import android.app.Application;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -63,12 +66,12 @@ public class AdapterPlaylistsListRecView extends
      */
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private final TextView playlist_name;
-        private final ImageView imageViewThumbnail;
+        private final ImageView playlsitThumbnail;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             playlist_name = itemView.findViewById(R.id.txtview_playlist_name);
-            imageViewThumbnail = itemView.findViewById(R.id.imageView_thumbnail);
+            playlsitThumbnail = itemView.findViewById(R.id.imageView_thumbnail);
 
             itemView.setOnClickListener(this);
             // Define click listener for the ViewHolder's View
@@ -82,8 +85,22 @@ public class AdapterPlaylistsListRecView extends
 
         public void bind(Playlist playlist) {
             playlist_name.setText(playlist.getSnippet().getTitle().toString());
-            //Log.d(TAG, "bind: " + playlist.getSnippet().getTitle().toString());
-            //imageViewThumbnail = ;
+
+            String url;
+            if(playlist.getSnippet().getThumbnails() == null){
+                url = null;
+            }else if (playlist.getSnippet().getThumbnails().getImageHighRes() != null){
+                url = playlist.getSnippet().getThumbnails().getImageHighRes().getUrl();
+            }else{
+                url = playlist.getSnippet().getThumbnails().getImageDefRes().getUrl();
+            }
+            if (url != null) {
+                Glide.with(application)
+                        .load(url)
+                        .placeholder(R.drawable.ic_baseline_cloud_download_24)
+                        .into(playlsitThumbnail);
+            }
+            Log.d(TAG, "bind: " + url);
         }
     }
 }

@@ -3,19 +3,19 @@
     <item
         android:id="@+id/nested_youtube"
         android:enabled="true"
-        android:icon="@drawable/ic_launcher_foreground"
+        android:icon="@drawable/playlist_vector"
         android:title="@string/bottom_nav_playlists" />
     <item
         android:id="@+id/fragment_audio"
         android:enabled="true"
-        android:icon="@drawable/ic_launcher_foreground"
+        android:icon="@drawable/music_vector"
         android:title="@string/bottom_nav_video" />
     <item
         android:id="@+id/fragment_video"
-        android:icon="@drawable/ic_launcher_foreground"
+        android:icon="@drawable/video_vector"
         android:title="@string/bottom_nav_musica" />
     <item
         android:id="@+id/fragment_settings"
-        android:icon="@drawable/ic_launcher_foreground"
+        android:icon="@drawable/setting_vector"
         android:title="@string/bottom_nav_setting" />
 </menu>

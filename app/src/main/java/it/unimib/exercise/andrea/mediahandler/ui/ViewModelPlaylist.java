@@ -5,14 +5,20 @@ import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import java.util.List;
+
+import it.unimib.exercise.andrea.mediahandler.models.playlistItem.PlaylistItemApiResponse;
 import it.unimib.exercise.andrea.mediahandler.models.playlistItem.ResultPlaylistItem;
+import it.unimib.exercise.andrea.mediahandler.models.playlistItem.ResultVideo;
+import it.unimib.exercise.andrea.mediahandler.models.playlistItem.Video;
 import it.unimib.exercise.andrea.mediahandler.models.playlists.Result;
 import it.unimib.exercise.andrea.mediahandler.repository.IPlaylistRepositoryWithLiveData;
 
 public class ViewModelPlaylist extends ViewModel {
     private static final String TAG = ViewModelPlaylist.class.getSimpleName();
     private MutableLiveData<Result> playlistListLiveData;
-    private MutableLiveData<ResultPlaylistItem> playlistLiveData;
+    private MutableLiveData<ResultPlaylistItem> videoListLiveData;
+    private MutableLiveData<ResultVideo> videoLiveData;
     private final IPlaylistRepositoryWithLiveData playlistRepositoryWithLiveData;
 
     public ViewModelPlaylist(IPlaylistRepositoryWithLiveData playlistRepositoryWithLiveData) {
@@ -26,17 +32,35 @@ public class ViewModelPlaylist extends ViewModel {
         return playlistListLiveData;
     }
 
+    public MutableLiveData<ResultPlaylistItem> getPlaylistFromId(String playlistId) {
+        fetchPlaylistFromId(playlistId);
+        return videoListLiveData;
+    }
+
+    public MutableLiveData<ResultVideo> getVideo(String videoIdInPlaylist ){
+        if (videoLiveData == null){
+            fetchVideo(videoIdInPlaylist);
+        }
+        return videoLiveData;
+    }
+
+    private void fetchVideo(String videoIdInPlaylist) {
+        videoLiveData = playlistRepositoryWithLiveData.fetchVideo(videoIdInPlaylist);
+    }
+
     private void fetchPlaylistList(long LastUpdate) {
         Log.d(TAG, "fetchPlaylistList: ");
         playlistListLiveData = playlistRepositoryWithLiveData.fetchPlaylistList(LastUpdate);
     }
 
-    public MutableLiveData<ResultPlaylistItem> getPlaylistFromId(long lastUpdate, String playlistId) {
-        fetchPlaylistFromId(lastUpdate, playlistId);
-        return playlistLiveData;
+    private void fetchPlaylistFromId(String playlistId){
+        videoListLiveData = playlistRepositoryWithLiveData.fetchVideoList(playlistId);
     }
 
-    private void fetchPlaylistFromId(long LastUpdate, String playlistId){
-        playlistLiveData = playlistRepositoryWithLiveData.fetchVideoList(LastUpdate, playlistId);
+    public void updateVideo(Video video){
+        playlistRepositoryWithLiveData.updateVideo(video);
     }
+
+
+
 }

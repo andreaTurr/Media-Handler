@@ -2,6 +2,7 @@ package it.unimib.exercise.andrea.mediahandler.source;
 
 
 import it.unimib.exercise.andrea.mediahandler.models.playlistItem.PlaylistItemApiResponse;
+import it.unimib.exercise.andrea.mediahandler.models.playlistItem.Video;
 import it.unimib.exercise.andrea.mediahandler.models.playlists.PlaylistApiResponse;
 
 /**
@@ -19,7 +20,9 @@ public abstract class BasePlaylistLocalDataSource {
     public abstract void insertPlaylistsList(PlaylistApiResponse playlistItemApiResponse);
     public abstract void getPlaylistLastUpdate(String playlistId);
 
-    //PlaylistIte
+    //Videolist
     public abstract void getVideoList(String playlistId);
     public abstract void insertVideoList(PlaylistItemApiResponse playlistItemApiResponse, String playlistId);
+    public abstract void insertVideo(Video video);
+    public abstract void getVideo(String videoId);
 }

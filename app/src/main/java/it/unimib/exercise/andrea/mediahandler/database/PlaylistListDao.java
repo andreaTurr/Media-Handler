@@ -10,7 +10,7 @@ import androidx.room.Update;
 import java.util.List;
 
 import it.unimib.exercise.andrea.mediahandler.models.playlistItem.Video;
-import it.unimib.exercise.andrea.mediahandler.models.playlists.*;
+import it.unimib.exercise.andrea.mediahandler.models.playlists.Playlist;
 
 /**
  * Data Access Object (DAO) that provides methods that can be used to query,
@@ -49,14 +49,18 @@ public interface PlaylistListDao {
     @Update
     int updateListFavoritePlaylist(List<Playlist> playlist);
 
-    @Query("SELECT * FROM video Where playlistId = :playlistId")
-    List<Video> getVideoFromPlaylist(String playlistId);
+    @Query("SELECT * FROM video Where playlistId = :playlistId ORDER BY position ASC")
+    List<Video> getVideoListFromPlaylistId(String playlistId);
 
     @Query("SELECT last_update FROM playlist Where id = :playlistId")
     Long getLastUpdateFromPlaylist(String playlistId);
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertVideoList(List<Video> videoList);
 
+    @Query("SELECT * FROM video Where id_video_in_playlist = :videoIdInPlaylist")
+    Video getVideo(String videoIdInPlaylist);
 
+    @Update
+    void updateVideo(Video video);
 }

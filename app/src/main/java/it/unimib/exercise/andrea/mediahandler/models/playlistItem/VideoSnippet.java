@@ -5,20 +5,20 @@ import android.os.Parcelable;
 
 import androidx.room.Embedded;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class VideoSnippet implements Parcelable {
     private String title;
     @Embedded
-    private VideoThumbnail thumbnails;
+    private Thumbnail thumbnails;
     private String playlistId;
+    private int position;
 
-    public VideoSnippet(String title, VideoThumbnail thumbnails, String playlistId) {
+    public VideoSnippet(String title, Thumbnail thumbnails, String playlistId, int position) {
         this.title = title;
         this.thumbnails = thumbnails;
         this.playlistId = playlistId;
+        this.position = position;
     }
 
     public String getTitle() {
@@ -29,11 +29,11 @@ public class VideoSnippet implements Parcelable {
         this.title = title;
     }
 
-    public VideoThumbnail getThumbnails() {
+    public Thumbnail getThumbnails() {
         return thumbnails;
     }
 
-    public void setThumbnails(VideoThumbnail thumbnails) {
+    public void setThumbnails(Thumbnail thumbnails) {
         this.thumbnails = thumbnails;
     }
 
@@ -45,17 +45,12 @@ public class VideoSnippet implements Parcelable {
         this.playlistId = playlistId;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        VideoSnippet that = (VideoSnippet) o;
-        return Objects.equals(title, that.title) && Objects.equals(thumbnails, that.thumbnails) && Objects.equals(playlistId, that.playlistId);
+    public int getPosition() {
+        return position;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(title, thumbnails, playlistId);
+    public void setPosition(int position) {
+        this.position = position;
     }
 
     @Override
@@ -64,7 +59,21 @@ public class VideoSnippet implements Parcelable {
                 "title='" + title + '\'' +
                 ", thumbnails=" + thumbnails +
                 ", playlistId='" + playlistId + '\'' +
+                ", position=" + position +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        VideoSnippet that = (VideoSnippet) o;
+        return position == that.position && Objects.equals(title, that.title) && Objects.equals(thumbnails, that.thumbnails) && Objects.equals(playlistId, that.playlistId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(title, thumbnails, playlistId, position);
     }
 
     @Override
@@ -77,12 +86,14 @@ public class VideoSnippet implements Parcelable {
         dest.writeString(this.title);
         dest.writeParcelable(this.thumbnails, flags);
         dest.writeString(this.playlistId);
+        dest.writeInt(this.position);
     }
 
     public void readFromParcel(Parcel source) {
         this.title = source.readString();
-        this.thumbnails = source.readParcelable(VideoThumbnail.class.getClassLoader());
+        this.thumbnails = source.readParcelable(Thumbnail.class.getClassLoader());
         this.playlistId = source.readString();
+        this.position = source.readInt();
     }
 
     public VideoSnippet() {
@@ -90,8 +101,9 @@ public class VideoSnippet implements Parcelable {
 
     protected VideoSnippet(Parcel in) {
         this.title = in.readString();
-        this.thumbnails = in.readParcelable(VideoThumbnail.class.getClassLoader());
+        this.thumbnails = in.readParcelable(Thumbnail.class.getClassLoader());
         this.playlistId = in.readString();
+        this.position = in.readInt();
     }
 
     public static final Creator<VideoSnippet> CREATOR = new Creator<VideoSnippet>() {

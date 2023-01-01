@@ -35,4 +35,9 @@ public class PlaylistMockRemoteDataSource extends BasePlaylistRemoteDataSource {
     public void getVideoList(String playlistId) {
 
     }
+
+    @Override
+    public void getPlaylistDuration(String playlistId) {
+
+    }
 }

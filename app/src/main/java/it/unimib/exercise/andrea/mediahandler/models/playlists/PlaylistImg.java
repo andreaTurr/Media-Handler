@@ -5,12 +5,9 @@ import android.os.Parcelable;
 
 import androidx.room.ColumnInfo;
 
-import com.google.gson.annotations.SerializedName;
-
 public class PlaylistImg implements Parcelable {
-    @SerializedName("url")
-    @ColumnInfo(name = "defImgUrl")
-    private String defImgUrl;
+    @ColumnInfo(name = "ImgUrl")
+    private String url;
 
     @Override
     public int describeContents() {
@@ -19,27 +16,26 @@ public class PlaylistImg implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.defImgUrl);
+        dest.writeString(this.url);
     }
 
-    public String getDefImgUrl() {
-        return defImgUrl;
+    public String getUrl() {
+        return url;
     }
 
-    public void setDefImgUrl(String defImgUrl) {
-        this.defImgUrl = defImgUrl;
+    public void setUrl(String url) {
+        this.url = url;
     }
-
 
     public void readFromParcel(Parcel source) {
-        this.defImgUrl = source.readString();
+        this.url = source.readString();
     }
 
     public PlaylistImg() {
     }
 
     protected PlaylistImg(Parcel in) {
-        this.defImgUrl = in.readString();
+        this.url = in.readString();
     }
 
     public static final Parcelable.Creator<PlaylistImg> CREATOR = new Parcelable.Creator<PlaylistImg>() {

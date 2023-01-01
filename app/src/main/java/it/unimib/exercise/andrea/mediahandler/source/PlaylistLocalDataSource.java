@@ -1,6 +1,7 @@
 package it.unimib.exercise.andrea.mediahandler.source;
 
 import static it.unimib.exercise.andrea.mediahandler.util.Constants.LAST_UPDATE_PLAYLIST_LIST;
+import static it.unimib.exercise.andrea.mediahandler.util.Constants.LOCAL_SOURCE_ERROR;
 import static it.unimib.exercise.andrea.mediahandler.util.Constants.SHARED_PREFERENCES_FILE_NAME;
 
 import android.util.Log;
@@ -38,13 +39,20 @@ public class PlaylistLocalDataSource extends BasePlaylistLocalDataSource {
         Log.d(TAG, "getPlaylist: local");
         YoutubeRoomDatabase.databaseWriteExecutor.execute(() ->{
             List<Playlist> list = playlistListDao.getAllPlaylists();
-            PlaylistApiResponse playlistApiResponse = new PlaylistApiResponse(list);
-            //NewsApiResponse newsApiResponse = new NewsApiResponse();
-            //newsApiResponse.setNewsList(newsDao.getAll());
             Log.d(TAG, "getPlaylist: " + list);
-            PlaylistApiResponse playlistItemApiResponse =
-                    new PlaylistApiResponse(list);
-            playlistCallback.onSuccessFromLocalPlaylistList(playlistItemApiResponse);
+
+            if (!list.isEmpty()){
+                PlaylistApiResponse playlistApiResponse = new PlaylistApiResponse(list);
+                PlaylistApiResponse playlistItemApiResponse =
+                        new PlaylistApiResponse(list);
+                playlistCallback.onSuccessFromLocalPlaylistList(playlistItemApiResponse);
+            }else{
+                sharedPreferencesUtil.writeStringData(SHARED_PREFERENCES_FILE_NAME,
+                        LAST_UPDATE_PLAYLIST_LIST, "0");
+                playlistCallback.onFailureFromRemotePlaylistList(
+                        new Exception(LOCAL_SOURCE_ERROR));
+            }
+
         });
     }
 
@@ -74,13 +82,13 @@ public class PlaylistLocalDataSource extends BasePlaylistLocalDataSource {
     public void getVideoList(String playlistId) {
         YoutubeRoomDatabase.databaseWriteExecutor.execute(() -> {
             Log.d(TAG, "getVideoList: Local");
-            List<Video> list = playlistListDao.getVideoFromPlaylist(playlistId);
+            List<Video> list = playlistListDao.getVideoListFromPlaylistId(playlistId);
             PlaylistItemApiResponse playlistItemApiResponse = new PlaylistItemApiResponse(list);
             Log.d(TAG, "getVideoList: " + list);
-            if (list != null)
+            if (!list.isEmpty()) //check if database empty
                 playlistCallback.onSuccessFromLocalVideoList(playlistItemApiResponse);
             else
-                playlistCallback.onFailureFromLocalVideoList(new Exception("test"));
+                playlistCallback.onFailureFromLocalVideoList(new Exception(LOCAL_SOURCE_ERROR));
         });
     }
 
@@ -90,7 +98,7 @@ public class PlaylistLocalDataSource extends BasePlaylistLocalDataSource {
             Log.d(TAG, "insertVideoList: ");
             List<Video> videoList = playlistItemApiResponse.getVideoList();
             playlistListDao.insertVideoList(videoList);
-            //update last update
+            //update lastUpdate
             Playlist playlist = playlistListDao.getPlaylist(playlistId);
             playlist.setLastUpdate(System.currentTimeMillis());
             playlistListDao.insertPlaylist(playlist);
@@ -98,4 +106,28 @@ public class PlaylistLocalDataSource extends BasePlaylistLocalDataSource {
             playlistCallback.onSuccessFromLocalVideoList(playlistItemApiResponse);
         });
     }
+
+    @Override
+    public void insertVideo(Video video) {
+        YoutubeRoomDatabase.databaseWriteExecutor.execute(() -> {
+            Log.d(TAG, "insertVideo: " + video);
+            playlistListDao.updateVideo(video);
+            List<Video> list = playlistListDao.getVideoListFromPlaylistId(video.getSnippet().getPlaylistId());
+            PlaylistItemApiResponse playlistItemApiResponse = new PlaylistItemApiResponse(list);
+            playlistCallback.onSuccessFromLocalVideoList(playlistItemApiResponse);
+        });
+    }
+
+    @Override
+    public void getVideo(String videoIdInPlaylist) {
+        YoutubeRoomDatabase.databaseWriteExecutor.execute(() -> {
+            Log.d(TAG, "getVideo: Local");
+            Video video = playlistListDao.getVideo(videoIdInPlaylist);
+            if (video != null)
+                playlistCallback.onSuccessFromLocalVideo(video);
+            else
+                playlistCallback.onFailureFromLocalVideo(new Exception(LOCAL_SOURCE_ERROR));
+        });
+    }
+
 }

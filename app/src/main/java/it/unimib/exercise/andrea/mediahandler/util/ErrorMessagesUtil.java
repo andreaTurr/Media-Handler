@@ -1,6 +1,7 @@
 package it.unimib.exercise.andrea.mediahandler.util;
 
 import static it.unimib.exercise.andrea.mediahandler.util.Constants.API_KEY_ERROR;
+import static it.unimib.exercise.andrea.mediahandler.util.Constants.LOCAL_SOURCE_ERROR;
 import static it.unimib.exercise.andrea.mediahandler.util.Constants.RETROFIT_ERROR;
 
 import android.app.Application;
@@ -30,6 +31,8 @@ public class ErrorMessagesUtil {
                 return application.getString(R.string.error_retrieving_playlists);
             case API_KEY_ERROR:
                 return application.getString(R.string.api_key_error);
+            case LOCAL_SOURCE_ERROR:
+                return application.getString(R.string.local_source_error);
             default:
                 return application.getString(R.string.unexpected_error);
         }

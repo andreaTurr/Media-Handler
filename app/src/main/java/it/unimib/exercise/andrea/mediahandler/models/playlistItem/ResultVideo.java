@@ -1,10 +1,10 @@
 package it.unimib.exercise.andrea.mediahandler.models.playlistItem;
 
-public abstract class ResultPlaylistItem {
-    private ResultPlaylistItem() {}
+public abstract class ResultVideo {
+    private ResultVideo() {}
 
     public boolean isSuccess() {
-        if (this instanceof ResultPlaylistItem.Success) {
+        if (this instanceof ResultVideo.Success) {
             return true;
         } else {
             return false;
@@ -15,13 +15,13 @@ public abstract class ResultPlaylistItem {
      * Class that represents a successful action during the interaction
      * with a Web Service or a local database.
      */
-    public static final class Success extends ResultPlaylistItem {
-        private final PlaylistItemApiResponse playlistItemApiResponse;
-        public Success(PlaylistItemApiResponse playlistItemApiResponse) {
-            this.playlistItemApiResponse = playlistItemApiResponse;
+    public static final class Success extends ResultVideo {
+        private final Video video;
+        public Success(Video video) {
+            this.video = video;
         }
-        public PlaylistItemApiResponse getData() {
-            return playlistItemApiResponse;
+        public Video getData() {
+            return video;
         }
     }
 
@@ -29,7 +29,7 @@ public abstract class ResultPlaylistItem {
      * Class that represents an error occurred during the interaction
      * with a Web Service or a local database.
      */
-    public static final class Error extends ResultPlaylistItem {
+    public static final class Error extends ResultVideo {
         private final String message;
         public Error(String message) {
             this.message = message;

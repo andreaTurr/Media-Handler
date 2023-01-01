@@ -5,11 +5,13 @@ import android.os.Parcelable;
 
 import androidx.room.Embedded;
 
+import it.unimib.exercise.andrea.mediahandler.models.playlistItem.Thumbnail;
+
 public class PlaylistSnippet implements Parcelable {
     private String title;
     private String description;
     @Embedded
-    private PlaylistThumbnail thumbnails;
+    private Thumbnail thumbnails;
 
     public String getTitle() {
         return title;
@@ -27,11 +29,11 @@ public class PlaylistSnippet implements Parcelable {
         this.description = description;
     }
 
-    public PlaylistThumbnail getThumbnails() {
+    public Thumbnail getThumbnails() {
         return thumbnails;
     }
 
-    public void setThumbnails(PlaylistThumbnail thumbnails) {
+    public void setThumbnails(Thumbnail thumbnails) {
         this.thumbnails = thumbnails;
     }
 
@@ -61,7 +63,7 @@ public class PlaylistSnippet implements Parcelable {
     public void readFromParcel(Parcel source) {
         this.title = source.readString();
         this.description = source.readString();
-        this.thumbnails = source.readParcelable(PlaylistThumbnail.class.getClassLoader());
+        this.thumbnails = source.readParcelable(Thumbnail.class.getClassLoader());
     }
 
     public PlaylistSnippet() {
@@ -70,7 +72,7 @@ public class PlaylistSnippet implements Parcelable {
     protected PlaylistSnippet(Parcel in) {
         this.title = in.readString();
         this.description = in.readString();
-        this.thumbnails = in.readParcelable(PlaylistThumbnail.class.getClassLoader());
+        this.thumbnails = in.readParcelable(Thumbnail.class.getClassLoader());
     }
 
     public static final Parcelable.Creator<PlaylistSnippet> CREATOR = new Parcelable.Creator<PlaylistSnippet>() {

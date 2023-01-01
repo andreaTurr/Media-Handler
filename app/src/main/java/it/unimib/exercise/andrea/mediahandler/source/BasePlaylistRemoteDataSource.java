@@ -11,4 +11,6 @@ public abstract class BasePlaylistRemoteDataSource {
     public abstract void getPlaylistList();
 
     public abstract void getVideoList(String playlistId);
+
+    public abstract void getPlaylistDuration(String playlistId);
 }

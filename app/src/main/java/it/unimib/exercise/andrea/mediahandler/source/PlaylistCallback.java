@@ -1,6 +1,7 @@
 package it.unimib.exercise.andrea.mediahandler.source;
 
 import it.unimib.exercise.andrea.mediahandler.models.playlistItem.PlaylistItemApiResponse;
+import it.unimib.exercise.andrea.mediahandler.models.playlistItem.Video;
 import it.unimib.exercise.andrea.mediahandler.models.playlists.PlaylistApiResponse;
 
 public interface PlaylistCallback {
@@ -17,5 +18,9 @@ public interface PlaylistCallback {
     void onFailureFromRemoteVideoList(Exception exception);
     void onSuccessFromLocalVideoList(PlaylistItemApiResponse playlistItemApiResponse);
     void onFailureFromLocalVideoList(Exception exception);
+
+    //Video
+    void onSuccessFromLocalVideo(Video video);
+    void onFailureFromLocalVideo(Exception exception);
 
 }

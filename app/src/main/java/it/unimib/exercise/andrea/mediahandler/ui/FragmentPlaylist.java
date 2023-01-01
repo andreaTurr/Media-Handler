@@ -21,7 +21,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
-import com.google.android.youtube.player.YouTubePlayer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +56,7 @@ public class FragmentPlaylist extends Fragment {
                 );
         if (playlistRepositoryWithLiveData != null) {
             // This is the way to create a ViewModel with custom parameters
-            // (see NewsViewModelFactory class for the implementation details)
+            // (see ViewModelPlaylistFactory class for the implementation details)
             viewModelPlaylist = new ViewModelProvider(
                     requireActivity(),
                     new ViewModelPlaylistFactory(playlistRepositoryWithLiveData)).get(ViewModelPlaylist.class);
@@ -97,15 +96,13 @@ public class FragmentPlaylist extends Fragment {
                 getActivity().getApplication(),
                 new AdapterPlaylistRecView.OnItemClickListener() {
                     @Override
-                    public void onVideoClick(Video video) {
-                        Snackbar.make(view, video.getSnippet().getTitle(), Snackbar.LENGTH_SHORT).show();
+                    public void onVideoClick(Video video, int position) {
+                        //Snackbar.make(view, video.getSnippet().getTitle(), Snackbar.LENGTH_SHORT).show();
                         // method to pass argument between fragments of navigation components
                         // https://developer.android.com/guide/navigation/navigation-pass-data#samples
                         Log.d(TAG, "onPlaylistClick videoId: " + video.getContentDetails().getVideoId());
                         FragmentPlaylistDirections.ActionFragmentPlaylistToVideoPlayer action =
-                                FragmentPlaylistDirections.actionFragmentPlaylistToVideoPlayer(
-                                        video.getContentDetails().getVideoId(),
-                                        playlistId);
+                                FragmentPlaylistDirections.actionFragmentPlaylistToVideoPlayer(video, position);
                         Navigation.findNavController(view).navigate(action);
                     }
                 });
@@ -123,7 +120,7 @@ public class FragmentPlaylist extends Fragment {
                 layoutManager.getOrientation()));
 
 
-        viewModelPlaylist.getPlaylistFromId(Long.parseLong(lastUpdate), playlistId).observe(getViewLifecycleOwner(), result -> {
+        viewModelPlaylist.getPlaylistFromId(playlistId).observe(getViewLifecycleOwner(), result -> {
             if (result.isSuccess()){
                 Log.d(TAG, "onViewCreated: isSuccess");
                 int initialSize = this.videoList.size();
@@ -132,10 +129,10 @@ public class FragmentPlaylist extends Fragment {
                 //Log.d(TAG, "result.isSuccess: " + videoList);
                 //this.videoList.addAll(((Result.Success) result).getData().getPlaylist());
                 this.videoList.addAll(((ResultPlaylistItem.Success) result).getData().getVideoList());
-                Log.d(TAG, "result.isSuccess: " + videoList);
+                //Log.d(TAG, "result.isSuccess: " + videoList);
                 adapterPlaylistRecView.notifyItemRangeRemoved(0, initialSize);
                 adapterPlaylistRecView.notifyItemRangeInserted(initialSize, this.videoList.size());
-                //Log.d(TAG, "onViewCreated: " + videoList);
+                Log.d(TAG, "result.isSuccess: " + videoList);
                 //progressBar.setVisibility(View.GONE);
             }else {
                 ErrorMessagesUtil errorMessagesUtil =

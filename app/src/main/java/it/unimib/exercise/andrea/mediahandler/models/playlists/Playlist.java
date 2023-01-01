@@ -29,6 +29,8 @@ public class Playlist implements Parcelable {
     // @ColumnInfo(name = "user_name", defaultValue = "temp") val name: String
     @ColumnInfo(name = "last_update", defaultValue = "0")
     private long lastUpdate;
+    @ColumnInfo(name = "total_duration", defaultValue = "0")
+    private long totalDuration;
 
     //getter and setters
     @NonNull

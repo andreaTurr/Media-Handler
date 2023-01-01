@@ -2,8 +2,11 @@ package it.unimib.exercise.andrea.mediahandler.service;
 
 import static it.unimib.exercise.andrea.mediahandler.util.Constants.PLAYLIST_ITEMS_ENDPOINT;
 import static it.unimib.exercise.andrea.mediahandler.util.Constants.PLAYLIST_LIST_ENDPOINT;
+import static it.unimib.exercise.andrea.mediahandler.util.Constants.VIDEO_DETAILED_ENDPOINT;
 
 import it.unimib.exercise.andrea.mediahandler.models.playlists.PlaylistApiResponse;
+import it.unimib.exercise.andrea.mediahandler.models.playlistItem.PlaylistItemApiResponse;
+import it.unimib.exercise.andrea.mediahandler.models.video.VideoApiResponse;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -18,8 +21,13 @@ public interface YoutubeApiService {
             @Header("Authorization") String token);
 
     @GET(PLAYLIST_ITEMS_ENDPOINT)
-    Call<it.unimib.exercise.andrea.mediahandler.models.playlistItem.PlaylistItemApiResponse> getPlaylists(
+    Call<PlaylistItemApiResponse> getPlaylists(
             @Query("playlistId") String playlistId,
+            @Header("Authorization") String token);
+
+    @GET(VIDEO_DETAILED_ENDPOINT)
+    Call<VideoApiResponse> getVideoDetailed(
+            @Query("id") String playlistId,
             @Header("Authorization") String token);
 }
 //  'https://youtube.googleapis.com/youtube/v3/

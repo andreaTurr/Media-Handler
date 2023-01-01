@@ -7,4 +7,10 @@
         <item name="android:background">@color/black_overlay</item>
         <item name="android:buttonBarStyle">?android:attr/buttonBarStyle</item>
     </style>
+
+    <style name="themeYoutube" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">#b71c1c</item>
+        <item name="android:statusBarColor">#7f0000</item>
+    </style>
 </resources>

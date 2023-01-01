@@ -3,12 +3,15 @@ package it.unimib.exercise.andrea.mediahandler.models.playlistItem;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.room.ColumnInfo;
+
 import java.util.Objects;
 
-public class VideoImg implements Parcelable {
+public class ImageHigh implements Parcelable {
+    @ColumnInfo(name = "ImgUrlHigh")
     String url;
 
-    public VideoImg(String url) {
+    public ImageHigh(String url) {
         this.url = url;
     }
 
@@ -24,8 +27,8 @@ public class VideoImg implements Parcelable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        VideoImg videoImg = (VideoImg) o;
-        return Objects.equals(url, videoImg.url);
+        ImageHigh imageHigh = (ImageHigh) o;
+        return Objects.equals(url, imageHigh.url);
     }
 
     @Override
@@ -47,19 +50,19 @@ public class VideoImg implements Parcelable {
         this.url = source.readString();
     }
 
-    protected VideoImg(Parcel in) {
+    protected ImageHigh(Parcel in) {
         this.url = in.readString();
     }
 
-    public static final Parcelable.Creator<VideoImg> CREATOR = new Parcelable.Creator<VideoImg>() {
+    public static final Parcelable.Creator<ImageHigh> CREATOR = new Parcelable.Creator<ImageHigh>() {
         @Override
-        public VideoImg createFromParcel(Parcel source) {
-            return new VideoImg(source);
+        public ImageHigh createFromParcel(Parcel source) {
+            return new ImageHigh(source);
         }
 
         @Override
-        public VideoImg[] newArray(int size) {
-            return new VideoImg[size];
+        public ImageHigh[] newArray(int size) {
+            return new ImageHigh[size];
         }
     };
 }
