@@ -24,9 +24,9 @@ public class Constants {
     // Constants for YOUTUBE_API https://www.googleapis.com/youtube/v3
     public static final String YOUTUBE_API_BASE_URL = "https://youtube.googleapis.com/youtube/v3/";
     public static final String TOP_SEARCH_ENDPOINT = "search/";
-    public static final String PLAYLIST_LIST_ENDPOINT = "playlists?part=snippet%2CcontentDetails&maxResults=25&mine=true";
-    public static final String PLAYLIST_ITEMS_ENDPOINT = "playlistItems?part=snippet%2CcontentDetails&maxResults=25";
-    public static final String VIDEO_DETAILED_ENDPOINT = "videos?part=contentDetails";
+    public static final String PLAYLIST_LIST_ENDPOINT = "playlists?part=snippet%2CcontentDetails&maxResults=50&mine=true";
+    public static final String PLAYLIST_ITEMS_ENDPOINT = "playlistItems?part=snippet%2CcontentDetails&maxResults=50";
+    public static final String VIDEO_DETAILED_ENDPOINT = "videos?part=contentDetails&maxResults=50";
 
 
 //playlistItems?part=snippet%2CcontentDetails&playlistId=PLsizmByY7_uV0J7feYX4pta_05SV5SkJr&key
@@ -41,11 +41,15 @@ public class Constants {
 
     // Constants for Room database
     public static final String NEWS_DATABASE_NAME = "news_db";
-    public static final int DATABASE_VERSION = 11;
+    public static final int DATABASE_VERSION = 12;
     public static final String YOUTUBE_DATABASE_NAME = "youtube_db";
 
     public static final String RETROFIT_ERROR = "retrofit_error";
     public static final String API_KEY_ERROR = "api_key_error";
     public static final String LOCAL_SOURCE_ERROR = "local_source_error";
     public static final String UNEXPECTED_ERROR = "unexpected_error";
+
+    public static final int SECONDS_IN_HOUR = 60 * 60;
+    public static final int SECONDS_IN_MINUTE = 60;
+    public static final int DIVIDER_INSET = 16 ;
 }

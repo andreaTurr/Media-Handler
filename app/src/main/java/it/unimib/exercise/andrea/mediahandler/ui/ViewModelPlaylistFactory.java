@@ -11,6 +11,7 @@ import it.unimib.exercise.andrea.mediahandler.repository.IPlaylistRepositoryWith
  * Custom ViewModelProvider to be able to have a custom constructor
  * for the PlaylistViewModel class.
  */
+@SuppressWarnings("unchecked")
 public class ViewModelPlaylistFactory implements ViewModelProvider.Factory {
 
     private IPlaylistRepositoryWithLiveData iPlaylistRepositoryWithLiveData;

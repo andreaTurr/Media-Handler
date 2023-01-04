@@ -29,4 +29,6 @@ public class VideoApiResponse {
     public void setPageInfo(PageInfo pageInfo) {
         this.pageInfo = pageInfo;
     }
+
+
 }

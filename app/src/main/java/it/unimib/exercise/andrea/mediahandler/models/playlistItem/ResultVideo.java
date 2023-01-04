@@ -1,8 +1,11 @@
 package it.unimib.exercise.andrea.mediahandler.models.playlistItem;
 
-public abstract class ResultVideo {
+import it.unimib.exercise.andrea.mediahandler.models.Result;
+
+public abstract class ResultVideo implements Result {
     private ResultVideo() {}
 
+    @Override
     public boolean isSuccess() {
         if (this instanceof ResultVideo.Success) {
             return true;

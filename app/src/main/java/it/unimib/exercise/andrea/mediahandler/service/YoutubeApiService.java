@@ -28,14 +28,24 @@ public interface YoutubeApiService {
     @GET(VIDEO_DETAILED_ENDPOINT)
     Call<VideoApiResponse> getVideoDetailed(
             @Query("id") String playlistId,
-            @Header("Authorization") String token);
+            @Query("key") String apiKey);
 }
-//  'https://youtube.googleapis.com/youtube/v3/
-//  playlists?part=snippet%2CcontentDetails&maxResults=25&mine=true
-//
-//  &key=[YOUR_API_KEY]' \
-//
-//GET https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet%2CcontentDetails&playlistId=PLsizmByY7_uV0J7feYX4pta_05SV5SkJr&key=[YOUR_API_KEY] HTTP/1.1
-//
-//Authorization: Bearer [YOUR_ACCESS_TOKEN]
-//Accept: application/json
+/*
+
+'https://youtube.googleapis.com/youtube/v3/
+playlists?part=snippet%2CcontentDetails&maxResults=25&mine=true
+&key=[YOUR_API_KEY]' \
+
+GET https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet%2CcontentDetails&playlistId=PLsizmByY7_uV0J7feYX4pta_05SV5SkJr&key=[YOUR_API_KEY] HTTP/1.1
+    Authorization: Bearer [YOUR_ACCESS_TOKEN]
+    Accept: application/json
+
+GET https://youtube.googleapis.com/youtube/v3/videos?part=contentDetails&id=fis26HvvDII&key=[YOUR_API_KEY] HTTP/1.1
+    Authorization: Bearer [YOUR_ACCESS_TOKEN]
+    Accept: application/json
+
+GET https://youtube.googleapis.com/youtube/v3/videos?part=contentDetails&id=fis26HvvDII&key=[YOUR_API_KEY] HTTP/1.1
+    Authorization: Bearer [YOUR_ACCESS_TOKEN]
+    Accept: application/json
+
+*/

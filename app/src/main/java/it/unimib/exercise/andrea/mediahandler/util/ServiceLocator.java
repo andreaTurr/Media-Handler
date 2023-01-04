@@ -2,6 +2,7 @@ package it.unimib.exercise.andrea.mediahandler.util;
 
 import android.app.Application;
 
+import it.unimib.exercise.andrea.mediahandler.R;
 import it.unimib.exercise.andrea.mediahandler.database.YoutubeRoomDatabase;
 import it.unimib.exercise.andrea.mediahandler.repository.IPlaylistRepositoryWithLiveData;
 import it.unimib.exercise.andrea.mediahandler.repository.PlaylistRepositoryWithLiveData;
@@ -91,7 +92,8 @@ public class ServiceLocator {
                     new PlaylistMockRemoteDataSource(jsonParserUtil);
         } else {
             playlistRemoteDataSource =
-                    new PlaylistRemoteDataSource( application.getApplicationContext(), mStateManager);
+                    new PlaylistRemoteDataSource( application.getApplicationContext(), mStateManager,
+                            application.getString(R.string.YOUTUBE_API_KEY_VALUE));
         }
 
         playlistLocalDataSource = new PlaylistLocalDataSource(

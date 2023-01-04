@@ -19,6 +19,7 @@ import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -49,7 +50,9 @@ public class FragmentVideoPlayer extends Fragment{
     private ViewModelPlaylist viewModelPlaylist;
     private Video video;
     private int videoPosition;
-    YouTubePlayerTracker tracker;
+    private TextView txtViewTitle;
+    private TextView txtViewDescription;
+    private YouTubePlayerTracker tracker;
 
     public FragmentVideoPlayer() {
         // Required empty public constructor
@@ -87,22 +90,28 @@ public class FragmentVideoPlayer extends Fragment{
         super.onViewCreated(view, savedInstanceState);
         bottomNav = getActivity().findViewById(R.id.bottom_navigation);
         topAppbar = getActivity().findViewById(R.id.top_appbar);
-
         video = FragmentVideoPlayerArgs.fromBundle(getArguments()).getVideo();
         videoPosition = FragmentVideoPlayerArgs.fromBundle(getArguments()).getPsition();
+        txtViewTitle = view.findViewById(R.id.textviewVideoPlayerTitle);
+        txtViewDescription = view.findViewById(R.id.textViewVideoPlayerDescription);
+
+
+        ((AppCompatActivity) requireActivity()).getSupportActionBar().setTitle(video.getSnippet().getTitle());
 
         youTubePlayerView = view.findViewById(R.id.youtube_player_view);
         getLifecycle().addObserver(youTubePlayerView);
         tracker = new YouTubePlayerTracker();
         youTubePlayerView.setEnableAutomaticInitialization(false);
-        youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
+        //youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
+        YouTubePlayerListener listener = new AbstractYouTubePlayerListener() {
             // Called when the player is ready to play videos.
             // You should start using the player only after this method is called.
             @Override
             public void onReady(@NonNull YouTubePlayer youTubePlayer) {
                 // using pre-made custom ui
-                //DefaultPlayerUiController defaultPlayerUiController = new DefaultPlayerUiController(youTubePlayerView, youTubePlayer);
-                //youTubePlayerView.setCustomPlayerUi(defaultPlayerUiController.getRootView());
+                DefaultPlayerUiController defaultPlayerUiController = new DefaultPlayerUiController(youTubePlayerView, youTubePlayer);
+                youTubePlayerView.setCustomPlayerUi(defaultPlayerUiController.getRootView());
+                defaultPlayerUiController.showFullscreenButton(false);
                 Snackbar.make(view, video.getSnippet().getTitle(), Snackbar.LENGTH_SHORT).show();
                 youTubePlayer.loadVideo(video.getContentDetails().getVideoId(), video.getCurrentSecond());
             }
@@ -116,12 +125,14 @@ public class FragmentVideoPlayer extends Fragment{
                     viewModelPlaylist.updateVideo(video);
                 }
             }
-        });
-        //IFramePlayerOptions options = new IFramePlayerOptions.Builder().controls(0).build();
-        //youTubePlayerView.initialize(listener, options);
+        };
+        IFramePlayerOptions options = new IFramePlayerOptions.Builder().controls(0).build();
+        youTubePlayerView.initialize(listener, options);
 
         setBarsBaseOnRotation();
 
+
+        //todo add getting video title and description from call to video list
         /*viewModelPlaylist.getVideo(video.getIdVideoInPlaylist()).observe(getViewLifecycleOwner(), resultVideo -> {
             if(resultVideo.isSuccess()){
                 video = ((ResultVideo.Success) resultVideo).getData();

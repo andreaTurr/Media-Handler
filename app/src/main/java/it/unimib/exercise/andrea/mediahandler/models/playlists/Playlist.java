@@ -32,7 +32,19 @@ public class Playlist implements Parcelable {
     @ColumnInfo(name = "total_duration", defaultValue = "0")
     private long totalDuration;
 
+    //contrsuctor
+
+    public Playlist(@NonNull String id, PlaylistSnippet snippet, PlaylistContentDetails contentDetails, long lastUpdate, long totalDuration) {
+        this.id = id;
+        this.snippet = snippet;
+        this.contentDetails = contentDetails;
+        this.lastUpdate = lastUpdate;
+        this.totalDuration = totalDuration;
+    }
+
+
     //getter and setters
+
     @NonNull
     public String getId() {
         return id;
@@ -65,21 +77,18 @@ public class Playlist implements Parcelable {
     public void setLastUpdate(long lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
-    //equals
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Playlist playlist = (Playlist) o;
-        return lastUpdate == playlist.lastUpdate && id.equals(playlist.id) && Objects.equals(snippet, playlist.snippet) && Objects.equals(contentDetails, playlist.contentDetails);
+
+    public long getTotalDuration() {
+        return totalDuration;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, snippet, contentDetails, lastUpdate);
+    public void setTotalDuration(long totalDuration) {
+        this.totalDuration = totalDuration;
     }
+
 
     //tostring
+
     @Override
     public String toString() {
         return "Playlist{" +
@@ -87,10 +96,29 @@ public class Playlist implements Parcelable {
                 ", snippet=" + snippet +
                 ", contentDetails=" + contentDetails +
                 ", lastUpdate=" + lastUpdate +
+                ", totalDuration=" + totalDuration +
                 '}';
     }
 
+
+    //equals
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Playlist playlist = (Playlist) o;
+        return lastUpdate == playlist.lastUpdate && totalDuration == playlist.totalDuration && id.equals(playlist.id) && snippet.equals(playlist.snippet) && contentDetails.equals(playlist.contentDetails);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, snippet, contentDetails, lastUpdate, totalDuration);
+    }
+
+
     //parcelable
+
     @Override
     public int describeContents() {
         return 0;
@@ -102,6 +130,7 @@ public class Playlist implements Parcelable {
         dest.writeParcelable(this.snippet, flags);
         dest.writeParcelable(this.contentDetails, flags);
         dest.writeLong(this.lastUpdate);
+        dest.writeLong(this.totalDuration);
     }
 
     public void readFromParcel(Parcel source) {
@@ -109,9 +138,7 @@ public class Playlist implements Parcelable {
         this.snippet = source.readParcelable(PlaylistSnippet.class.getClassLoader());
         this.contentDetails = source.readParcelable(PlaylistContentDetails.class.getClassLoader());
         this.lastUpdate = source.readLong();
-    }
-
-    public Playlist() {
+        this.totalDuration = source.readLong();
     }
 
     protected Playlist(Parcel in) {
@@ -119,6 +146,7 @@ public class Playlist implements Parcelable {
         this.snippet = in.readParcelable(PlaylistSnippet.class.getClassLoader());
         this.contentDetails = in.readParcelable(PlaylistContentDetails.class.getClassLoader());
         this.lastUpdate = in.readLong();
+        this.totalDuration = in.readLong();
     }
 
     public static final Creator<Playlist> CREATOR = new Creator<Playlist>() {

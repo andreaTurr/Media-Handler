@@ -5,27 +5,26 @@ import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import java.util.List;
-
-import it.unimib.exercise.andrea.mediahandler.models.playlistItem.PlaylistItemApiResponse;
 import it.unimib.exercise.andrea.mediahandler.models.playlistItem.ResultPlaylistItem;
 import it.unimib.exercise.andrea.mediahandler.models.playlistItem.ResultVideo;
 import it.unimib.exercise.andrea.mediahandler.models.playlistItem.Video;
-import it.unimib.exercise.andrea.mediahandler.models.playlists.Result;
+import it.unimib.exercise.andrea.mediahandler.models.playlists.ResultPlaylist;
+import it.unimib.exercise.andrea.mediahandler.models.video.ResultVideoDuration;
 import it.unimib.exercise.andrea.mediahandler.repository.IPlaylistRepositoryWithLiveData;
 
 public class ViewModelPlaylist extends ViewModel {
     private static final String TAG = ViewModelPlaylist.class.getSimpleName();
-    private MutableLiveData<Result> playlistListLiveData;
+    private MutableLiveData<ResultPlaylist> playlistListLiveData;
     private MutableLiveData<ResultPlaylistItem> videoListLiveData;
     private MutableLiveData<ResultVideo> videoLiveData;
     private final IPlaylistRepositoryWithLiveData playlistRepositoryWithLiveData;
+    private MutableLiveData<ResultVideoDuration> durationLiveData;
 
     public ViewModelPlaylist(IPlaylistRepositoryWithLiveData playlistRepositoryWithLiveData) {
         this.playlistRepositoryWithLiveData = playlistRepositoryWithLiveData;
     }
 
-    public MutableLiveData<Result> getPlaylistList(long lastUpdate) {
+    public MutableLiveData<ResultPlaylist> getPlaylistList(long lastUpdate) {
         if (playlistListLiveData == null){
             fetchPlaylistList(lastUpdate);
         }
@@ -44,6 +43,13 @@ public class ViewModelPlaylist extends ViewModel {
         return videoLiveData;
     }
 
+    public MutableLiveData<ResultVideoDuration> getPlaylistDuration(String videoIds){
+        fetchPlaylistDuration(videoIds);
+        return durationLiveData;
+    }
+
+
+
     private void fetchVideo(String videoIdInPlaylist) {
         videoLiveData = playlistRepositoryWithLiveData.fetchVideo(videoIdInPlaylist);
     }
@@ -59,6 +65,10 @@ public class ViewModelPlaylist extends ViewModel {
 
     public void updateVideo(Video video){
         playlistRepositoryWithLiveData.updateVideo(video);
+    }
+
+    private void fetchPlaylistDuration(String videoIds) {
+        durationLiveData = playlistRepositoryWithLiveData.fetchTotalPlaylistDuration(videoIds);
     }
 
 

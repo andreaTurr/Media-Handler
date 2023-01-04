@@ -4,6 +4,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.room.Embedded;
+import androidx.room.Entity;
+import androidx.room.Ignore;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -21,6 +23,8 @@ public class Thumbnail implements Parcelable {
         this.imageHighRes = imageHighRes;
         this.imageDefRes = imageDefRes;
     }
+    @Ignore
+    public Thumbnail() {}
 
     public ImageHigh getImageHighRes() {
         return imageHighRes;
@@ -67,8 +71,6 @@ public class Thumbnail implements Parcelable {
         this.imageDefRes = source.readParcelable(ImageDefault.class.getClassLoader());
     }
 
-    public Thumbnail() {
-    }
 
     protected Thumbnail(Parcel in) {
         this.imageHighRes = in.readParcelable(ImageHigh.class.getClassLoader());

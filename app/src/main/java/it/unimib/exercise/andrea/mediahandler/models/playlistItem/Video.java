@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Embedded;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
@@ -125,7 +126,7 @@ public class Video implements Parcelable {
         this.videoDuration = source.readFloat();
         this.currentSecond = source.readFloat();
     }
-
+    @Ignore
     public Video() {
     }
 

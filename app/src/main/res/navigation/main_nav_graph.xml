@@ -34,7 +34,7 @@
         <fragment
             android:id="@+id/fragment_playlist_list"
             android:name="it.unimib.exercise.andrea.mediahandler.ui.FragmentPlayListList"
-            android:label="fragment_playlist_list"
+            android:label="@string/my_playlists"
             tools:layout="@layout/fragment_playlist_list">
             <action
                 android:id="@+id/action_fragment_playlist_list_to_fragmentPlaylist"
@@ -56,6 +56,9 @@
             <action
                 android:id="@+id/action_fragmentPlaylist_to_videoPlayer"
                 app:destination="@id/videoPlayer" />
+            <action
+                android:id="@+id/action_fragmentPlaylist_to_fragmentPlaylistDetail"
+                app:destination="@id/fragmentPlaylistDetail" />
         </fragment>
         <fragment
             android:id="@+id/videoPlayer"
@@ -68,6 +71,15 @@
             <argument
                 android:name="psition"
                 app:argType="integer" />
+        </fragment>
+        <fragment
+            android:id="@+id/fragmentPlaylistDetail"
+            android:name="it.unimib.exercise.andrea.mediahandler.ui.FragmentPlaylistDetail"
+            android:label="fragment_playlist_detail"
+            tools:layout="@layout/fragment_playlist_detail" >
+            <argument
+                android:name="VideoArray"
+                app:argType="it.unimib.exercise.andrea.mediahandler.models.playlistItem.Video[]" />
         </fragment>
     </navigation>
 </navigation>

@@ -22,5 +22,7 @@ public interface PlaylistCallback {
     //Video
     void onSuccessFromLocalVideo(Video video);
     void onFailureFromLocalVideo(Exception exception);
+    void onSuccesFromRemotePlaylistDuration(long duration);
+
 
 }

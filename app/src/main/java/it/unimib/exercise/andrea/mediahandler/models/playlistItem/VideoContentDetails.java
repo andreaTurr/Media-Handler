@@ -13,6 +13,12 @@ public class VideoContentDetails implements Parcelable {
     public String getVideoId() {return videoId;}
     public void setVideoId(String videoId) {this.videoId = videoId;}
 
+    @Override
+    public String toString() {
+        return "VideoContentDetails{" +
+                "videoId='" + videoId + '\'' +
+                '}';
+    }
 
     @Override
     public int describeContents() {

@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.room.Embedded;
+import androidx.room.Ignore;
 
 import java.util.Objects;
 
@@ -96,6 +97,7 @@ public class VideoSnippet implements Parcelable {
         this.position = source.readInt();
     }
 
+    @Ignore
     public VideoSnippet() {
     }
 

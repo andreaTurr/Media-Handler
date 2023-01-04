@@ -1,5 +1,6 @@
 package it.unimib.exercise.andrea.mediahandler.ui;
 
+import static it.unimib.exercise.andrea.mediahandler.util.Constants.DIVIDER_INSET;
 import static it.unimib.exercise.andrea.mediahandler.util.Constants.LAST_UPDATE_PLAYLIST_LIST;
 import static it.unimib.exercise.andrea.mediahandler.util.Constants.SHARED_PREFERENCES_FILE_NAME;
 
@@ -7,6 +8,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -16,9 +18,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.divider.MaterialDividerItemDecoration;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
@@ -27,7 +33,7 @@ import java.util.List;
 import it.unimib.exercise.andrea.mediahandler.R;
 import it.unimib.exercise.andrea.mediahandler.adapters.AdapterPlaylistsListRecView;
 import it.unimib.exercise.andrea.mediahandler.models.playlists.Playlist;
-import it.unimib.exercise.andrea.mediahandler.models.playlists.Result;
+import it.unimib.exercise.andrea.mediahandler.models.playlists.ResultPlaylist;
 import it.unimib.exercise.andrea.mediahandler.repository.IPlaylistRepositoryWithLiveData;
 import it.unimib.exercise.andrea.mediahandler.util.AuthStateManager;
 import it.unimib.exercise.andrea.mediahandler.util.ErrorMessagesUtil;
@@ -88,17 +94,29 @@ public class FragmentPlayListList extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        /*requireActivity().addMenuProvider(new MenuProvider() {
+        requireActivity().addMenuProvider(new MenuProvider() {
             @Override
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
                 menu.clear();
+                menuInflater.inflate(R.menu.top_app_bar, menu);
+
             }
 
             @Override
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                if (menuItem.getItemId() == R.id.topAppBarInfo){
+
+                }
                 return false;
             }
-        });*/
+
+            @Override
+            public void onPrepareMenu(@NonNull Menu menu) {
+                MenuProvider.super.onPrepareMenu(menu);
+                MenuItem item = menu.findItem(R.id.topAppBarDelete);
+                item.setVisible(false);
+            }
+        }, this.getViewLifecycleOwner());  // <--- carefull if Lyfecycle is omitted it cause duplicated menus across multiple fragments
 
         RecyclerView recyclerViewPlaylistList = view.findViewById(R.id.recyclerview_playlist_list);
         LinearLayoutManager layoutManager =
@@ -134,8 +152,12 @@ public class FragmentPlayListList extends Fragment {
                     SHARED_PREFERENCES_FILE_NAME, LAST_UPDATE_PLAYLIST_LIST);
         }
         //divider between items of recycle view
-        recyclerViewPlaylistList.addItemDecoration(new DividerItemDecoration(getContext(),
-                layoutManager.getOrientation()));
+        MaterialDividerItemDecoration divider = new MaterialDividerItemDecoration(getContext(),
+                layoutManager.getOrientation());
+        //divider.setDividerInsetStart(DIVIDER_INSET);
+        divider.setDividerInsetEnd(DIVIDER_INSET);
+        divider.setLastItemDecorated(false);
+        recyclerViewPlaylistList.addItemDecoration(divider);
 
 
         viewModelPlaylist.getPlaylistList(Long.parseLong(lastUpdate)).observe(getViewLifecycleOwner(), result -> {
@@ -143,14 +165,14 @@ public class FragmentPlayListList extends Fragment {
                 Log.d(TAG, "onViewCreated: result.isSuccess");
                 int initialSize = this.playlistList.size();
                 this.playlistList.clear();
-                this.playlistList.addAll(((Result.Success) result).getData().getPlaylistList());
+                this.playlistList.addAll(((ResultPlaylist.Success) result).getData().getPlaylistList());
                 adapterPlaylistsListRecView.notifyItemRangeInserted(initialSize, this.playlistList.size());
                 //progressBar.setVisibility(View.GONE);
             }else {
                 ErrorMessagesUtil errorMessagesUtil =
                         new ErrorMessagesUtil(requireActivity().getApplication());
                 Snackbar.make(view, errorMessagesUtil.getErrorMessage(((
-                        Result.Error)result).getMessage()),
+                        ResultPlaylist.Error)result).getMessage()),
                         Snackbar.LENGTH_SHORT).show();
                 Log.d(TAG, "observe: not success");
             }
