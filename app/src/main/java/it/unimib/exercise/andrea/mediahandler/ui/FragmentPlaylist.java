@@ -101,8 +101,7 @@ public class FragmentPlaylist extends Fragment {
                 NavHostFragment navHostFragment = (NavHostFragment) getActivity().getSupportFragmentManager()
                         .findFragmentById(R.id.nav_host_fragment_main);
                 NavController navController = navHostFragment.getNavController();
-                if (menuItem.getItemId() == R.id.topAppBarInfo &&
-                        navController.getCurrentDestination().getId() == R.id.fragmentPlaylist){
+                if (menuItem.getItemId() == R.id.topAppBarInfo ){
                     //todo goto playlist progress
                     Video[] videoArray = videoList.toArray(new Video[0]);
                     FragmentPlaylistDirections.ActionFragmentPlaylistToFragmentPlaylistDetail action =

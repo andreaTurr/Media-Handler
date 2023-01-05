@@ -41,7 +41,7 @@ public class Constants {
 
     // Constants for Room database
     public static final String NEWS_DATABASE_NAME = "news_db";
-    public static final int DATABASE_VERSION = 12;
+    public static final int DATABASE_VERSION = 13;
     public static final String YOUTUBE_DATABASE_NAME = "youtube_db";
 
     public static final String RETROFIT_ERROR = "retrofit_error";

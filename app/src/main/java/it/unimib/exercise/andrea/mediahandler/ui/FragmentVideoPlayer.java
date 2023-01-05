@@ -94,7 +94,10 @@ public class FragmentVideoPlayer extends Fragment{
         videoPosition = FragmentVideoPlayerArgs.fromBundle(getArguments()).getPsition();
         txtViewTitle = view.findViewById(R.id.textviewVideoPlayerTitle);
         txtViewDescription = view.findViewById(R.id.textViewVideoPlayerDescription);
+        Log.d(TAG, "onViewCreated: " + video.getSnippet().getDescription());
 
+        txtViewTitle.setText(video.getSnippet().getTitle());
+        txtViewDescription.setText(video.getSnippet().getDescription());
 
         ((AppCompatActivity) requireActivity()).getSupportActionBar().setTitle(video.getSnippet().getTitle());
 

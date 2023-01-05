@@ -14,16 +14,26 @@ public class VideoSnippet implements Parcelable {
     private Thumbnail thumbnails;
     private String playlistId;
     private int position;
+    private String description;
 
-    public VideoSnippet(String title, Thumbnail thumbnails, String playlistId, int position) {
+    public VideoSnippet(String title, Thumbnail thumbnails, String playlistId, int position, String description) {
         this.title = title;
         this.thumbnails = thumbnails;
         this.playlistId = playlistId;
         this.position = position;
+        this.description = description;
     }
 
     public String getTitle() {
         return title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public void setTitle(String title) {
@@ -58,9 +68,6 @@ public class VideoSnippet implements Parcelable {
     public String toString() {
         return "VideoSnippet{" +
                 "title='" + title + '\'' +
-                ", thumbnails=" + thumbnails +
-                ", playlistId='" + playlistId + '\'' +
-                ", position=" + position +
                 '}';
     }
 
@@ -69,13 +76,14 @@ public class VideoSnippet implements Parcelable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         VideoSnippet that = (VideoSnippet) o;
-        return position == that.position && Objects.equals(title, that.title) && Objects.equals(thumbnails, that.thumbnails) && Objects.equals(playlistId, that.playlistId);
+        return Objects.equals(title, that.title) && Objects.equals(playlistId, that.playlistId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(title, thumbnails, playlistId, position);
+        return Objects.hash(title, playlistId);
     }
+
 
     @Override
     public int describeContents() {
@@ -88,6 +96,7 @@ public class VideoSnippet implements Parcelable {
         dest.writeParcelable(this.thumbnails, flags);
         dest.writeString(this.playlistId);
         dest.writeInt(this.position);
+        dest.writeString(this.description);
     }
 
     public void readFromParcel(Parcel source) {
@@ -95,10 +104,7 @@ public class VideoSnippet implements Parcelable {
         this.thumbnails = source.readParcelable(Thumbnail.class.getClassLoader());
         this.playlistId = source.readString();
         this.position = source.readInt();
-    }
-
-    @Ignore
-    public VideoSnippet() {
+        this.description = source.readString();
     }
 
     protected VideoSnippet(Parcel in) {
@@ -106,6 +112,7 @@ public class VideoSnippet implements Parcelable {
         this.thumbnails = in.readParcelable(Thumbnail.class.getClassLoader());
         this.playlistId = in.readString();
         this.position = in.readInt();
+        this.description = in.readString();
     }
 
     public static final Creator<VideoSnippet> CREATOR = new Creator<VideoSnippet>() {
