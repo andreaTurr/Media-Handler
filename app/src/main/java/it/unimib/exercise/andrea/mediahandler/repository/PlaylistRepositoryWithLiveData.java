@@ -51,11 +51,19 @@ public class PlaylistRepositoryWithLiveData implements IPlaylistRepositoryWithLi
     }
 
     @Override
-    public MutableLiveData<ResultPlaylistItem> fetchVideoList(String playlistId) {
-        playlistItemMutableLiveData = new MutableLiveData<>();  //to prevent past value from being taken
+    public MutableLiveData<ResultPlaylistItem> fetchVideoList(String playlistId, boolean refresh) {
+
         Log.d(TAG, "fetchVideoList: ");
         //used to get last update from server, logic continues in callback
-        playlistLocalDataSource.getPlaylistLastUpdate(playlistId);
+        if (refresh == true){
+            onSuccessFromLocalLastUpdate(0L, playlistId);
+        }else{
+            /*to prevent past value from being taken,
+            only if no refresh in order to preserve observe on livedata*/
+            playlistItemMutableLiveData = new MutableLiveData<>();
+            playlistLocalDataSource.getPlaylistLastUpdate(playlistId);
+        }
+
         return playlistItemMutableLiveData;
     }
 

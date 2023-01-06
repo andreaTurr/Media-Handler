@@ -15,7 +15,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -53,6 +52,8 @@ public class FragmentPlaylist extends Fragment {
     private List<Video> videoList;
     private SharedPreferencesUtil sharedPreferencesUtil;
     private ViewModelPlaylist viewModelPlaylist;
+    String playlistId;
+    String playlistTitle;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -97,34 +98,45 @@ public class FragmentPlaylist extends Fragment {
 
             @Override
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-                //NavController navController = Navigation.findNavController(view);
                 NavHostFragment navHostFragment = (NavHostFragment) getActivity().getSupportFragmentManager()
                         .findFragmentById(R.id.nav_host_fragment_main);
                 NavController navController = navHostFragment.getNavController();
-                if (menuItem.getItemId() == R.id.topAppBarInfo ){
-                    //todo goto playlist progress
-                    Video[] videoArray = videoList.toArray(new Video[0]);
-                    FragmentPlaylistDirections.ActionFragmentPlaylistToFragmentPlaylistDetail action =
-                            FragmentPlaylistDirections.actionFragmentPlaylistToFragmentPlaylistDetail(
-                                    videoArray);
-                    /*NavHostFragment navHostFragment = (NavHostFragment) getActivity().getSupportFragmentManager()
-                            .findFragmentById(R.id.nav_host_fragment_main);
-                    navHostFragment.getNavController();*/
-                    navController.navigate(action);
+                if(navController.getCurrentDestination().getId() == R.id.fragmentPlaylist) {
+                    switch(menuItem.getItemId()){
+                        case R.id.topAppBarInfo:
+                            Video[] videoArray = videoList.toArray(new Video[0]);
+                            FragmentPlaylistDirections.ActionFragmentPlaylistToFragmentPlaylistDetail action =
+                                    FragmentPlaylistDirections.actionFragmentPlaylistToFragmentPlaylistDetail(
+                                            videoArray, playlistId, playlistTitle);
+                            navController.navigate(action);
+                            break;
+                        case R.id.topAppBarRefresh:
+                            viewModelPlaylist.getPlaylistFromId(playlistId, true);
+                            Snackbar.make(requireActivity().findViewById(android.R.id.content),
+                                    getString(R.string.updating), Snackbar.LENGTH_SHORT).show();
+                            break;
+                    }
                 }
+
+
                 return false;
             }
 
             @Override
             public void onPrepareMenu(@NonNull Menu menu) {
-                MenuProvider.super.onPrepareMenu(menu);
-                MenuItem item = menu.findItem(R.id.topAppBarDelete);
-                item.setVisible(false);
+                NavHostFragment navHostFragment = (NavHostFragment) getActivity().getSupportFragmentManager()
+                        .findFragmentById(R.id.nav_host_fragment_main);
+                NavController navController = navHostFragment.getNavController();
+                if(navController.getCurrentDestination().getId() == R.id.fragmentPlaylist) {
+                    MenuProvider.super.onPrepareMenu(menu);
+                    MenuItem item = menu.findItem(R.id.topAppBarDelete);
+                    item.setVisible(false);
+                }
             }
         }, this.getViewLifecycleOwner());
         //get value passed from originating action fragment
-        String playlistId = FragmentPlaylistArgs.fromBundle(getArguments()).getPlaylistId();
-        String playlistTitle = FragmentPlaylistArgs.fromBundle(getArguments()).getPlaylistTitle();
+        playlistId = FragmentPlaylistArgs.fromBundle(getArguments()).getPlaylistId();
+        playlistTitle = FragmentPlaylistArgs.fromBundle(getArguments()).getPlaylistTitle();
 
 
         ((AppCompatActivity) requireActivity()).getSupportActionBar().setTitle(playlistTitle);
@@ -169,18 +181,18 @@ public class FragmentPlaylist extends Fragment {
         divider.setLastItemDecorated(false);
         recyclerViewPlaylistItems.addItemDecoration(divider);
 
-        viewModelPlaylist.getPlaylistFromId(playlistId).observe(getViewLifecycleOwner(), result -> {
+        viewModelPlaylist.getPlaylistFromId(playlistId, false).observe(getViewLifecycleOwner(), result -> {
             if (result.isSuccess()){
                 Log.d(TAG, "onViewCreated: isSuccess");
-                int initialSize = this.videoList.size();
+                int updateSize = this.videoList.size();
                 //Log.d(TAG, "result.isSuccess: " + videoList);
                 this.videoList.clear();
-                //Log.d(TAG, "result.isSuccess: " + videoList);
-                //this.videoList.addAll(((Result.Success) result).getData().getPlaylist());
                 this.videoList.addAll(((ResultPlaylistItem.Success) result).getData().getVideoList());
-                //Log.d(TAG, "result.isSuccess: " + videoList);
-                adapterPlaylistRecView.notifyItemRangeRemoved(0, initialSize);
-                adapterPlaylistRecView.notifyItemRangeInserted(initialSize, this.videoList.size());
+                if(this.videoList.size() >= updateSize){
+                    updateSize = this.videoList.size();
+                }
+                //if nothing has been deleted
+                adapterPlaylistRecView.notifyItemRangeChanged(0, updateSize);
                 Log.d(TAG, "result.isSuccess: " + videoList);
                 //progressBar.setVisibility(View.GONE);
             }else {

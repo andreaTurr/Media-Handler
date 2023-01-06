@@ -112,7 +112,6 @@ public class PlaylistRemoteDataSource extends BasePlaylistRemoteDataSource {
                             if (response.body() != null && response.isSuccessful()) {
                                 playlistCallback.onSuccessFromRemotePlaylistList(response.body());
                             } else {
-                                Log.d(TAG, "onResponse: " + response.raw() + "   " + accessToken );
                                 playlistCallback.onFailureFromRemotePlaylistList(new Exception(API_KEY_ERROR));
                             }
                         }

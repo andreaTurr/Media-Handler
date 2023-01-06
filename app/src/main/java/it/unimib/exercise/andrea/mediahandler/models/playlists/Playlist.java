@@ -86,9 +86,7 @@ public class Playlist implements Parcelable {
         this.totalDuration = totalDuration;
     }
 
-
     //tostring
-
     @Override
     public String toString() {
         return "Playlist{" +
@@ -100,7 +98,6 @@ public class Playlist implements Parcelable {
                 '}';
     }
 
-
     //equals
 
     @Override
@@ -108,12 +105,12 @@ public class Playlist implements Parcelable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Playlist playlist = (Playlist) o;
-        return lastUpdate == playlist.lastUpdate && totalDuration == playlist.totalDuration && id.equals(playlist.id) && snippet.equals(playlist.snippet) && contentDetails.equals(playlist.contentDetails);
+        return id.equals(playlist.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, snippet, contentDetails, lastUpdate, totalDuration);
+        return Objects.hash(id);
     }
 
 

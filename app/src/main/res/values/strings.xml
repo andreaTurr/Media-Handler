@@ -34,4 +34,6 @@
     <string name="my_playlists">My playlists</string>
     <string name="videoTitle">Title of Video</string>
     <string name="videoDescription">Description of video</string>
+    <string name="detailed_time">Total hours: 10h 13m 12s</string>
+    <string name="updating">updating</string>
 </resources>

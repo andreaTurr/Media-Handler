@@ -10,7 +10,7 @@ import it.unimib.exercise.andrea.mediahandler.models.video.ResultVideoDuration;
 
 public interface IPlaylistRepositoryWithLiveData {
     MutableLiveData<ResultPlaylist> fetchPlaylistList(long lastUpdate);
-    MutableLiveData<ResultPlaylistItem> fetchVideoList(String playlistId);
+    MutableLiveData<ResultPlaylistItem> fetchVideoList(String playlistId, boolean refresh);
     MutableLiveData<ResultVideo> fetchVideo(String videoIdInPlaylist);
     void updateVideo(Video video);
     MutableLiveData<ResultVideoDuration> fetchTotalPlaylistDuration(String playlistId);

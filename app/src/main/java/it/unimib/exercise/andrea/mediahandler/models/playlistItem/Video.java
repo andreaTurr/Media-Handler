@@ -32,6 +32,7 @@ public class Video implements Parcelable {
     @ColumnInfo(defaultValue = "0")
     private float currentSecond;
 
+    //constructor
     public Video(@NonNull String idVideoInPlaylist, VideoSnippet snippet, VideoContentDetails contentDetails, float videoDuration, float currentSecond) {
         this.idVideoInPlaylist = idVideoInPlaylist;
         this.snippet = snippet;
@@ -40,6 +41,7 @@ public class Video implements Parcelable {
         this.currentSecond = currentSecond;
     }
 
+    //getter and setters
     @NonNull
     public String getIdVideoInPlaylist() {
         return idVideoInPlaylist;
@@ -81,30 +83,33 @@ public class Video implements Parcelable {
         this.currentSecond = currentSecond;
     }
 
+    //equals and hash
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Video video = (Video) o;
-        return Float.compare(video.videoDuration, videoDuration) == 0 && Float.compare(video.currentSecond, currentSecond) == 0 && idVideoInPlaylist.equals(video.idVideoInPlaylist) && Objects.equals(snippet, video.snippet) && Objects.equals(contentDetails, video.contentDetails);
+        return idVideoInPlaylist.equals(video.idVideoInPlaylist);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idVideoInPlaylist, snippet, contentDetails, videoDuration, currentSecond);
+        return Objects.hash(idVideoInPlaylist);
     }
 
+    //tostring
     @Override
     public String toString() {
         return "Video{" +
-                "id='" + idVideoInPlaylist + '\'' +
                 ", snippet=" + snippet +
-                ", contentDetails=" + contentDetails +
                 ", videoDuration=" + videoDuration +
                 ", currentSecond=" + currentSecond +
                 '}';
     }
 
+    //parcelable
     @Override
     public int describeContents() {
         return 0;

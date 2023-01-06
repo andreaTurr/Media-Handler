@@ -80,6 +80,12 @@
             <argument
                 android:name="VideoArray"
                 app:argType="it.unimib.exercise.andrea.mediahandler.models.playlistItem.Video[]" />
+            <argument
+                android:name="playlistId"
+                app:argType="string" />
+            <argument
+                android:name="playlistTitle"
+                app:argType="string" />
         </fragment>
     </navigation>
 </navigation>

@@ -7,11 +7,14 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,6 +26,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.snackbar.Snackbar;
 
 import it.unimib.exercise.andrea.mediahandler.R;
@@ -76,7 +80,7 @@ public class FragmentPlaylistDetail extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        requireActivity().addMenuProvider(new MenuProvider() {
+        /*requireActivity().addMenuProvider(new MenuProvider() {
             @Override
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
                 menu.clear();
@@ -90,18 +94,27 @@ public class FragmentPlaylistDetail extends Fragment {
 
             @Override
             public void onPrepareMenu(@NonNull Menu menu) {
-                MenuProvider.super.onPrepareMenu(menu);
-                MenuItem item = menu.findItem(R.id.topAppBarInfo);
-                item.setVisible(false);
-                item = menu.findItem(R.id.topAppBarDelete);
-                item.setVisible(false);
-                item = menu.findItem(R.id.topAppBarRefresh);
-                item.setVisible(false);
+                NavHostFragment navHostFragment = (NavHostFragment) getActivity().getSupportFragmentManager()
+                        .findFragmentById(R.id.nav_host_fragment_main);
+                NavController navController = navHostFragment.getNavController();
+                if(navController.getCurrentDestination().getId() == R.id.fragmentPlaylistDetail) {
+                    MenuProvider.super.onPrepareMenu(menu);
+                    MenuItem item = menu.findItem(R.id.topAppBarInfo);
+                    item.setVisible(false);
+                    item = menu.findItem(R.id.topAppBarDelete);
+                    item.setVisible(false);
+                    item = menu.findItem(R.id.topAppBarRefresh);
+                    item.setVisible(false);
+                }
             }
-        }, this.getViewLifecycleOwner());
+        }, this.getViewLifecycleOwner());*/
         videoArray = FragmentPlaylistDetailArgs.fromBundle(getArguments()).getVideoArray();
+        String playlistId = FragmentPlaylistDetailArgs.fromBundle(getArguments()).getPlaylistId();
+        String playlistTitle = FragmentPlaylistDetailArgs.fromBundle(getArguments()).getPlaylistTitle();
         Log.d(TAG, "onViewCreated: " + videoArray.toString());
         playlistDuration = view.findViewById(R.id.textViewPlaylistDuration);
+        ((AppCompatActivity) requireActivity()).getSupportActionBar().setTitle(playlistTitle);
+
         String videoIds = "";
 
         for (Video video:
@@ -111,16 +124,17 @@ public class FragmentPlaylistDetail extends Fragment {
         videoIds = videoIds.substring(0, videoIds.length() - 1);
         Log.d(TAG, "onViewCreated: " + videoIds);
 
-        ConstraintLayout details = view.findViewById(R.id.DetailsSubView);
+        //ConstraintLayout details = view.findViewById(R.id.DetailsSubView);
+        MaterialCardView materialCardView = view.findViewById(R.id.DetailsSubView);
         ProgressBar progressBar = view.findViewById(R.id.progressBarPlaylistDetails);
 
-        details.setVisibility(View.GONE);
+        materialCardView.setVisibility(View.GONE);
 
         viewModelPlaylist.getPlaylistDuration(videoIds).observe(getViewLifecycleOwner(), resultVideoDuration -> {
             if (resultVideoDuration.isSuccess()){
                 Log.d(TAG, "onViewCreated: ");
                 printTime(((ResultVideoDuration.Success)resultVideoDuration).getData());
-                details.setVisibility(View.VISIBLE);
+                materialCardView.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.GONE);
             }
         });

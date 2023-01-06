@@ -25,14 +25,14 @@ public class ViewModelPlaylist extends ViewModel {
     }
 
     public MutableLiveData<ResultPlaylist> getPlaylistList(long lastUpdate) {
-        if (playlistListLiveData == null){
+        if (playlistListLiveData == null || lastUpdate == 0){
             fetchPlaylistList(lastUpdate);
         }
         return playlistListLiveData;
     }
 
-    public MutableLiveData<ResultPlaylistItem> getPlaylistFromId(String playlistId) {
-        fetchPlaylistFromId(playlistId);
+    public MutableLiveData<ResultPlaylistItem> getPlaylistFromId(String playlistId, boolean refresh) {
+        fetchPlaylistFromId(playlistId, refresh);
         return videoListLiveData;
     }
 
@@ -59,8 +59,8 @@ public class ViewModelPlaylist extends ViewModel {
         playlistListLiveData = playlistRepositoryWithLiveData.fetchPlaylistList(LastUpdate);
     }
 
-    private void fetchPlaylistFromId(String playlistId){
-        videoListLiveData = playlistRepositoryWithLiveData.fetchVideoList(playlistId);
+    private void fetchPlaylistFromId(String playlistId, boolean refresh){
+        videoListLiveData = playlistRepositoryWithLiveData.fetchVideoList(playlistId, refresh);
     }
 
     public void updateVideo(Video video){

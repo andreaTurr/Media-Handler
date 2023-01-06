@@ -68,6 +68,7 @@ public class VideoSnippet implements Parcelable {
     public String toString() {
         return "VideoSnippet{" +
                 "title='" + title + '\'' +
+                "position='" + position + '\'' +
                 '}';
     }
 

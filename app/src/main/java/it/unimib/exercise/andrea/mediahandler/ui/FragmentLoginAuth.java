@@ -7,7 +7,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import it.unimib.exercise.andrea.mediahandler.R ;
 import it.unimib.exercise.andrea.mediahandler.databinding.FragmentLoginAuthBinding;
+import it.unimib.exercise.andrea.mediahandler.repository.IPlaylistRepositoryWithLiveData;
 import it.unimib.exercise.andrea.mediahandler.util.AuthStateManager;
+import it.unimib.exercise.andrea.mediahandler.util.ServiceLocator;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -21,6 +23,7 @@ import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import android.util.Log;
@@ -28,6 +31,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import net.openid.appauth.AuthState;
 import net.openid.appauth.AuthorizationException;
@@ -101,12 +106,12 @@ public class FragmentLoginAuth extends Fragment {
                 public void run() {
                     Intent authIntent = authService.getAuthorizationRequestIntent(authRequest) ;
                     authResponseActivityResultLauncher.launch(authIntent);
-                    /*authService.performAuthorizationRequest(
+                    authService.performAuthorizationRequest(
                             authRequest,
                             PendingIntent.getActivity(getContext(), 0,
                                     new Intent(getContext(), FragmentPlayListList.class), 0), //completed intent
                             PendingIntent.getActivity(getContext(), 0,
-                                    new Intent(getContext(), FragmentLoginAuth.class), 0));   //cancelled intent*/
+                                    new Intent(getContext(), FragmentLoginAuth.class), 0));   //cancelled intent*//*
                 }
             });
             Log.d(TAG, "End btnFragAuth.setOnClickListener");
@@ -154,7 +159,7 @@ public class FragmentLoginAuth extends Fragment {
                     public void run() {
                         Intent authIntent = authService.getAuthorizationRequestIntent(authRequest) ;
                         authResponseActivityResultLauncher.launch(authIntent);
-                        /*authService.performAuthorizationRequest(
+                        authService.performAuthorizationRequest(
                                 authRequest,
                                 PendingIntent.getActivity(getContext(), 0,
                                         new Intent(getContext(), FragmentPlayListList.class), 0), //completed intent
@@ -200,8 +205,7 @@ public class FragmentLoginAuth extends Fragment {
                             Log.d(TAG, "onActivityResult: save mAuth");
                             mAuthService = new AuthorizationService(getActivity());
                             mStateManager.updateAfterAuthorization(resp, ex);
-                            Navigation.findNavController(requireView()).navigate(R.id.action_fragmentLoginAuth_to_fragmentPlaylistList);
-                            /*mAuthService.performTokenRequest(
+                            mAuthService.performTokenRequest(
                                     resp.createTokenExchangeRequest(),
                                     new AuthorizationService.TokenResponseCallback() {
                                         @Override public void onTokenRequestCompleted(
@@ -210,7 +214,9 @@ public class FragmentLoginAuth extends Fragment {
                                                 // exchange succeeded
                                                 mStateManager.updateAfterTokenResponse(resp, ex) ;
                                                 Log.d(TAG,"accessToken" + resp.accessToken) ;
-                                                executorService.execute(new Runnable() {
+                                                Navigation.findNavController(requireView()).navigate(
+                                                        R.id.action_fragmentLoginAuth_to_fragmentPlaylistList);
+                                                /*executorService.execute(new Runnable() {
                                                     @Override
                                                     public void run() {
                                                         OkHttpClient client = new OkHttpClient();
@@ -227,12 +233,12 @@ public class FragmentLoginAuth extends Fragment {
                                                             Log.w(TAG, e);
                                                         }
                                                     }
-                                                });
+                                                });*/
                                             } else {
                                                 // authorization failed, check ex for more details
                                             }
                                         }
-                                    });*/
+                                    });
                         }
                     }
                 }

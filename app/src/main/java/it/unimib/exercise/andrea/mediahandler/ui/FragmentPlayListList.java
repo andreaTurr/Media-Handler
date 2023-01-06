@@ -11,7 +11,9 @@ import androidx.annotation.Nullable;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -58,13 +60,6 @@ public class FragmentPlayListList extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*Log.d(TAG, "onCreate: start");
-        AuthorizationResponse resp = AuthorizationResponse.fromIntent(getActivity().getIntent());
-        AuthorizationException ex = AuthorizationException.fromIntent(getActivity().getIntent());
-        if (resp != null){
-            Log.d(TAG, "onActivityResult: save mAuth");
-            mStateManager.updateAfterAuthorization(resp, ex);
-        }*/
         IPlaylistRepositoryWithLiveData playlistRepositoryWithLiveData =
                 ServiceLocator.getInstance().getPlaylistRepository(
                         requireActivity().getApplication(),
@@ -80,8 +75,6 @@ public class FragmentPlayListList extends Fragment {
             Snackbar.make(requireActivity().findViewById(android.R.id.content),
                     getString(R.string.unexpected_error), Snackbar.LENGTH_SHORT).show();
         }
-
-
         playlistList = new ArrayList<>();
     }
 
@@ -104,17 +97,32 @@ public class FragmentPlayListList extends Fragment {
 
             @Override
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-                if (menuItem.getItemId() == R.id.topAppBarInfo){
+                NavHostFragment navHostFragment = (NavHostFragment) getActivity().getSupportFragmentManager()
+                        .findFragmentById(R.id.nav_host_fragment_main);
+                NavController navController = navHostFragment.getNavController();
 
+                if(navController.getCurrentDestination().getId() == R.id.fragment_playlist_list){
+                    if (menuItem.getItemId() == R.id.topAppBarRefresh){
+                        viewModelPlaylist.getPlaylistList(0);
+                        Snackbar.make(requireActivity().findViewById(android.R.id.content),
+                                getString(R.string.updating), Snackbar.LENGTH_SHORT).show();
+                    }
                 }
                 return false;
             }
 
             @Override
             public void onPrepareMenu(@NonNull Menu menu) {
-                MenuProvider.super.onPrepareMenu(menu);
-                MenuItem item = menu.findItem(R.id.topAppBarDelete);
-                item.setVisible(false);
+                //NavController navController = Navigation.findNavController(view);
+                NavHostFragment navHostFragment = (NavHostFragment) getActivity().getSupportFragmentManager()
+                        .findFragmentById(R.id.nav_host_fragment_main);
+                NavController navController = navHostFragment.getNavController();
+                if(navController.getCurrentDestination().getId() == R.id.fragment_playlist_list){
+                    MenuProvider.super.onPrepareMenu(menu);
+                    MenuItem item = menu.findItem(R.id.topAppBarDelete);
+                    item.setVisible(false);
+                }
+
             }
         }, this.getViewLifecycleOwner());  // <--- carefull if Lyfecycle is omitted it cause duplicated menus across multiple fragments
 
@@ -154,28 +162,37 @@ public class FragmentPlayListList extends Fragment {
         //divider between items of recycle view
         MaterialDividerItemDecoration divider = new MaterialDividerItemDecoration(getContext(),
                 layoutManager.getOrientation());
-        //divider.setDividerInsetStart(DIVIDER_INSET);
         divider.setDividerInsetEnd(DIVIDER_INSET);
         divider.setLastItemDecorated(false);
         recyclerViewPlaylistList.addItemDecoration(divider);
 
 
-        viewModelPlaylist.getPlaylistList(Long.parseLong(lastUpdate)).observe(getViewLifecycleOwner(), result -> {
-            if (result.isSuccess()){
-                Log.d(TAG, "onViewCreated: result.isSuccess");
-                int initialSize = this.playlistList.size();
+        viewModelPlaylist.getPlaylistList(Long.parseLong(lastUpdate)).observe(getViewLifecycleOwner(), resultPlaylist -> {
+            if (resultPlaylist.isSuccess()){
+                //result should contain ALL playlist of the channel
+                Log.d(TAG, "onViewCreated: resultPlaylist.isSuccess");
+                int updateSize = this.playlistList.size();
                 this.playlistList.clear();
-                this.playlistList.addAll(((ResultPlaylist.Success) result).getData().getPlaylistList());
-                adapterPlaylistsListRecView.notifyItemRangeInserted(initialSize, this.playlistList.size());
-                //progressBar.setVisibility(View.GONE);
+                this.playlistList.addAll(((ResultPlaylist.Success) resultPlaylist).getData().getPlaylistList());
+                //if nothing has been deleted
+                if(this.playlistList.size() >= updateSize){
+                    updateSize = this.playlistList.size();
+                }
+                adapterPlaylistsListRecView.notifyItemRangeChanged(0, updateSize);
             }else {
                 ErrorMessagesUtil errorMessagesUtil =
                         new ErrorMessagesUtil(requireActivity().getApplication());
                 Snackbar.make(view, errorMessagesUtil.getErrorMessage(((
-                        ResultPlaylist.Error)result).getMessage()),
+                        ResultPlaylist.Error)resultPlaylist).getMessage()),
                         Snackbar.LENGTH_SHORT).show();
                 Log.d(TAG, "observe: not success");
             }
         });
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        requireActivity().closeContextMenu();
     }
 }
