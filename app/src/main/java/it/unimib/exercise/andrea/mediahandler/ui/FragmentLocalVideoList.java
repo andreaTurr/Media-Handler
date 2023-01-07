@@ -2,25 +2,18 @@ package it.unimib.exercise.andrea.mediahandler.ui;
 
 import static it.unimib.exercise.andrea.mediahandler.util.Constants.DIVIDER_INSET;
 
-import android.content.ContentResolver;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.media.ThumbnailUtils;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -28,30 +21,45 @@ import com.google.android.material.divider.MaterialDividerItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import it.unimib.exercise.andrea.mediahandler.R;
 import it.unimib.exercise.andrea.mediahandler.adapters.AdapterLocalVideoRecView;
-import it.unimib.exercise.andrea.mediahandler.adapters.AdapterPlaylistRecView;
 import it.unimib.exercise.andrea.mediahandler.models.localVideo.LocalVideo;
-import it.unimib.exercise.andrea.mediahandler.models.playlistItem.Video;
+import it.unimib.exercise.andrea.mediahandler.models.localVideo.ResultLocalVideos;
+import it.unimib.exercise.andrea.mediahandler.repository.IMediaRepository;
+import it.unimib.exercise.andrea.mediahandler.util.ServiceLocator;
 
 /**
  * A simple {@link Fragment} subclass.
  * create an instance of this fragment.
  */
-public class FragmentVideo extends Fragment implements AdapterLocalVideoRecView.OnItemClickListener{
+public class FragmentLocalVideoList extends Fragment{
     private RecyclerView recyclerViewLocalVideos;
     private List<LocalVideo> localVideos;
     AdapterLocalVideoRecView adapterLocalVideoRecView;
+    private static final String TAG = FragmentLocalVideoList.class.getSimpleName();
+    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
+    private static final int STORAGE_PERMISSION = 101;
+    private ViewModelMedia viewModelMedia;
 
-    public FragmentVideo() {
+    public FragmentLocalVideoList() {
         // Required empty public constructor
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        IMediaRepository mediaRepository =
+                ServiceLocator.getInstance().getMediaRepository(
+                        requireActivity().getApplication()
+                );
+        if (mediaRepository != null){
+            viewModelMedia = new ViewModelProvider(
+                    requireActivity(),
+                    new ViewModelMediaFactory(mediaRepository)).get(ViewModelMedia.class);
+        }
         localVideos = new ArrayList<>();
     }
 
@@ -70,7 +78,15 @@ public class FragmentVideo extends Fragment implements AdapterLocalVideoRecView.
         LinearLayoutManager layoutManager =
                 new LinearLayoutManager(requireContext(),
                         LinearLayoutManager.VERTICAL, false);
-        adapterLocalVideoRecView = new AdapterLocalVideoRecView(localVideos, getActivity().getApplication(), this::onVideoClick);
+        adapterLocalVideoRecView = new AdapterLocalVideoRecView(localVideos, getActivity().getApplication(), new AdapterLocalVideoRecView.OnItemClickListener() {
+            @Override
+            public void onVideoClick(LocalVideo localVideo, int position) {
+                FragmentLocalVideoListDirections.ActionFragmentVideoToFragmentLocalVideoPlayer action =
+                        FragmentLocalVideoListDirections.actionFragmentVideoToFragmentLocalVideoPlayer(
+                                localVideo);
+                Navigation.findNavController(view).navigate(action);
+            }
+        });
 
         recyclerViewLocalVideos.setLayoutManager(layoutManager);
         recyclerViewLocalVideos.setAdapter(adapterLocalVideoRecView);
@@ -81,29 +97,14 @@ public class FragmentVideo extends Fragment implements AdapterLocalVideoRecView.
         divider.setLastItemDecorated(false);
         recyclerViewLocalVideos.addItemDecoration(divider);
 
-        getVideos();
-
-    }
-
-    private void getVideos() {
-        ContentResolver contentResolver = getActivity().getContentResolver();
-        Uri uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
-        Cursor cursor = contentResolver.query(uri, null, null, null, null);
-
-        if(cursor != null && cursor.moveToFirst()){
-            do {
-                String videoTitle = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.TITLE));
-                String videoPath = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DATA));
-                Bitmap videoThumbNail = ThumbnailUtils.createVideoThumbnail(videoPath, MediaStore.Images.Thumbnails.MINI_KIND);
-                localVideos.add(new LocalVideo(videoTitle, videoPath, videoThumbNail));
-            }while(cursor.moveToNext());
-        }
-        adapterLocalVideoRecView.notifyDataSetChanged();
-
-    }
-
-    @Override
-    public void onVideoClick(LocalVideo video, int position) {
-
+        viewModelMedia.getLocalsVideo().observe(getViewLifecycleOwner(), resultLocalVideos ->{
+            if (resultLocalVideos.isSuccess()){
+                Log.d(TAG, "onViewCreated: isSuccess");
+                localVideos.clear();
+                List<LocalVideo> resultList = ((ResultLocalVideos.Success)resultLocalVideos).getData();
+                localVideos.addAll(resultList);
+                adapterLocalVideoRecView.notifyDataSetChanged();
+            }
+        });
     }
 }

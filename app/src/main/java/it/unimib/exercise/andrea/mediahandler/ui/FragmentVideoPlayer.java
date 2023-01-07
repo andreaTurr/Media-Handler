@@ -33,7 +33,6 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTube
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.ui.DefaultPlayerUiController;
 
 import it.unimib.exercise.andrea.mediahandler.R;
-import it.unimib.exercise.andrea.mediahandler.models.playlistItem.ResultVideo;
 import it.unimib.exercise.andrea.mediahandler.models.playlistItem.Video;
 import it.unimib.exercise.andrea.mediahandler.repository.IPlaylistRepositoryWithLiveData;
 import it.unimib.exercise.andrea.mediahandler.util.ServiceLocator;
@@ -82,7 +81,7 @@ public class FragmentVideoPlayer extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_video_player_test_card, container, false);
+        return inflater.inflate(R.layout.fragment_yt_video_player, container, false);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package it.unimib.exercise.andrea.mediahandler.models.localVideo;
+package it.unimib.exercise.andrea.mediahandler.models.localAudio;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -12,8 +12,7 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity
-public class LocalVideo implements Parcelable {
-
+public class LocalAudio implements Parcelable {
     @Ignore
     private Uri uri;
     @PrimaryKey
@@ -25,32 +24,24 @@ public class LocalVideo implements Parcelable {
     private int size;
     @Ignore
     private Bitmap thumbNail;
+    private String author;
 
+
+    public LocalAudio(@NonNull String name, long currentTime, int duration, int size) {
+        this.name = name;
+        this.currentTime = currentTime;
+        this.duration = duration;
+        this.size = size;
+    }
     @Ignore
-    public LocalVideo(Uri uri, @NonNull String name, long currentTime, int duration, int size, Bitmap thumbNail) {
+    public LocalAudio(Uri uri, @NonNull String name, long currentTime, int duration, int size, Bitmap thumbNail, String author) {
         this.uri = uri;
         this.name = name;
         this.currentTime = currentTime;
         this.duration = duration;
         this.size = size;
         this.thumbNail = thumbNail;
-    }
-
-    public LocalVideo(@NonNull String name, long currentTime, int duration, int size) {
-        this.thumbNail = thumbNail;
-        this.uri = uri;
-        this.name = name;
-        this.currentTime = currentTime;
-        this.duration = duration;
-        this.size = size;
-    }
-
-    public Bitmap getThumbNail() {
-        return thumbNail;
-    }
-
-    public void setThumbNail(Bitmap thumbNail) {
-        this.thumbNail = thumbNail;
+        this.author = author;
     }
 
     public Uri getUri() {
@@ -61,11 +52,12 @@ public class LocalVideo implements Parcelable {
         this.uri = uri;
     }
 
+    @NonNull
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(@NonNull String name) {
         this.name = name;
     }
 
@@ -93,13 +85,31 @@ public class LocalVideo implements Parcelable {
         this.size = size;
     }
 
+    public Bitmap getThumbNail() {
+        return thumbNail;
+    }
+
+    public void setThumbNail(Bitmap thumbNail) {
+        this.thumbNail = thumbNail;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
     @Override
     public String toString() {
-        return "LocalVideo{" +
+        return "LocalAudio{" +
                 "name='" + name + '\'' +
                 ", currentTime=" + currentTime +
+                ", duration=" + duration +
                 '}';
     }
+
 
     @Override
     public int describeContents() {
@@ -108,38 +118,44 @@ public class LocalVideo implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeParcelable(this.thumbNail, flags);
         dest.writeParcelable(this.uri, flags);
         dest.writeString(this.name);
+        dest.writeLong(this.currentTime);
         dest.writeInt(this.duration);
         dest.writeInt(this.size);
+        dest.writeParcelable(this.thumbNail, flags);
+        dest.writeString(this.author);
     }
 
     public void readFromParcel(Parcel source) {
-        this.thumbNail = source.readParcelable(Bitmap.class.getClassLoader());
         this.uri = source.readParcelable(Uri.class.getClassLoader());
         this.name = source.readString();
+        this.currentTime = source.readLong();
         this.duration = source.readInt();
         this.size = source.readInt();
+        this.thumbNail = source.readParcelable(Bitmap.class.getClassLoader());
+        this.author = source.readString();
     }
 
-    protected LocalVideo(Parcel in) {
-        this.thumbNail = in.readParcelable(Bitmap.class.getClassLoader());
+    protected LocalAudio(Parcel in) {
         this.uri = in.readParcelable(Uri.class.getClassLoader());
         this.name = in.readString();
+        this.currentTime = in.readLong();
         this.duration = in.readInt();
         this.size = in.readInt();
+        this.thumbNail = in.readParcelable(Bitmap.class.getClassLoader());
+        this.author = in.readString();
     }
 
-    public static final Parcelable.Creator<LocalVideo> CREATOR = new Parcelable.Creator<LocalVideo>() {
+    public static final Creator<LocalAudio> CREATOR = new Creator<LocalAudio>() {
         @Override
-        public LocalVideo createFromParcel(Parcel source) {
-            return new LocalVideo(source);
+        public LocalAudio createFromParcel(Parcel source) {
+            return new LocalAudio(source);
         }
 
         @Override
-        public LocalVideo[] newArray(int size) {
-            return new LocalVideo[size];
+        public LocalAudio[] newArray(int size) {
+            return new LocalAudio[size];
         }
     };
 }

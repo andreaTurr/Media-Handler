@@ -1,4 +1,4 @@
-package it.unimib.exercise.andrea.mediahandler.source;
+package it.unimib.exercise.andrea.mediahandler.source.playlist;
 
 /**
  * Base class to get playlist from a remote source.

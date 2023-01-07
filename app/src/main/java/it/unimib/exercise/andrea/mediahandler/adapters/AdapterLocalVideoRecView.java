@@ -14,7 +14,6 @@ import java.util.List;
 
 import it.unimib.exercise.andrea.mediahandler.R;
 import it.unimib.exercise.andrea.mediahandler.models.localVideo.LocalVideo;
-import it.unimib.exercise.andrea.mediahandler.models.playlistItem.Video;
 
 public class AdapterLocalVideoRecView extends RecyclerView.Adapter<AdapterLocalVideoRecView.ViewHolder> {
     private static final String TAG = AdapterPlaylistRecView.class.getSimpleName();
@@ -23,7 +22,7 @@ public class AdapterLocalVideoRecView extends RecyclerView.Adapter<AdapterLocalV
     private final AdapterLocalVideoRecView.OnItemClickListener onItemClickListener;
 
     public interface OnItemClickListener {
-        void onVideoClick(LocalVideo video, int position);
+        void onVideoClick(LocalVideo localVideo, int position);
     }
 
     public AdapterLocalVideoRecView(List<LocalVideo> videoList, Application application, AdapterLocalVideoRecView.OnItemClickListener onItemClickListener) {
@@ -66,15 +65,14 @@ public class AdapterLocalVideoRecView extends RecyclerView.Adapter<AdapterLocalV
 
         @Override
         public void onClick(View view) {
-
+            onItemClickListener.onVideoClick(videoList.get(getAbsoluteAdapterPosition()), getAbsoluteAdapterPosition() );
         }
 
         public void bind(LocalVideo video) {
             String url;
             String title;
-            video_name.setText("");
-
-
+            video_name.setText(video.getName());
+            videoThumbnail.setImageBitmap(video.getThumbNail());
         }
     }
 }

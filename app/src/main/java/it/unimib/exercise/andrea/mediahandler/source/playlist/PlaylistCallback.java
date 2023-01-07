@@ -1,4 +1,4 @@
-package it.unimib.exercise.andrea.mediahandler.source;
+package it.unimib.exercise.andrea.mediahandler.source.playlist;
 
 import it.unimib.exercise.andrea.mediahandler.models.playlistItem.PlaylistItemApiResponse;
 import it.unimib.exercise.andrea.mediahandler.models.playlistItem.Video;

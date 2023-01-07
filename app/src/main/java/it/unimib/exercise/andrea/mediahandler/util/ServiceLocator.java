@@ -3,15 +3,18 @@ package it.unimib.exercise.andrea.mediahandler.util;
 import android.app.Application;
 
 import it.unimib.exercise.andrea.mediahandler.R;
-import it.unimib.exercise.andrea.mediahandler.database.YoutubeRoomDatabase;
+import it.unimib.exercise.andrea.mediahandler.database.RoomDatabase;
+import it.unimib.exercise.andrea.mediahandler.repository.IMediaRepository;
 import it.unimib.exercise.andrea.mediahandler.repository.IPlaylistRepositoryWithLiveData;
+import it.unimib.exercise.andrea.mediahandler.repository.MediaRepository;
 import it.unimib.exercise.andrea.mediahandler.repository.PlaylistRepositoryWithLiveData;
 import it.unimib.exercise.andrea.mediahandler.service.YoutubeApiService;
-import it.unimib.exercise.andrea.mediahandler.source.BasePlaylistLocalDataSource;
-import it.unimib.exercise.andrea.mediahandler.source.BasePlaylistRemoteDataSource;
-import it.unimib.exercise.andrea.mediahandler.source.PlaylistLocalDataSource;
-import it.unimib.exercise.andrea.mediahandler.source.PlaylistMockRemoteDataSource;
-import it.unimib.exercise.andrea.mediahandler.source.PlaylistRemoteDataSource;
+import it.unimib.exercise.andrea.mediahandler.source.playlist.BasePlaylistLocalDataSource;
+import it.unimib.exercise.andrea.mediahandler.source.playlist.BasePlaylistRemoteDataSource;
+import it.unimib.exercise.andrea.mediahandler.source.media.MediaDataSource;
+import it.unimib.exercise.andrea.mediahandler.source.playlist.PlaylistLocalDataSource;
+import it.unimib.exercise.andrea.mediahandler.source.playlist.PlaylistMockRemoteDataSource;
+import it.unimib.exercise.andrea.mediahandler.source.playlist.PlaylistRemoteDataSource;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -58,14 +61,13 @@ public class ServiceLocator {
     }
 
     /**
-     * Returns an instance of YoutubeRoomDatabase class to manage Room database.
+     * Returns an instance of RoomDatabase class to manage Room database.
      * @param application Param for accessing the global application state.
      * @return An instance of YoutubeRoomDatabase.
      */
-    public YoutubeRoomDatabase getNewsDao(Application application) {
-        return YoutubeRoomDatabase.getDatabase(application);
+    public RoomDatabase getRoomDatabase(Application application) {
+        return RoomDatabase.getDatabase(application);
     }
-
 
 
     //menagement of AuthStateManager is inside the class itself
@@ -97,8 +99,15 @@ public class ServiceLocator {
         }
 
         playlistLocalDataSource = new PlaylistLocalDataSource(
-                getNewsDao(application),
+                getRoomDatabase(application),
                 sharedPreferencesUtil);
         return new PlaylistRepositoryWithLiveData(playlistRemoteDataSource, playlistLocalDataSource);
     }
+
+    public IMediaRepository getMediaRepository(Application application){
+        MediaDataSource mediaDataSource = new MediaDataSource(
+                getRoomDatabase(application), application.getApplicationContext());
+        return new MediaRepository(mediaDataSource);
+    }
+
 }

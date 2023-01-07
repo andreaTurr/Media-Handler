@@ -6,11 +6,11 @@
         android:icon="@drawable/playlist_vector"
         android:title="@string/bottom_nav_playlists" />
     <item
-        android:id="@+id/fragment_video"
+        android:id="@+id/nested_local_video"
         android:icon="@drawable/video_vector"
         android:title="@string/bottom_nav_video" />
     <item
-        android:id="@+id/fragment_audio"
+        android:id="@+id/nested_local_audio"
         android:enabled="true"
         android:icon="@drawable/music_vector"
         android:title="@string/bottom_nav_audio" />

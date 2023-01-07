@@ -1,4 +1,4 @@
-package it.unimib.exercise.andrea.mediahandler.source;
+package it.unimib.exercise.andrea.mediahandler.source.playlist;
 
 import static it.unimib.exercise.andrea.mediahandler.util.Constants.API_KEY_ERROR;
 import static it.unimib.exercise.andrea.mediahandler.util.Constants.RETROFIT_ERROR;
@@ -16,7 +16,6 @@ import net.openid.appauth.AuthorizationService;
 import net.openid.appauth.TokenResponse;
 
 import java.time.Duration;
-import java.time.temporal.TemporalUnit;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

@@ -13,9 +13,9 @@ import it.unimib.exercise.andrea.mediahandler.models.playlistItem.Video;
 import it.unimib.exercise.andrea.mediahandler.models.playlists.PlaylistApiResponse;
 import it.unimib.exercise.andrea.mediahandler.models.playlists.ResultPlaylist;
 import it.unimib.exercise.andrea.mediahandler.models.video.ResultVideoDuration;
-import it.unimib.exercise.andrea.mediahandler.source.BasePlaylistLocalDataSource;
-import it.unimib.exercise.andrea.mediahandler.source.BasePlaylistRemoteDataSource;
-import it.unimib.exercise.andrea.mediahandler.source.PlaylistCallback;
+import it.unimib.exercise.andrea.mediahandler.source.playlist.BasePlaylistLocalDataSource;
+import it.unimib.exercise.andrea.mediahandler.source.playlist.BasePlaylistRemoteDataSource;
+import it.unimib.exercise.andrea.mediahandler.source.playlist.PlaylistCallback;
 
 public class PlaylistRepositoryWithLiveData implements IPlaylistRepositoryWithLiveData, PlaylistCallback {
     private final MutableLiveData<ResultPlaylist> playlistsListMutableLiveData;

@@ -1,4 +1,4 @@
-package it.unimib.exercise.andrea.mediahandler.source;
+package it.unimib.exercise.andrea.mediahandler.source.playlist;
 
 import static it.unimib.exercise.andrea.mediahandler.util.Constants.API_KEY_ERROR;
 import static it.unimib.exercise.andrea.mediahandler.util.Constants.PLAYLIST_API_TEST_JSON_FILE;

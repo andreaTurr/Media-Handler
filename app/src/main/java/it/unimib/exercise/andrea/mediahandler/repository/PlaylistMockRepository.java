@@ -9,7 +9,7 @@ import java.util.List;
 
 import it.unimib.exercise.andrea.mediahandler.R;
 import it.unimib.exercise.andrea.mediahandler.database.PlaylistListDao;
-import it.unimib.exercise.andrea.mediahandler.database.YoutubeRoomDatabase;
+import it.unimib.exercise.andrea.mediahandler.database.RoomDatabase;
 import it.unimib.exercise.andrea.mediahandler.models.playlists.Playlist;
 import it.unimib.exercise.andrea.mediahandler.models.playlists.PlaylistApiResponse;
 import it.unimib.exercise.andrea.mediahandler.util.JSONParserUtil;
@@ -94,7 +94,7 @@ public class PlaylistMockRepository implements IPlaylistRepository{
      * because the database access cannot been executed in the main thread.
      */
     private void readDataFromDatabase(long lastUpdate) {
-        YoutubeRoomDatabase.databaseWriteExecutor.execute(() -> {
+        RoomDatabase.databaseWriteExecutor.execute(() -> {
             responseCallback.onSuccess(playlistListDao.getAllPlaylists(), lastUpdate);
         });
     }

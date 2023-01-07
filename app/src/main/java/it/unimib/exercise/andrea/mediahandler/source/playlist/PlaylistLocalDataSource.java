@@ -1,4 +1,4 @@
-package it.unimib.exercise.andrea.mediahandler.source;
+package it.unimib.exercise.andrea.mediahandler.source.playlist;
 
 import static it.unimib.exercise.andrea.mediahandler.util.Constants.LAST_UPDATE_PLAYLIST_LIST;
 import static it.unimib.exercise.andrea.mediahandler.util.Constants.LOCAL_SOURCE_ERROR;
@@ -9,7 +9,7 @@ import android.util.Log;
 import java.util.List;
 
 import it.unimib.exercise.andrea.mediahandler.database.PlaylistListDao;
-import it.unimib.exercise.andrea.mediahandler.database.YoutubeRoomDatabase;
+import it.unimib.exercise.andrea.mediahandler.database.RoomDatabase;
 import it.unimib.exercise.andrea.mediahandler.models.playlistItem.PlaylistItemApiResponse;
 import it.unimib.exercise.andrea.mediahandler.models.playlistItem.Video;
 import it.unimib.exercise.andrea.mediahandler.models.playlistItem.VideoPartial;
@@ -26,8 +26,8 @@ public class PlaylistLocalDataSource extends BasePlaylistLocalDataSource {
     private final PlaylistListDao playlistListDao;
     private final SharedPreferencesUtil sharedPreferencesUtil;
 
-    public PlaylistLocalDataSource(YoutubeRoomDatabase youtubeRoomDatabase, SharedPreferencesUtil sharedPreferencesUtil) {
-        this.playlistListDao = youtubeRoomDatabase.playlistDao();
+    public PlaylistLocalDataSource(RoomDatabase roomDatabase, SharedPreferencesUtil sharedPreferencesUtil) {
+        this.playlistListDao = roomDatabase.playlistDao();
         this.sharedPreferencesUtil = sharedPreferencesUtil;
     }
 
@@ -39,7 +39,7 @@ public class PlaylistLocalDataSource extends BasePlaylistLocalDataSource {
     @Override
     public void getPlaylistList() {
         Log.d(TAG, "getPlaylist: local");
-        YoutubeRoomDatabase.databaseWriteExecutor.execute(() ->{
+        RoomDatabase.databaseWriteExecutor.execute(() ->{
             List<Playlist> list = playlistListDao.getAllPlaylists();
             Log.d(TAG, "getPlaylist: " + list);
 
@@ -66,7 +66,7 @@ public class PlaylistLocalDataSource extends BasePlaylistLocalDataSource {
      */
     @Override
     public void insertPlaylistsList(PlaylistApiResponse playlistApiResponse) {
-        YoutubeRoomDatabase.databaseWriteExecutor.execute(() -> {
+        RoomDatabase.databaseWriteExecutor.execute(() -> {
             //todo handle playlist deleted by user and not in user account anymore
             List<Playlist> newPlaylistList = playlistApiResponse.getPlaylistList();
             List<Playlist> oldPlaylistList = playlistListDao.getAllPlaylists();
@@ -101,7 +101,7 @@ public class PlaylistLocalDataSource extends BasePlaylistLocalDataSource {
 
     @Override
     public void getPlaylistLastUpdate(String playlistId) {
-        YoutubeRoomDatabase.databaseWriteExecutor.execute(() -> {
+        RoomDatabase.databaseWriteExecutor.execute(() -> {
             Long lastUpdate = playlistListDao.getLastUpdateFromPlaylist(playlistId);
             playlistCallback.onSuccessFromLocalLastUpdate(lastUpdate, playlistId);
         });
@@ -109,7 +109,7 @@ public class PlaylistLocalDataSource extends BasePlaylistLocalDataSource {
 
     @Override
     public void getVideoList(String playlistId) {
-        YoutubeRoomDatabase.databaseWriteExecutor.execute(() -> {
+        RoomDatabase.databaseWriteExecutor.execute(() -> {
             Log.d(TAG, "getVideoList: Local");
             List<Video> list = playlistListDao.getVideoListFromPlaylistId(playlistId);
             PlaylistItemApiResponse playlistItemApiResponse = new PlaylistItemApiResponse(list);
@@ -123,7 +123,7 @@ public class PlaylistLocalDataSource extends BasePlaylistLocalDataSource {
 
     @Override
     public void insertVideoList(PlaylistItemApiResponse playlistItemApiResponse, String playlistId) {
-        YoutubeRoomDatabase.databaseWriteExecutor.execute(() -> {
+        RoomDatabase.databaseWriteExecutor.execute(() -> {
             Log.d(TAG, "insertVideoList: ");
             List<Video> newVideoList = playlistItemApiResponse.getVideoList();
             List<Video> oldVideoList = playlistListDao.getVideoListFromPlaylistId(playlistId);
@@ -162,7 +162,7 @@ public class PlaylistLocalDataSource extends BasePlaylistLocalDataSource {
 
     @Override
     public void insertVideo(Video video) {
-        YoutubeRoomDatabase.databaseWriteExecutor.execute(() -> {
+        RoomDatabase.databaseWriteExecutor.execute(() -> {
             Log.d(TAG, "insertVideo: " + video);
             playlistListDao.updateVideo(video);
             List<Video> list = playlistListDao.getVideoListFromPlaylistId(video.getSnippet().getPlaylistId());
@@ -173,7 +173,7 @@ public class PlaylistLocalDataSource extends BasePlaylistLocalDataSource {
 
     @Override
     public void getVideo(String videoIdInPlaylist) {
-        YoutubeRoomDatabase.databaseWriteExecutor.execute(() -> {
+        RoomDatabase.databaseWriteExecutor.execute(() -> {
             Log.d(TAG, "getVideo: Local");
             Video video = playlistListDao.getVideo(videoIdInPlaylist);
             if (video != null)
