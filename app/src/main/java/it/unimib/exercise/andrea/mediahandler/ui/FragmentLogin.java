@@ -1,5 +1,10 @@
 package it.unimib.exercise.andrea.mediahandler.ui;
 
+import android.content.ContentResolver;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.media.ThumbnailUtils;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -7,12 +12,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
 import it.unimib.exercise.andrea.mediahandler.R;
+import it.unimib.exercise.andrea.mediahandler.models.playlistItem.Thumbnail;
 
 /**
  * create an instance of this fragment.
@@ -28,7 +35,7 @@ public class FragmentLogin extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        //todo ask for user permissions
 
     }
 
@@ -51,6 +58,6 @@ public class FragmentLogin extends Fragment {
         buttonForgot.setOnClickListener(view1 -> {
             Navigation.findNavController(requireView()).navigate(R.id.action_fragment_login_to_fragmentLoginAuth);
         });
-
     }
+
 }

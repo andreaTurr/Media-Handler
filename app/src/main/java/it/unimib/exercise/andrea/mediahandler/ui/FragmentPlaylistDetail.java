@@ -80,34 +80,6 @@ public class FragmentPlaylistDetail extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        /*requireActivity().addMenuProvider(new MenuProvider() {
-            @Override
-            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-                menu.clear();
-                menuInflater.inflate(R.menu.top_app_bar, menu);
-            }
-
-            @Override
-            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-                return false;
-            }
-
-            @Override
-            public void onPrepareMenu(@NonNull Menu menu) {
-                NavHostFragment navHostFragment = (NavHostFragment) getActivity().getSupportFragmentManager()
-                        .findFragmentById(R.id.nav_host_fragment_main);
-                NavController navController = navHostFragment.getNavController();
-                if(navController.getCurrentDestination().getId() == R.id.fragmentPlaylistDetail) {
-                    MenuProvider.super.onPrepareMenu(menu);
-                    MenuItem item = menu.findItem(R.id.topAppBarInfo);
-                    item.setVisible(false);
-                    item = menu.findItem(R.id.topAppBarDelete);
-                    item.setVisible(false);
-                    item = menu.findItem(R.id.topAppBarRefresh);
-                    item.setVisible(false);
-                }
-            }
-        }, this.getViewLifecycleOwner());*/
         videoArray = FragmentPlaylistDetailArgs.fromBundle(getArguments()).getVideoArray();
         String playlistId = FragmentPlaylistDetailArgs.fromBundle(getArguments()).getPlaylistId();
         String playlistTitle = FragmentPlaylistDetailArgs.fromBundle(getArguments()).getPlaylistTitle();
