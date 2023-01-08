@@ -94,7 +94,7 @@ public class FragmentLocalAudioList extends Fragment {
 
         viewModelMedia.getLocalAudio().observe(getViewLifecycleOwner(), resultLocalAudios ->{
             if (resultLocalAudios.isSuccess()){
-                Log.d(TAG, "onViewCreated: isSuccess");
+                Log.d(TAG, "onViewCreated: local isSuccess");
                 localAudios.clear();
                 List<LocalAudio> resultList = ((ResultLocalAudios.Success)resultLocalAudios).getData();
                 localAudios.addAll(resultList);

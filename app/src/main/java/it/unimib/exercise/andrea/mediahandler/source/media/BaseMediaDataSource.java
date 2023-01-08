@@ -10,10 +10,10 @@ public abstract class BaseMediaDataSource {
         this.mediaCallback = mediaCallback;
     }
     public abstract void getVideos();
-    public abstract void getLocalVideo(LocalVideo localVideo);
+    public abstract void getInsertLocalVideo(LocalVideo localVideo);
     public abstract void updateLocalVideo(LocalVideo localVideo);
 
     public abstract void getAudios();
-    public abstract void getLocalAudio(LocalAudio localAudio);
+    public abstract void getInsertLocalAudio(LocalAudio localAudio);
     public abstract void updateLocalAudio(LocalAudio localAudio);
 }

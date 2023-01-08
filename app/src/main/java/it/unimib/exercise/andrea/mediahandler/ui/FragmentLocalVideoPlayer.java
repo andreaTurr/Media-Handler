@@ -94,7 +94,7 @@ public class FragmentLocalVideoPlayer extends Fragment {
 
         // Start the playback.
 
-        viewModelMedia.getLocalVideo(localVideo).observe(getViewLifecycleOwner(), resultLocalVideos -> {
+        viewModelMedia.getInsertLocalVideo(localVideo).observe(getViewLifecycleOwner(), resultLocalVideos -> {
             if(resultLocalVideos.isSuccess()){
                 Log.d(TAG, "onViewCreated: isSuccess local video");
                 List<LocalVideo> savedVideos = ((ResultLocalVideos.Success)resultLocalVideos).getData();

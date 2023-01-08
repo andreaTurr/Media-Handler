@@ -35,9 +35,9 @@ public class MediaRepository implements IMediaRepository, MediaCallback {
     }
 
     @Override
-    public MutableLiveData<ResultLocalVideos> fetchLocalVideo(LocalVideo localVideo) {
+    public MutableLiveData<ResultLocalVideos> fetchInsertLocalVideo(LocalVideo localVideo) {
         localVideosCurrentTimeLiveData = new MutableLiveData<>();
-        mediaDataSource.getLocalVideo(localVideo);
+        mediaDataSource.getInsertLocalVideo(localVideo);
         return localVideosCurrentTimeLiveData;
     }
 
@@ -53,10 +53,10 @@ public class MediaRepository implements IMediaRepository, MediaCallback {
     }
 
     @Override
-    public MutableLiveData<ResultLocalAudios> fetchLocalAudio(LocalAudio localAudio) {
+    public MutableLiveData<ResultLocalAudios> fetchInsertLocalAudio(LocalAudio localAudio) {
         Log.d(TAG, "fetchLocalAudio: ");
         localAudiosCurrentTimeLiveData = new MutableLiveData<>();
-        mediaDataSource.getLocalAudio(localAudio);
+        mediaDataSource.getInsertLocalAudio(localAudio);
         return localAudiosCurrentTimeLiveData;
     }
 

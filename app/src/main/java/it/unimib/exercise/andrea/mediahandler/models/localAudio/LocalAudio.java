@@ -33,6 +33,8 @@ public class LocalAudio implements Parcelable {
         this.duration = duration;
         this.size = size;
     }
+
+
     @Ignore
     public LocalAudio(Uri uri, @NonNull String name, long currentTime, int duration, int size, Bitmap thumbNail, String author) {
         this.uri = uri;
@@ -41,6 +43,15 @@ public class LocalAudio implements Parcelable {
         this.duration = duration;
         this.size = size;
         this.thumbNail = thumbNail;
+        this.author = author;
+    }
+    @Ignore
+    public LocalAudio(Uri uri, @NonNull String name, long currentTime, int duration, int size, String author) {
+        this.uri = uri;
+        this.name = name;
+        this.currentTime = currentTime;
+        this.duration = duration;
+        this.size = size;
         this.author = author;
     }
 

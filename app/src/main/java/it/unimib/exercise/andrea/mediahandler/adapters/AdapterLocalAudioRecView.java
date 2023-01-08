@@ -1,6 +1,7 @@
 package it.unimib.exercise.andrea.mediahandler.adapters;
 
 import android.app.Application;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,7 +76,12 @@ public class AdapterLocalAudioRecView extends RecyclerView.Adapter<AdapterLocalA
             String title;
             audioName.setText(audio.getName());
             audioBody.setText(audio.getAuthor());
-            thumbnail.setImageBitmap(audio.getThumbNail());
+            if (audio.getThumbNail() == null){
+                thumbnail.setImageResource(R.drawable.music_vector);
+            }else{
+                thumbnail.setImageBitmap(audio.getThumbNail());
+            }
+
         }
     }
 }

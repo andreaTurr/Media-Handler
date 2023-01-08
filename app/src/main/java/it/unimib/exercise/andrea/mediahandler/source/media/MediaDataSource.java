@@ -4,6 +4,7 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Build;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import it.unimib.exercise.andrea.mediahandler.R;
 import it.unimib.exercise.andrea.mediahandler.database.LocalMediaDao;
 import it.unimib.exercise.andrea.mediahandler.database.RoomDatabase;
 import it.unimib.exercise.andrea.mediahandler.models.localAudio.LocalAudio;
@@ -36,7 +38,7 @@ public class MediaDataSource extends BaseMediaDataSource {
     @Override
     public void getVideos() {
         Log.d(TAG, "getVideos: ");
-        List<LocalVideo> localVideos = new ArrayList<LocalVideo>();
+        List<LocalVideo> localVideos = new ArrayList<>();
         Uri collection;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             collection = MediaStore.Video.Media.getContentUri(MediaStore.VOLUME_EXTERNAL);
@@ -103,7 +105,7 @@ public class MediaDataSource extends BaseMediaDataSource {
     }
 
     @Override
-    public void getLocalVideo(LocalVideo localVideo) {
+    public void getInsertLocalVideo(LocalVideo localVideo) {
         RoomDatabase.databaseWriteExecutor.execute(() -> {
             Log.d(TAG, "getVideoLocalVideo: old=" + localVideo);
             localMediaDao.insertLocalVideo(localVideo);
@@ -165,10 +167,8 @@ public class MediaDataSource extends BaseMediaDataSource {
             int sizeColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.SIZE);
             int authorColum = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST);
             int pathColum = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA);
-
             while (cursor.moveToNext()) {
                 // Get values of columns for a given video.
-
                 long id = cursor.getLong(idColumn);
                 String name = cursor.getString(nameColumn);
                 int duration = cursor.getInt(durationColumn);
@@ -182,25 +182,31 @@ public class MediaDataSource extends BaseMediaDataSource {
                 // Stores column values and the contentUri in a local object
                 // that represents the media file.
                 Bitmap thumbnail = null;
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {  //29
-                    thumbnail =
-                            context.getContentResolver().loadThumbnail(
-                                    contentUri, new Size(640, 480), null);
-                }else{
-                    thumbnail = ThumbnailUtils.createVideoThumbnail(path, MediaStore.Images.Thumbnails.MINI_KIND);
+                try{
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {  //29
+                        thumbnail =
+                                context.getContentResolver().loadThumbnail(
+                                        contentUri, new Size(640, 480), null);
+                    }else{
+                        thumbnail = ThumbnailUtils.createVideoThumbnail(path, MediaStore.Images.Thumbnails.MINI_KIND);
+                    }
+                }catch (IOException e){
+                    Log.d(TAG, "getAudios: exception="+e.getMessage());
                 }
                 // Stores column values and the contentUri in a local object
                 // that represents the media file.
                 localAudios.add(new LocalAudio(contentUri, name, 0L, duration, size, thumbnail, author));
             }
             mediaCallback.onSuccessFromStorageAudio(new ResultLocalAudios.Success(localAudios));
-        } catch (IOException e) {
+        } /*catch (IOException e) {
             e.printStackTrace();
-        }
+            Log.d(TAG, "getAudios: error=" + e.getMessage());
+            Log.d(TAG, "getAudios: error=" + e.printStackTrace());
+        }*/
     }
 
     @Override
-    public void getLocalAudio(LocalAudio localAudio) {
+    public void getInsertLocalAudio(LocalAudio localAudio) {
         RoomDatabase.databaseWriteExecutor.execute(() -> {
             Log.d(TAG, "getLocalAudio: old=" + localAudio);
             localMediaDao.insertLocalAudio(localAudio);

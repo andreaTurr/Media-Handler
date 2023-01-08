@@ -24,14 +24,12 @@ public class ViewModelMedia extends ViewModel {
     }
 
 
-    public MutableLiveData<ResultLocalVideos> getLocalsVideo(){
-        if(localVideosLiveData == null){
-            fetchLocalVideos();
-        }
+    public MutableLiveData<ResultLocalVideos> getLocalVideos(){
+        fetchLocalVideos();
         return localVideosLiveData;
     }
-    public MutableLiveData<ResultLocalVideos> getLocalVideo(LocalVideo localVideo) {
-        fetchLocalVideoCurrentTime(localVideo);
+    public MutableLiveData<ResultLocalVideos> getInsertLocalVideo(LocalVideo localVideo) {
+        fetchInsertLocalVideo(localVideo);
         return  localVideoSavedLiveData;
     }
     public void updateLocalVideo(LocalVideo localVideo){
@@ -40,14 +38,12 @@ public class ViewModelMedia extends ViewModel {
 
 
     public MutableLiveData<ResultLocalAudios> getLocalAudio(){
-        if(localVideosLiveData == null){
-            fetchLocalAudios();
-        }
+        fetchLocalAudios();
         return localAudiosLiveData;
     }
-    public MutableLiveData<ResultLocalAudios> getLocalAudio(LocalAudio localAudio) {
+    public MutableLiveData<ResultLocalAudios> getInsertLocalAudio(LocalAudio localAudio) {
         Log.d(TAG, "getLocalAudio: ");
-        fetchLocalAudioCurrentTime(localAudio);
+        fetchInsertLocalAudio(localAudio);
         return localAudiosSavedLiveData;
     }
     public void updateLocalAudio(LocalAudio localAudio){
@@ -58,15 +54,15 @@ public class ViewModelMedia extends ViewModel {
     private void fetchLocalVideos() {
         localVideosLiveData = mediaRepository.fetchLocalVideo();
     }
-    private void fetchLocalVideoCurrentTime(LocalVideo localVideo) {
-        localVideoSavedLiveData = mediaRepository.fetchLocalVideo(localVideo);
+    private void fetchInsertLocalVideo(LocalVideo localVideo) {
+        localVideoSavedLiveData = mediaRepository.fetchInsertLocalVideo(localVideo);
     }
 
 
     private void fetchLocalAudios() {
         localAudiosLiveData = mediaRepository.fetchLocalAudio();
     }
-    private void fetchLocalAudioCurrentTime(LocalAudio localAudio) {
-        localAudiosSavedLiveData = mediaRepository.fetchLocalAudio(localAudio);
+    private void fetchInsertLocalAudio(LocalAudio localAudio) {
+        localAudiosSavedLiveData = mediaRepository.fetchInsertLocalAudio(localAudio);
     }
 }

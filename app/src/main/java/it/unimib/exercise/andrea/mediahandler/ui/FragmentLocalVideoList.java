@@ -97,7 +97,7 @@ public class FragmentLocalVideoList extends Fragment{
         divider.setLastItemDecorated(false);
         recyclerViewLocalVideos.addItemDecoration(divider);
 
-        viewModelMedia.getLocalsVideo().observe(getViewLifecycleOwner(), resultLocalVideos ->{
+        viewModelMedia.getLocalVideos().observe(getViewLifecycleOwner(), resultLocalVideos ->{
             if (resultLocalVideos.isSuccess()){
                 Log.d(TAG, "onViewCreated: isSuccess");
                 localVideos.clear();

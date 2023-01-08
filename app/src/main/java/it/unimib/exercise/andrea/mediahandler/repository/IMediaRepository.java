@@ -9,10 +9,10 @@ import it.unimib.exercise.andrea.mediahandler.models.localVideo.ResultLocalVideo
 
 public interface IMediaRepository {
     MutableLiveData<ResultLocalVideos> fetchLocalVideo();
-    MutableLiveData<ResultLocalVideos> fetchLocalVideo(LocalVideo localVideo);
+    MutableLiveData<ResultLocalVideos> fetchInsertLocalVideo(LocalVideo localVideo);
     void updateLocalVideo(LocalVideo localVideo);
 
     MutableLiveData<ResultLocalAudios> fetchLocalAudio();
-    MutableLiveData<ResultLocalAudios> fetchLocalAudio(LocalAudio localAudio);
+    MutableLiveData<ResultLocalAudios> fetchInsertLocalAudio(LocalAudio localAudio);
     void updateLocalAudio(LocalAudio localAudio);
 }
