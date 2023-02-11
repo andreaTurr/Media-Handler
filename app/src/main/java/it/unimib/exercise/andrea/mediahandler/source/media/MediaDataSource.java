@@ -4,7 +4,6 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Build;
@@ -17,13 +16,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import it.unimib.exercise.andrea.mediahandler.R;
 import it.unimib.exercise.andrea.mediahandler.database.LocalMediaDao;
 import it.unimib.exercise.andrea.mediahandler.database.RoomDatabase;
+import it.unimib.exercise.andrea.mediahandler.models.Result;
 import it.unimib.exercise.andrea.mediahandler.models.localAudio.LocalAudio;
-import it.unimib.exercise.andrea.mediahandler.models.localAudio.ResultLocalAudios;
 import it.unimib.exercise.andrea.mediahandler.models.localVideo.LocalVideo;
-import it.unimib.exercise.andrea.mediahandler.models.localVideo.ResultLocalVideos;
 
 public class MediaDataSource extends BaseMediaDataSource {
     private static final String TAG = MediaDataSource.class.getSimpleName();
@@ -98,7 +95,7 @@ public class MediaDataSource extends BaseMediaDataSource {
 
                 localVideos.add(new LocalVideo(contentUri, name, 0, duration, size, thumbnail));
             }
-            mediaCallback.onSuccessFromStorageVideo(new ResultLocalVideos.Success(localVideos));
+            mediaCallback.onSuccessFromStorageVideo(new Result.ResultLocalVideosSuccess(localVideos));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -113,7 +110,7 @@ public class MediaDataSource extends BaseMediaDataSource {
             Log.d(TAG, "getVideoLocalVideo: new=" + databaseInstance);
             List<LocalVideo> list = new ArrayList<>();
             list.add(databaseInstance);
-            mediaCallback.onSuccessFromGetVideoCurrentTime(new ResultLocalVideos.Success(list));
+            mediaCallback.onSuccessFromGetVideoCurrentTime(new Result.ResultLocalVideosSuccess(list));
         });
 
 
@@ -197,7 +194,7 @@ public class MediaDataSource extends BaseMediaDataSource {
                 // that represents the media file.
                 localAudios.add(new LocalAudio(contentUri, name, 0L, duration, size, thumbnail, author));
             }
-            mediaCallback.onSuccessFromStorageAudio(new ResultLocalAudios.Success(localAudios));
+            mediaCallback.onSuccessFromStorageAudio(new Result.ResultLocalAudiosSuccess(localAudios));
         } /*catch (IOException e) {
             e.printStackTrace();
             Log.d(TAG, "getAudios: error=" + e.getMessage());
@@ -214,7 +211,7 @@ public class MediaDataSource extends BaseMediaDataSource {
             Log.d(TAG, "getLocalAudio: new=" + databaseInstance);
             List<LocalAudio> list = new ArrayList<>();
             list.add(databaseInstance);
-            mediaCallback.onSuccessFromGetAudioCurrentTime(new ResultLocalAudios.Success(list));
+            mediaCallback.onSuccessFromGetAudioCurrentTime(new Result.ResultLocalAudiosSuccess(list));
         });
     }
 
@@ -222,6 +219,14 @@ public class MediaDataSource extends BaseMediaDataSource {
     public void updateLocalAudio(LocalAudio localAudio) {
         RoomDatabase.databaseWriteExecutor.execute(() -> {
             localMediaDao.updateLocalAudio(localAudio);
+        });
+    }
+
+    @Override
+    public void deleteMediaData() {
+        RoomDatabase.databaseWriteExecutor.execute(() -> {
+            localMediaDao.deleteAllAudioData();
+            localMediaDao.deleteAllVideoData();
         });
     }
 }

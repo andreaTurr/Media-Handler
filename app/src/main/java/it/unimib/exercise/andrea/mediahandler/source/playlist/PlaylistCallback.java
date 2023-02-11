@@ -24,4 +24,5 @@ public interface PlaylistCallback {
     void onFailureFromLocalVideo(Exception exception);
     void onSuccesFromRemotePlaylistDuration(long duration);
 
+    void onSuccessDeletion();
 }

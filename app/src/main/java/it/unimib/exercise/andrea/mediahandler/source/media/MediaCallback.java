@@ -1,12 +1,11 @@
 package it.unimib.exercise.andrea.mediahandler.source.media;
 
-import it.unimib.exercise.andrea.mediahandler.models.localAudio.ResultLocalAudios;
-import it.unimib.exercise.andrea.mediahandler.models.localVideo.ResultLocalVideos;
+import it.unimib.exercise.andrea.mediahandler.models.Result;
 
 public interface MediaCallback {
-    void onSuccessFromStorageVideo(ResultLocalVideos localVideos);
-    void onSuccessFromGetVideoCurrentTime(ResultLocalVideos localVideo);
+    void onSuccessFromStorageVideo(Result localVideos);
+    void onSuccessFromGetVideoCurrentTime(Result localVideo);
 
-    void onSuccessFromStorageAudio(ResultLocalAudios localAudios);
-    void onSuccessFromGetAudioCurrentTime(ResultLocalAudios localAudio);
+    void onSuccessFromStorageAudio(Result localAudios);
+    void onSuccessFromGetAudioCurrentTime(Result localAudio);
 }

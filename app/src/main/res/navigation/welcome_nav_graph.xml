@@ -6,7 +6,7 @@
     app:startDestination="@id/fragment_login">
     <fragment
         android:id="@+id/fragment_login"
-        android:name="it.unimib.exercise.andrea.mediahandler.ui.FragmentLogin"
+        android:name="it.unimib.exercise.andrea.mediahandler.ui.welcome.FragmentLogin"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
@@ -16,29 +16,32 @@
             android:id="@+id/action_fragment_login_to_fragmen_login_google"
             app:destination="@id/fragmen_login_google" />
         <action
-            android:id="@+id/action_fragment_login_to_fragmentLoginAuth"
-            app:destination="@id/fragmentLoginAuth" />
+            android:id="@+id/action_fragment_login_to_fragmentSignUp"
+            app:destination="@id/fragmentSignUp" />
     </fragment>
     <activity
         android:id="@+id/activityMain"
-        android:name="it.unimib.exercise.andrea.mediahandler.ui.ActivityMain"
+        android:name="it.unimib.exercise.andrea.mediahandler.ui.main.ActivityMain"
         android:label="activity_main"
         tools:layout="@layout/activity_main" />
     <fragment
         android:id="@+id/fragmen_login_google"
-        android:name="it.unimib.exercise.andrea.mediahandler.ui.FragmenLoginGoogle"
+        android:name="it.unimib.exercise.andrea.mediahandler.ui.welcome.FragmenLoginGoogle"
         android:label="fragment_login_google"
         tools:layout="@layout/fragment_login_google" />
     <fragment
-        android:id="@+id/fragmentLoginAuth"
-        android:name="it.unimib.exercise.andrea.mediahandler.ui.FragmentLoginAuth"
-        android:label="fragment_login_auth"
-        tools:layout="@layout/fragment_login_auth" >
-    </fragment>
-    <fragment
         android:id="@+id/fragmentPlayListList"
-        android:name="it.unimib.exercise.andrea.mediahandler.ui.FragmentPlayListList"
+        android:name="it.unimib.exercise.andrea.mediahandler.ui.main.FragmentPlayListList"
         android:label="fragment_playlist_list"
         tools:layout="@layout/fragment_playlist_list" />
+    <fragment
+        android:id="@+id/fragmentSignUp"
+        android:name="it.unimib.exercise.andrea.mediahandler.ui.welcome.FragmentSignUp"
+        android:label="fragment_sign_up"
+        tools:layout="@layout/fragment_sign_up" >
+        <action
+            android:id="@+id/action_fragmentSignUp_to_activityMain2"
+            app:destination="@id/activityMain" />
+    </fragment>
 
 </navigation>

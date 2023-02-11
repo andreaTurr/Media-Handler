@@ -51,4 +51,11 @@ public interface PlaylistListDao {
     void deleteVideo(Video video);
     @Delete
     void delete(Playlist playlist);
+
+    @Query("DELETE FROM Playlist")
+    int deleteAllPlaylist();
+
+    @Query("DELETE FROM Video")
+    int deleteAllVideo();
+
 }

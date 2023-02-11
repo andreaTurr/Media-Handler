@@ -99,6 +99,8 @@ public class PlaylistLocalDataSource extends BasePlaylistLocalDataSource {
         });
     }
 
+
+
     @Override
     public void getPlaylistLastUpdate(String playlistId) {
         RoomDatabase.databaseWriteExecutor.execute(() -> {
@@ -180,6 +182,25 @@ public class PlaylistLocalDataSource extends BasePlaylistLocalDataSource {
                 playlistCallback.onSuccessFromLocalVideo(video);
             else
                 playlistCallback.onFailureFromLocalVideo(new Exception(LOCAL_SOURCE_ERROR));
+        });
+    }
+
+    @Override
+    public void deleteAll() {
+        RoomDatabase.databaseWriteExecutor.execute(() -> {
+            Log.d(TAG, "deleteAll");
+            int newsCounter = playlistListDao.getAllPlaylists().size();
+            int newsDeletedNews = playlistListDao.deleteAllPlaylist();
+            playlistListDao.deleteAllVideo();
+
+            Log.d(TAG, "newsCounter: " + newsCounter);
+            Log.d(TAG, "newsDeletedNews: " + newsDeletedNews);
+            // It means that everything has been deleted
+            if (newsCounter == newsDeletedNews) {
+                sharedPreferencesUtil.deleteAll(SHARED_PREFERENCES_FILE_NAME);
+                playlistCallback.onSuccessDeletion();
+            }
+
         });
     }
 

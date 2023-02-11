@@ -36,4 +36,11 @@
     <string name="videoDescription">Description of video</string>
     <string name="detailed_time">Total hours: 10h 13m 12s</string>
     <string name="updating">updating</string>
+    <string name="error_password">Password should be at least 6 characters</string>
+    <string name="error_email">Insert a valid email address</string>
+    <string name="error_login_password_message">The password is invalid</string>
+    <string name="error_login_user_message">There is no user record corresponding to this identifier</string>
+    <string name="check_login_data_message">Check the data you inserted</string>
+    <string name="error_user_collision_message">The email address is already in use by another account</string>
+    <string name="logout">Logout</string>
 </resources>

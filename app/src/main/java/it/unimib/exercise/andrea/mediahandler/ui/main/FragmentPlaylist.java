@@ -1,0 +1,214 @@
+package it.unimib.exercise.andrea.mediahandler.ui.main;
+
+import static it.unimib.exercise.andrea.mediahandler.util.Constants.DIVIDER_INSET;
+import static it.unimib.exercise.andrea.mediahandler.util.Constants.LAST_UPDATE_VIDEO_LIST;
+import static it.unimib.exercise.andrea.mediahandler.util.Constants.SHARED_PREFERENCES_FILE_NAME;
+
+import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.MenuProvider;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.google.android.material.divider.MaterialDividerItemDecoration;
+import com.google.android.material.snackbar.Snackbar;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import it.unimib.exercise.andrea.mediahandler.R;
+import it.unimib.exercise.andrea.mediahandler.adapters.AdapterPlaylistRecView;
+import it.unimib.exercise.andrea.mediahandler.models.Result;
+import it.unimib.exercise.andrea.mediahandler.models.playlistItem.Video;
+import it.unimib.exercise.andrea.mediahandler.repository.playlist.IPlaylistRepositoryWithLiveData;
+import it.unimib.exercise.andrea.mediahandler.util.ErrorMessagesUtil;
+import it.unimib.exercise.andrea.mediahandler.util.ServiceLocator;
+import it.unimib.exercise.andrea.mediahandler.util.SharedPreferencesUtil;
+
+/**
+ * A simple {@link Fragment} subclass.
+ * create an instance of this fragment.
+ */
+public class FragmentPlaylist extends Fragment {
+    private static final String TAG = FragmentPlaylist.class.getSimpleName();
+    private AdapterPlaylistRecView adapterPlaylistRecView;
+    private List<Video> videoList;
+    private SharedPreferencesUtil sharedPreferencesUtil;
+    private ViewModelPlaylist viewModelPlaylist;
+    String playlistId;
+    String playlistTitle;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        IPlaylistRepositoryWithLiveData playlistRepositoryWithLiveData =
+                ServiceLocator.getInstance().getPlaylistRepository(
+                        requireActivity().getApplication(),
+                        requireActivity().getApplication().getResources().getBoolean(R.bool.debug_mode)
+                );
+        if (playlistRepositoryWithLiveData != null) {
+            // This is the way to create a ViewModel with custom parameters
+            // (see ViewModelPlaylistFactory class for the implementation details)
+            viewModelPlaylist = new ViewModelProvider(
+                    requireActivity(),
+                    new ViewModelPlaylistFactory(playlistRepositoryWithLiveData)).get(ViewModelPlaylist.class);
+        } else {
+            Snackbar.make(requireActivity().findViewById(android.R.id.content),
+                    getString(R.string.unexpected_error), Snackbar.LENGTH_SHORT).show();
+        }
+
+        videoList = new ArrayList<>();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_playlist, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        //requireActivity().removeMenuProvider();
+        requireActivity().addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                menu.clear();
+                menuInflater.inflate(R.menu.top_app_bar, menu);
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                NavHostFragment navHostFragment = (NavHostFragment) getActivity().getSupportFragmentManager()
+                        .findFragmentById(R.id.nav_host_fragment_main);
+                NavController navController = navHostFragment.getNavController();
+                if(navController.getCurrentDestination().getId() == R.id.fragmentPlaylist) {
+                    switch(menuItem.getItemId()){
+                        case R.id.topAppBarInfo:
+                            Video[] videoArray = videoList.toArray(new Video[0]);
+                            FragmentPlaylistDirections.ActionFragmentPlaylistToFragmentPlaylistDetail action =
+                                    FragmentPlaylistDirections.actionFragmentPlaylistToFragmentPlaylistDetail(
+                                            videoArray, playlistId, playlistTitle);
+                            navController.navigate(action);
+                            break;
+                        case R.id.topAppBarRefresh:
+                            viewModelPlaylist.getPlaylistFromId(playlistId, true);
+                            Snackbar.make(requireActivity().findViewById(android.R.id.content),
+                                    getString(R.string.updating), Snackbar.LENGTH_SHORT).show();
+                            break;
+                    }
+                }
+
+
+                return false;
+            }
+
+            @Override
+            public void onPrepareMenu(@NonNull Menu menu) {
+                NavHostFragment navHostFragment = (NavHostFragment) getActivity().getSupportFragmentManager()
+                        .findFragmentById(R.id.nav_host_fragment_main);
+                NavController navController = navHostFragment.getNavController();
+                if(navController.getCurrentDestination().getId() == R.id.fragmentPlaylist) {
+                    MenuProvider.super.onPrepareMenu(menu);
+                    MenuItem item = menu.findItem(R.id.topAppBarDelete);
+                    item.setVisible(false);
+                }
+            }
+        }, this.getViewLifecycleOwner());
+        //get value passed from originating action fragment
+        playlistId = FragmentPlaylistArgs.fromBundle(getArguments()).getPlaylistId();
+        playlistTitle = FragmentPlaylistArgs.fromBundle(getArguments()).getPlaylistTitle();
+
+
+        ((AppCompatActivity) requireActivity()).getSupportActionBar().setTitle(playlistTitle);
+        Log.d(TAG, "onViewCreated: get playlist: " + playlistId);
+        TextView titleOfPlaylist = view.findViewById(R.id.playlistTitle);
+        titleOfPlaylist.setText(playlistTitle);
+
+        RecyclerView recyclerViewPlaylistItems = view.findViewById(R.id.recyclerview_playlist);
+        LinearLayoutManager layoutManager =
+                new LinearLayoutManager(requireContext(),
+                        LinearLayoutManager.VERTICAL, false);
+
+        adapterPlaylistRecView = new AdapterPlaylistRecView(
+                videoList,
+                getActivity().getApplication(),
+                new AdapterPlaylistRecView.OnItemClickListener() {
+                    @Override
+                    public void onVideoClick(Video video, int position) {
+                        //Snackbar.make(view, video.getSnippet().getTitle(), Snackbar.LENGTH_SHORT).show();
+                        // method to pass argument between fragments of navigation components
+                        // https://developer.android.com/guide/navigation/navigation-pass-data#samples
+                        Log.d(TAG, "onPlaylistClick videoId: " + video.getContentDetails().getVideoId());
+                        FragmentPlaylistDirections.ActionFragmentPlaylistToVideoPlayer action =
+                                FragmentPlaylistDirections.actionFragmentPlaylistToVideoPlayer(video, position);
+                        Navigation.findNavController(view).navigate(action);
+                    }
+                });
+        recyclerViewPlaylistItems.setLayoutManager(layoutManager);
+        recyclerViewPlaylistItems.setAdapter(adapterPlaylistRecView);
+        sharedPreferencesUtil = new SharedPreferencesUtil(requireActivity().getApplication());
+        String lastUpdate = "0";
+        if (sharedPreferencesUtil.readStringData(
+                SHARED_PREFERENCES_FILE_NAME, LAST_UPDATE_VIDEO_LIST) != null) {
+            lastUpdate = sharedPreferencesUtil.readStringData(
+                    SHARED_PREFERENCES_FILE_NAME, LAST_UPDATE_VIDEO_LIST);
+        }
+        //divider between items of recycle view
+        MaterialDividerItemDecoration divider = new MaterialDividerItemDecoration(getContext(),
+                layoutManager.getOrientation());
+        //divider.setDividerInsetStart(DIVIDER_INSET);
+        divider.setDividerInsetEnd(DIVIDER_INSET);
+        divider.setLastItemDecorated(false);
+        recyclerViewPlaylistItems.addItemDecoration(divider);
+
+        viewModelPlaylist.getPlaylistFromId(playlistId, false).observe(getViewLifecycleOwner(), result -> {
+            if (result.isSuccess()){
+                Log.d(TAG, "onViewCreated: isSuccess");
+                int updateSize = this.videoList.size();
+                //Log.d(TAG, "result.isSuccess: " + videoList);
+                this.videoList.clear();
+                this.videoList.addAll(((Result.ResultPlaylistItemSuccess) result).getData().getVideoList());
+                if(this.videoList.size() >= updateSize){
+                    updateSize = this.videoList.size();
+                }
+                //if nothing has been deleted
+                adapterPlaylistRecView.notifyItemRangeChanged(0, updateSize);
+                Log.d(TAG, "result.isSuccess: " + videoList);
+                //progressBar.setVisibility(View.GONE);
+            }else {
+                ErrorMessagesUtil errorMessagesUtil =
+                        new ErrorMessagesUtil(requireActivity().getApplication());
+                Snackbar.make(view, errorMessagesUtil.getErrorMessage(((
+                                Result.Error)result).getMessage()),
+                        Snackbar.LENGTH_SHORT).show();
+                Log.d(TAG, "observe: not success");
+            }
+        } );
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        adapterPlaylistRecView.notifyItemRangeRemoved(0, videoList.size());
+    }
+}

@@ -4,10 +4,12 @@ import android.app.Application;
 
 import it.unimib.exercise.andrea.mediahandler.R;
 import it.unimib.exercise.andrea.mediahandler.database.RoomDatabase;
-import it.unimib.exercise.andrea.mediahandler.repository.IMediaRepository;
-import it.unimib.exercise.andrea.mediahandler.repository.IPlaylistRepositoryWithLiveData;
-import it.unimib.exercise.andrea.mediahandler.repository.MediaRepository;
-import it.unimib.exercise.andrea.mediahandler.repository.PlaylistRepositoryWithLiveData;
+import it.unimib.exercise.andrea.mediahandler.repository.media.IMediaRepository;
+import it.unimib.exercise.andrea.mediahandler.repository.playlist.IPlaylistRepositoryWithLiveData;
+import it.unimib.exercise.andrea.mediahandler.repository.media.MediaRepository;
+import it.unimib.exercise.andrea.mediahandler.repository.playlist.PlaylistRepositoryWithLiveData;
+import it.unimib.exercise.andrea.mediahandler.repository.user.IUserRepository;
+import it.unimib.exercise.andrea.mediahandler.repository.user.UserRepository;
 import it.unimib.exercise.andrea.mediahandler.service.YoutubeApiService;
 import it.unimib.exercise.andrea.mediahandler.source.playlist.BasePlaylistLocalDataSource;
 import it.unimib.exercise.andrea.mediahandler.source.playlist.BasePlaylistRemoteDataSource;
@@ -15,6 +17,10 @@ import it.unimib.exercise.andrea.mediahandler.source.media.MediaDataSource;
 import it.unimib.exercise.andrea.mediahandler.source.playlist.PlaylistLocalDataSource;
 import it.unimib.exercise.andrea.mediahandler.source.playlist.PlaylistMockRemoteDataSource;
 import it.unimib.exercise.andrea.mediahandler.source.playlist.PlaylistRemoteDataSource;
+import it.unimib.exercise.andrea.mediahandler.source.user.BaseUserAuthenticationRemoteDataSource;
+import it.unimib.exercise.andrea.mediahandler.source.user.BaseUserDataRemoteDataSource;
+import it.unimib.exercise.andrea.mediahandler.source.user.UserAuthenticationRemoteDataSource;
+import it.unimib.exercise.andrea.mediahandler.source.user.UserDataRemoteDataSource;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -108,6 +114,25 @@ public class ServiceLocator {
         MediaDataSource mediaDataSource = new MediaDataSource(
                 getRoomDatabase(application), application.getApplicationContext());
         return new MediaRepository(mediaDataSource);
+    }
+
+    public IUserRepository getUserRepository(Application application) {
+        SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(application);
+
+        BaseUserAuthenticationRemoteDataSource userRemoteAuthenticationDataSource =
+                new UserAuthenticationRemoteDataSource();
+
+        BaseUserDataRemoteDataSource userDataRemoteDataSource =
+                new UserDataRemoteDataSource(sharedPreferencesUtil);
+
+        DataEncryptionUtil dataEncryptionUtil = new DataEncryptionUtil(application);
+
+        BasePlaylistLocalDataSource playlistLocalDataSource = new PlaylistLocalDataSource(
+                getRoomDatabase(application),
+                sharedPreferencesUtil);
+
+        return new UserRepository(userRemoteAuthenticationDataSource,
+                userDataRemoteDataSource, playlistLocalDataSource);
     }
 
 }

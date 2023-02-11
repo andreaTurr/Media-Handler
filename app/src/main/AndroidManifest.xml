@@ -11,6 +11,7 @@
     <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
 
     <!-- Required only if your app needs to access audio files
+    android:theme="@style/Theme.MediaHandler"
          that other apps created. -->
     <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
 
@@ -18,37 +19,38 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/ic_launcher"
         android:supportsRtl="true"
-        android:theme="@style/Theme.MediaHandler"
+
+        android:theme="@style/themeYoutube"
         tools:targetApi="31" >
         <activity
-            android:name=".ui.ActivityLoginGoogle"
+            android:name=".ui.welcome.ActivityLoginGoogle"
             android:exported="false" >
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui.ActivityMain"
+            android:name=".ui.main.ActivityMain"
             android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
             android:exported="true"
             android:theme="@style/themeYoutube">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
 
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui.ActivityWelcome"
+            android:name=".ui.welcome.ActivityWelcome"
             android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />

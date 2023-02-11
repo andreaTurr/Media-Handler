@@ -6,15 +6,19 @@
     app:startDestination="@id/nested_youtube">
     <fragment
         android:id="@+id/fragment_settings"
-        android:name="it.unimib.exercise.andrea.mediahandler.ui.FragmentSettings"
+        android:name="it.unimib.exercise.andrea.mediahandler.ui.main.FragmentSettings"
         android:label="fragment_settings"
-        tools:layout="@layout/fragment_settings" />
+        tools:layout="@layout/fragment_settings" >
+        <action
+            android:id="@+id/action_fragment_settings_to_activityWelcome"
+            app:destination="@id/activityWelcome" />
+    </fragment>
     <navigation
         android:id="@+id/nested_youtube"
         app:startDestination="@id/fragment_login_auth">
         <fragment
             android:id="@+id/fragment_login_auth"
-            android:name="it.unimib.exercise.andrea.mediahandler.ui.FragmentLoginAuth"
+            android:name="it.unimib.exercise.andrea.mediahandler.ui.main.FragmentLoginAuth"
             android:label="fragment_login_auth"
             tools:layout="@layout/fragment_login_auth">
             <action
@@ -23,7 +27,7 @@
         </fragment>
         <fragment
             android:id="@+id/fragment_playlist_list"
-            android:name="it.unimib.exercise.andrea.mediahandler.ui.FragmentPlayListList"
+            android:name="it.unimib.exercise.andrea.mediahandler.ui.main.FragmentPlayListList"
             android:label="@string/my_playlists"
             tools:layout="@layout/fragment_playlist_list">
             <action
@@ -33,7 +37,7 @@
 
         <fragment
             android:id="@+id/fragmentPlaylist"
-            android:name="it.unimib.exercise.andrea.mediahandler.ui.FragmentPlaylist"
+            android:name="it.unimib.exercise.andrea.mediahandler.ui.main.FragmentPlaylist"
             android:label="fragment_playlist"
             tools:layout="@layout/fragment_playlist">
             <argument
@@ -52,7 +56,7 @@
         </fragment>
         <fragment
             android:id="@+id/videoPlayer"
-            android:name="it.unimib.exercise.andrea.mediahandler.ui.FragmentVideoPlayer"
+            android:name="it.unimib.exercise.andrea.mediahandler.ui.main.FragmentVideoPlayer"
             android:label="fragment_video_player"
             tools:layout="@layout/fragment_video_player">
             <argument
@@ -64,7 +68,7 @@
         </fragment>
         <fragment
             android:id="@+id/fragmentPlaylistDetail"
-            android:name="it.unimib.exercise.andrea.mediahandler.ui.FragmentPlaylistDetail"
+            android:name="it.unimib.exercise.andrea.mediahandler.ui.main.FragmentPlaylistDetail"
             android:label="fragment_playlist_detail"
             tools:layout="@layout/fragment_playlist_detail" >
             <argument
@@ -82,7 +86,7 @@
         app:startDestination="@id/fragment_video">
         <fragment
             android:id="@+id/fragment_video"
-            android:name="it.unimib.exercise.andrea.mediahandler.ui.FragmentLocalVideoList"
+            android:name="it.unimib.exercise.andrea.mediahandler.ui.main.FragmentLocalVideoList"
             android:label="fragment_video"
             tools:layout="@layout/fragment_video" >
             <action
@@ -91,7 +95,7 @@
         </fragment>
         <fragment
             android:id="@+id/fragmentLocalVideoPlayer"
-            android:name="it.unimib.exercise.andrea.mediahandler.ui.FragmentLocalVideoPlayer"
+            android:name="it.unimib.exercise.andrea.mediahandler.ui.main.FragmentLocalVideoPlayer"
             android:label="fragment_local_video_player"
             tools:layout="@layout/fragment_local_video_player" >
             <argument
@@ -103,7 +107,7 @@
         app:startDestination="@id/fragment_audio">
         <fragment
             android:id="@+id/fragment_audio"
-            android:name="it.unimib.exercise.andrea.mediahandler.ui.FragmentLocalAudioList"
+            android:name="it.unimib.exercise.andrea.mediahandler.ui.main.FragmentLocalAudioList"
             android:label="fragment_audio"
             tools:layout="@layout/fragment_audio" >
             <action
@@ -112,7 +116,7 @@
         </fragment>
         <fragment
             android:id="@+id/fragmentAudioPlayer"
-            android:name="it.unimib.exercise.andrea.mediahandler.ui.FragmentLocalAudioPlayer"
+            android:name="it.unimib.exercise.andrea.mediahandler.ui.main.FragmentLocalAudioPlayer"
             android:label="fragment_local_audio_player"
             tools:layout="@layout/fragment_local_audio_player" >
             <argument
@@ -120,4 +124,9 @@
                 app:argType="it.unimib.exercise.andrea.mediahandler.models.localAudio.LocalAudio" />
         </fragment>
     </navigation>
+    <activity
+        android:id="@+id/activityWelcome"
+        android:name="it.unimib.exercise.andrea.mediahandler.ui.welcome.ActivityWelcome"
+        android:label="activity_welcome"
+        tools:layout="@layout/activity_welcome" />
 </navigation>

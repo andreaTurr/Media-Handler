@@ -25,4 +25,6 @@ public abstract class BasePlaylistLocalDataSource {
     public abstract void insertVideoList(PlaylistItemApiResponse playlistItemApiResponse, String playlistId);
     public abstract void insertVideo(Video video);
     public abstract void getVideo(String videoId);
+
+    public abstract void deleteAll();
 }

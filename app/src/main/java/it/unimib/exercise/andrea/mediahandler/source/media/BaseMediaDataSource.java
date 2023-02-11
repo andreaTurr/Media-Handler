@@ -16,4 +16,7 @@ public abstract class BaseMediaDataSource {
     public abstract void getAudios();
     public abstract void getInsertLocalAudio(LocalAudio localAudio);
     public abstract void updateLocalAudio(LocalAudio localAudio);
+
+    public abstract void deleteMediaData();
+
 }

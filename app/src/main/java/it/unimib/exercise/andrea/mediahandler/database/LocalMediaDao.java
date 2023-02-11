@@ -38,4 +38,12 @@ public interface LocalMediaDao {
     void deleteLocalVideo(LocalVideo video);
     @Delete
     void deleteLocalAudio(LocalAudio audio);
+
+
+    @Query("DELETE FROM LocalVideo")
+    void deleteAllVideoData();
+
+    @Query("DELETE FROM LocalVideo")
+    void deleteAllAudioData();
+
 }
