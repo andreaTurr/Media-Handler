@@ -62,9 +62,9 @@ public class FragmentLoginAuth extends Fragment {
         //mStateManager = AuthStateManager.getInstance(getActivity()) ;
         mStateManager = AuthStateManager.getInstance(getActivity()) ;
         //mAuthService = new AuthorizationService(getActivity()) ;
-
+        //mStateManager.replace(new AuthState());
         if (mStateManager != null && mStateManager.getCurrent().isAuthorized()) {
-            Log.d(TAG, "onViewCreated: already authorized");
+            Log.d(TAG, "onCreate: already authorized");
             //Navigation.findNavController(requireView()).navigate(R.id.action_fragmentLoginAuth_to_fragmentPlaylistList);
         }else{
             AuthorizationServiceConfiguration serviceConfig = new AuthorizationServiceConfiguration(

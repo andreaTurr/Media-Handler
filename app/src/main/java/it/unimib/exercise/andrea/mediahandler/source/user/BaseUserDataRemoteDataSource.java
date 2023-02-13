@@ -1,8 +1,10 @@
 package it.unimib.exercise.andrea.mediahandler.source.user;
 
-import java.util.Set;
+import java.util.List;
 
 import it.unimib.exercise.andrea.mediahandler.models.User;
+import it.unimib.exercise.andrea.mediahandler.models.playlistItem.Video;
+import it.unimib.exercise.andrea.mediahandler.models.playlists.Playlist;
 import it.unimib.exercise.andrea.mediahandler.repository.user.UserResponseCallback;
 
 /**
@@ -17,6 +19,8 @@ public abstract class BaseUserDataRemoteDataSource {
 
     public abstract void saveUserData(User user);
     public abstract void getUserPlaylists(String idToken);
+    public abstract void getUserVideos(String idToken);
     public abstract void getUserPreferences(String idToken);
-    public abstract void saveUserPreferences(String favoriteCountry, Set<String> favoriteTopics, String idToken);
+    public abstract void saveUserPlaylists(List<Playlist> playlistList, String idToken);
+    public abstract void saveUserVideos(List<Video> videoList, String idToken);
 }

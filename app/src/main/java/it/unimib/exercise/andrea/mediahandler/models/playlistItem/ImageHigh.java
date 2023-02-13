@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.room.ColumnInfo;
+import androidx.room.Ignore;
 
 import java.util.Objects;
 
@@ -14,7 +15,8 @@ public class ImageHigh implements Parcelable {
     public ImageHigh(String url) {
         this.url = url;
     }
-
+    @Ignore
+    public ImageHigh(){}
     public String getUrl() {
         return url;
     }

@@ -3,8 +3,6 @@ package it.unimib.exercise.andrea.mediahandler.ui.welcome;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import java.util.Set;
-
 import it.unimib.exercise.andrea.mediahandler.models.Result;
 import it.unimib.exercise.andrea.mediahandler.models.User;
 import it.unimib.exercise.andrea.mediahandler.repository.user.IUserRepository;
@@ -16,6 +14,7 @@ public class ViewModelUser extends ViewModel {
     private MutableLiveData<Result> userMutableLiveData;
     private MutableLiveData<Result> userPlaylistsMutableLiveData;
     private MutableLiveData<Result> userPreferencesMutableLiveData;
+    private MutableLiveData<Result> syncMutableLiveData = null;
     private boolean authenticationError;
 
     public ViewModelUser(IUserRepository userRepository) {
@@ -38,17 +37,17 @@ public class ViewModelUser extends ViewModel {
         return userMutableLiveData;
     }
 
-    public MutableLiveData<Result> getPlaylistsMutableLiveData(String idToken) {
-        if (userPlaylistsMutableLiveData == null) {
-            getUserPlaylists(idToken);
-        }
+    public MutableLiveData<Result> updateLocalData(String idToken) {
+        getYTData(idToken);
         return userPlaylistsMutableLiveData;
     }
 
-    public void saveUserPreferences(String favoriteCountry, Set<String> favoriteTopics, String idToken) {
+    public MutableLiveData<Result> saveYTData() {
+        String idToken = getLoggedUser().getIdToken();
         if (idToken != null) {
-            userRepository.saveUserPreferences(favoriteCountry, favoriteTopics, idToken);
+            syncMutableLiveData = userRepository.saveUserYTData(idToken);
         }
+        return syncMutableLiveData;
     }
 
     public MutableLiveData<Result> getUserPreferences(String idToken) {
@@ -72,8 +71,8 @@ public class ViewModelUser extends ViewModel {
         return userMutableLiveData;
     }
 
-    private void getUserPlaylists(String idToken) {
-        userPlaylistsMutableLiveData = userRepository.getUserPlaylists(idToken);
+    private void getYTData(String idToken) {
+        userPlaylistsMutableLiveData = userRepository.getUserYTData(idToken);
     }
 
     public void getUser(String email, String password, boolean isUserRegistered) {

@@ -24,7 +24,6 @@ public class MediaRepository implements IMediaRepository, MediaCallback {
         this.localAudiosLiveData = new MutableLiveData<>();
         this.localVideosLiveData = new MutableLiveData<>();
         this.mediaDataSource.setPlaylistCallback(this);
-
     }
 
     @Override

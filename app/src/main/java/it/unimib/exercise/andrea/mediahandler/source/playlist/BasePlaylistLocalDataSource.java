@@ -16,15 +16,17 @@ public abstract class BasePlaylistLocalDataSource {
         this.playlistCallback = playlistCallback;
     }
     //Playlist
-    public abstract void getPlaylistList();
-    public abstract void insertPlaylistsList(PlaylistApiResponse playlistItemApiResponse);
+    public abstract void getPlaylistList(int responseType);
+    public abstract void insertPlaylistsList(PlaylistApiResponse playlistItemApiResponse, boolean setLastUpdate, int responseType);
     public abstract void getPlaylistLastUpdate(String playlistId);
 
     //Videolist
     public abstract void getVideoList(String playlistId);
-    public abstract void insertVideoList(PlaylistItemApiResponse playlistItemApiResponse, String playlistId);
+    public abstract void insertVideoList(PlaylistItemApiResponse playlistItemApiResponse, String playlistId, boolean setUpdateTime, int responseType);
     public abstract void insertVideo(Video video);
     public abstract void getVideo(String videoId);
 
     public abstract void deleteAll();
+
+    public abstract void getAllVideos();
 }

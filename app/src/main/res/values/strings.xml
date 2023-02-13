@@ -43,4 +43,17 @@
     <string name="check_login_data_message">Check the data you inserted</string>
     <string name="error_user_collision_message">The email address is already in use by another account</string>
     <string name="logout">Logout</string>
+    <string name="SyncButton">Synchronize</string>
+    <string name="sync_success_upl">Synchronization upload successfull</string>
+    <string name="sync_error_upl">Synchronization upload error</string>
+    <string name="sync_success_dwn">Synchronization download successfull</string>
+    <string name="sync_error_dwn">Synchronization download error</string>
+    <string name="fragment_settings_name">Settings</string>
+    <string name="fragment_login_auth_name">Authorization Google</string>
+    <string name="fragment_video_player">Local Video Player</string>
+    <string name="fragment_audio">Local Audio tracks</string>
+    <string name="fragment_video">Local Videos</string>
+    <string name="fragment_local_audio_player">Local Audio Player</string>
+    <string name="fragment_local_video_player">Local Video Player</string>
+    <string name="LoadingFromRemote">Loading From Database</string>
 </resources>

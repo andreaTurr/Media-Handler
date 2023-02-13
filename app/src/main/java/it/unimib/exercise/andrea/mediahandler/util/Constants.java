@@ -61,5 +61,6 @@ public class Constants {
     public static final String FIREBASE_REALTIME_DATABASE = "https://myuniproject-371314-default-rtdb.europe-west1.firebasedatabase.app/";
     public static final String FIREBASE_USERS_COLLECTION = "users";
     public static final String FIREBASE_PLAYLISTS_COLLECTION = "saved_playlists";
+    public static final String FIREBASE_VIDEOS_COLLECTION = "saved_videos";
     public static final int MINIMUM_PASSWORD_LENGTH = 6;
 }

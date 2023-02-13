@@ -8,7 +8,7 @@ public interface PlaylistCallback {
     //Playlist
     void onSuccessFromRemotePlaylistList(PlaylistApiResponse newsApiResponse);
     void onFailureFromRemotePlaylistList(Exception exception);
-    void onSuccessFromLocalPlaylistList(PlaylistApiResponse playlistApiResponse);
+    void onSuccessFromLocalPlaylistList(PlaylistApiResponse playlistApiResponse, int type);
     void onFailureFromLocalPlaylistList(Exception exception);
     void onSuccessFromLocalLastUpdate(Long lastUpdate, String playlistId);
     //void onFailureFromLocalLastUpdate(String playlistId);
@@ -16,7 +16,7 @@ public interface PlaylistCallback {
     //PlaylistItem
     void onSuccessFromRemoteVideoList(PlaylistItemApiResponse response, String playlistId) ;
     void onFailureFromRemoteVideoList(Exception exception);
-    void onSuccessFromLocalVideoList(PlaylistItemApiResponse playlistItemApiResponse);
+    void onSuccessFromLocalVideoList(PlaylistItemApiResponse playlistItemApiResponse, int type);
     void onFailureFromLocalVideoList(Exception exception);
 
     //Video

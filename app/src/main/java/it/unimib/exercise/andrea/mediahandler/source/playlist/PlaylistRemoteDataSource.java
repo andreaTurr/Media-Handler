@@ -102,8 +102,11 @@ public class PlaylistRemoteDataSource extends BasePlaylistRemoteDataSource {
                 public void execute(@Nullable String accessToken,
                                     @Nullable String idToken,
                                     @Nullable AuthorizationException ex) {
+
+                    //mStateManager.updateAfterTokenResponse(resp, ex) ;
                     Call<PlaylistApiResponse> playlistApiResponse = youtubeApiService.getPlaylistsList(
                             String.format("Bearer %s", accessToken));
+                    //Log.d(TAG, "accessToken: " + accessToken);
                     playlistApiResponse.enqueue(new Callback<PlaylistApiResponse>() {
                         @Override
                         public void onResponse(@NonNull Call<PlaylistApiResponse> call,

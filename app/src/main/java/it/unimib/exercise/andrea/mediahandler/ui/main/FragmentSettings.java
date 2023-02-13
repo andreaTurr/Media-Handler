@@ -31,10 +31,10 @@ import it.unimib.exercise.andrea.mediahandler.util.ServiceLocator;
  * create an instance of this fragment.
  */
 public class FragmentSettings extends Fragment {
-
     private static final String TAG = FragmentSettings.class.getSimpleName();
     private ViewModelUser userViewModel;
     private FragmentSettingsBinding fragmentSettingsBinding;
+    private ViewModelPlaylist viewModelPlaylist;
 
     public FragmentSettings() {
         // Required empty public constructor
@@ -83,6 +83,23 @@ public class FragmentSettings extends Fragment {
                 } else {
                     Snackbar.make(view,
                             requireActivity().getString(R.string.unexpected_error),
+                            Snackbar.LENGTH_SHORT).show();
+                }
+            });
+        });
+
+        fragmentSettingsBinding.buttonSync.setOnClickListener(view1 -> {
+            userViewModel.saveYTData().observe(getViewLifecycleOwner(), result -> {
+
+                if (result.isSuccess()) {
+                    Log.d(TAG, "savePlaylistList: result success" );
+                    Snackbar.make(view,
+                            requireActivity().getString(R.string.sync_success_upl),
+                            Snackbar.LENGTH_SHORT).show();
+                } else {
+                    Log.d(TAG, "savePlaylistList: result error" );
+                    Snackbar.make(view,
+                            requireActivity().getString(R.string.sync_error_upl),
                             Snackbar.LENGTH_SHORT).show();
                 }
             });

@@ -166,10 +166,11 @@ public class FragmentLocalVideoPlayer extends Fragment {
     }
     @Override
     public void onPause() {
-        //todo save current time in database
         exitLayoutFullScreenLandscape();
-        localVideo.setCurrentTime(player.getCurrentPosition());
-        viewModelMedia.updateLocalVideo(localVideo);
+        if (player.getCurrentPosition() != 0){
+            localVideo.setCurrentTime(player.getCurrentPosition());
+            viewModelMedia.updateLocalVideo(localVideo);
+        }
         super.onPause();
     }
 

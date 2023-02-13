@@ -3,13 +3,16 @@ package it.unimib.exercise.andrea.mediahandler.models.playlistItem;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.room.Ignore;
+
 public class VideoContentDetails implements Parcelable {
     // The ID that YouTube uses to uniquely identify a video.
     // To retrieve the video resource, set the id query parameter to this value in your API request.
     private String videoId;
 
     public VideoContentDetails(String videoId) {this.videoId = videoId;}
-
+    @Ignore
+    public VideoContentDetails() {}
     public String getVideoId() {return videoId;}
     public void setVideoId(String videoId) {this.videoId = videoId;}
 

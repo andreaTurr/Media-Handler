@@ -23,6 +23,8 @@ public class VideoSnippet implements Parcelable {
         this.position = position;
         this.description = description;
     }
+    @Ignore
+    public VideoSnippet(){}
 
     public String getTitle() {
         return title;

@@ -17,23 +17,29 @@ public class VideoPartial {
     private VideoSnippet snippet;
     @Embedded
     private VideoContentDetails contentDetails;
+    private float currentSecond;
+
 
     @Ignore
     public VideoPartial(Video video) {
         this.idVideoInPlaylist = video.getIdVideoInPlaylist();
         this.snippet = video.getSnippet();
         this.contentDetails = video.getContentDetails();
+        this.currentSecond = video.getCurrentSecond();
     }
 
-    public VideoPartial(String idVideoInPlaylist, VideoSnippet snippet, VideoContentDetails contentDetails) {
+    public VideoPartial(String idVideoInPlaylist, VideoSnippet snippet, VideoContentDetails contentDetails, float currentSecond) {
         this.idVideoInPlaylist = idVideoInPlaylist;
         this.snippet = snippet;
         this.contentDetails = contentDetails;
+        this.currentSecond = currentSecond;
     }
 
     public String getIdVideoInPlaylist() {
         return idVideoInPlaylist;
     }
+
+
 
     public void setIdVideoInPlaylist(String idVideoInPlaylist) {
         this.idVideoInPlaylist = idVideoInPlaylist;
@@ -53,6 +59,14 @@ public class VideoPartial {
 
     public void setContentDetails(VideoContentDetails contentDetails) {
         this.contentDetails = contentDetails;
+    }
+
+    public float getCurrentSecond() {
+        return currentSecond;
+    }
+
+    public void setCurrentSecond(float currentSecond) {
+        this.currentSecond = currentSecond;
     }
 }
 

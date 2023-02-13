@@ -58,4 +58,6 @@ public interface PlaylistListDao {
     @Query("DELETE FROM Video")
     int deleteAllVideo();
 
+    @Query("SELECT * FROM Video")
+    List<Video> getAllVideos();
 }

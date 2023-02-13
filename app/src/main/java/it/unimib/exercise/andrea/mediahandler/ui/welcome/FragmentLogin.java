@@ -44,6 +44,7 @@ import it.unimib.exercise.andrea.mediahandler.models.Result;
 import it.unimib.exercise.andrea.mediahandler.models.User;
 import it.unimib.exercise.andrea.mediahandler.repository.user.IUserRepository;
 import it.unimib.exercise.andrea.mediahandler.ui.main.ActivityMain;
+import it.unimib.exercise.andrea.mediahandler.ui.main.FragmentPlaylistDirections;
 import it.unimib.exercise.andrea.mediahandler.util.DataEncryptionUtil;
 import it.unimib.exercise.andrea.mediahandler.util.ServiceLocator;
 
@@ -54,7 +55,6 @@ import org.apache.commons.validator.routines.EmailValidator;
  */
 public class FragmentLogin extends Fragment {
     private static final String TAG = FragmentLogin.class.getSimpleName();
-    private static final boolean USE_NAVIGATION_COMPONENT = true;
 
     private ActivityResultLauncher<IntentSenderRequest> activityResultLauncher;
     private ActivityResultContracts.StartIntentSenderForResult startIntentSenderForResult;
@@ -69,13 +69,15 @@ public class FragmentLogin extends Fragment {
 
     private DataEncryptionUtil dataEncryptionUtil;
 
+    private User userLocal;
+
     public FragmentLogin() {
         // Required empty public constructor
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //todo ask for user permissions
+        Log.d(TAG, "onCreate: ");
         IUserRepository userRepository = ServiceLocator.getInstance().
                 getUserRepository(requireActivity().getApplication());
         userViewModel = new ViewModelProvider(
@@ -83,7 +85,7 @@ public class FragmentLogin extends Fragment {
                 new ViewModelFactoryUser(userRepository)).get(ViewModelUser.class);
         dataEncryptionUtil = new DataEncryptionUtil(requireActivity().getApplication());
 
-        oneTapClient = Identity.getSignInClient(requireActivity());
+        //oneTapClient = Identity.getSignInClient(requireActivity());
         signInRequest = BeginSignInRequest.builder()
                 .setPasswordRequestOptions(BeginSignInRequest.PasswordRequestOptions.builder()
                         .setSupported(true)
@@ -114,7 +116,12 @@ public class FragmentLogin extends Fragment {
                                 User user = ((Result.UserResponseSuccess) authenticationResult).getData();
                                 saveLoginData(user.getEmail(), null, user.getIdToken());
                                 userViewModel.setAuthenticationError(false);
-                                retrieveUserInformationAndStartActivity(user, R.id.action_fragment_login_to_activityMain);
+                                //todo check if internet: if so goto loading fragment, else goto ActivityMain
+                                FragmentLoginDirections.ActionFragmentLoginToFragmentLoading action =
+                                        FragmentLoginDirections.actionFragmentLoginToFragmentLoading(user.getIdToken());
+                                Navigation.findNavController(requireView()).navigate(action);
+
+                                //retrieveUserInformationAndStartActivity(user, R.id.action_fragment_login_to_activityMain);
                             } else {
                                 userViewModel.setAuthenticationError(true);
                                 progressIndicator.setVisibility(View.GONE);
@@ -136,15 +143,18 @@ public class FragmentLogin extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        if (userViewModel.getLoggedUser() != null) {
-            startActivityBasedOnCondition(ActivityMain.class,
-                        R.id.action_fragment_login_to_activityMain);
+        userLocal = userViewModel.getLoggedUser();
+        progressIndicator = view.findViewById(R.id.loading);
+        if (userLocal != null) {
+            FragmentLoginDirections.ActionFragmentLoginToFragmentLoading action =
+                    FragmentLoginDirections.actionFragmentLoginToFragmentLoading(userLocal.getIdToken());
+            Navigation.findNavController(requireView()).navigate(action);
+            //Navigation.findNavController(requireView()).navigate(R.id.action_fragment_login_to_fragmentLoading);
         }
 
         editTextEmail = view.findViewById(R.id.EditTextEmail);
         editTextPassword = view.findViewById(R.id.EditTextPassword);
-        progressIndicator = view.findViewById(R.id.loading);
+
 
         final Button buttonLogin = view.findViewById(R.id.button_login);
         //final Button buttonGoogleLogin = view.findViewById(R.id.button_google_login);
@@ -182,7 +192,10 @@ public class FragmentLogin extends Fragment {
                                     User user = ((Result.UserResponseSuccess) result).getData();
                                     saveLoginData(email, password, user.getIdToken());
                                     userViewModel.setAuthenticationError(false);
-                                    retrieveUserInformationAndStartActivity(user, R.id.action_fragment_login_to_activityMain);
+                                    FragmentLoginDirections.ActionFragmentLoginToFragmentLoading action =
+                                            FragmentLoginDirections.actionFragmentLoginToFragmentLoading(user.getIdToken());
+                                    Navigation.findNavController(requireView()).navigate(action);
+                                    //retrieveUserInformationAndStartActivity(user, R.id.action_fragment_login_to_fragmentLoading);
                                 } else {
                                     userViewModel.setAuthenticationError(true);
                                     progressIndicator.setVisibility(View.GONE);
@@ -199,7 +212,7 @@ public class FragmentLogin extends Fragment {
                         R.string.check_login_data_message, Snackbar.LENGTH_SHORT).show();
             }
         });
-
+        //todo implement google login
        /* buttonGoogleLogin.setOnClickListener(v -> oneTapClient.beginSignIn(signInRequest)
                 .addOnSuccessListener(requireActivity(), new OnSuccessListener<BeginSignInResult>() {
                     @Override
@@ -250,52 +263,13 @@ public class FragmentLogin extends Fragment {
         }
     }
 
-    private void retrieveUserInformationAndStartActivity(User user, int destination) {
-        progressIndicator.setVisibility(View.VISIBLE);
 
-        userViewModel.getPlaylistsMutableLiveData(user.getIdToken()).observe(
-                getViewLifecycleOwner(), userFavoriteNewsRetrievalResult -> {
-                    Log.d(TAG, "retrieveUserInformationAndStartActivity: result");
-                    progressIndicator.setVisibility(View.GONE);
-                    startActivityBasedOnCondition(ActivityMain.class, destination);
-                }
-        );
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_login, container, false);
-    }
-
-
-    /*@Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        Button buttonRegister = view.findViewById(R.id.button_register);
-        buttonRegister.setOnClickListener(view1 -> {
-            Navigation.findNavController(requireView()).navigate(R.id.action_fragment_login_to_activityMain);
-        });
-        Button buttonForgot = view.findViewById(R.id.button_forgot_password);
-        buttonForgot.setOnClickListener(view1 -> {
-            Navigation.findNavController(requireView()).navigate(R.id.action_fragment_login_to_fragmentLoginAuth);
-        });
-    }*/
-
-    /**
-     * Starts another Activity using Intent or NavigationComponent.
-     * @param destinationActivity The class of Activity to start.
-     * @param destination The ID associated with the action defined in welcome_nav_graph.xml.
-     */
-    private void startActivityBasedOnCondition(Class<?> destinationActivity, int destination) {
-        if (USE_NAVIGATION_COMPONENT) {
-            Navigation.findNavController(requireView()).navigate(destination);
-        } else {
-            Intent intent = new Intent(requireContext(), destinationActivity);
-            startActivity(intent);
-        }
-        requireActivity().finish();
     }
 
     /**

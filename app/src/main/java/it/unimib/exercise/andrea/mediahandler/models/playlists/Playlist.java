@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Embedded;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.util.Objects;
@@ -41,7 +42,8 @@ public class Playlist implements Parcelable {
         this.lastUpdate = lastUpdate;
         this.totalDuration = totalDuration;
     }
-
+    @Ignore
+    public Playlist(){}
 
     //getter and setters
 

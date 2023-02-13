@@ -5,7 +5,6 @@ import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 
 import java.util.List;
-import java.util.Set;
 
 import it.unimib.exercise.andrea.mediahandler.models.Result;
 import it.unimib.exercise.andrea.mediahandler.models.User;
@@ -29,8 +28,10 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Pl
     private final BaseUserDataRemoteDataSource userDataRemoteDataSource;
     private final BasePlaylistLocalDataSource playlistLocalDataSource;
     private final MutableLiveData<Result> userMutableLiveData;
-    private final MutableLiveData<Result> userPlaylistsMutableLiveData;
+    private final MutableLiveData<Result> syncUplodeMutableLiveData;
+    private final MutableLiveData<Result> syncDownMutableLiveData;
     private final MutableLiveData<Result> userPreferencesMutableLiveData;
+    private String idToken;
 
     public UserRepository(BaseUserAuthenticationRemoteDataSource userRemoteDataSource,
                           BaseUserDataRemoteDataSource userDataRemoteDataSource,
@@ -39,8 +40,9 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Pl
         this.userDataRemoteDataSource = userDataRemoteDataSource;
         this.playlistLocalDataSource = playlistLocalDataSource;
         this.userMutableLiveData = new MutableLiveData<>();
+        this.syncUplodeMutableLiveData = new MutableLiveData<>();
         this.userPreferencesMutableLiveData = new MutableLiveData<>();
-        this.userPlaylistsMutableLiveData = new MutableLiveData<>();
+        this.syncDownMutableLiveData = new MutableLiveData<>();
         this.userRemoteDataSource.setUserResponseCallback(this);
         this.userDataRemoteDataSource.setUserResponseCallback(this);
         this.playlistLocalDataSource.setPlaylistCallback(this);
@@ -57,15 +59,25 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Pl
     }
 
     @Override
-    public MutableLiveData<Result> getGoogleUser(String idToken) {
-        signInWithGoogle(idToken);
-        return userMutableLiveData;
+    public MutableLiveData<Result> saveUserYTData(String idToken) {
+        //saveUserYTData part 1
+        this.idToken = idToken;
+        playlistLocalDataSource.getPlaylistList(1);
+        return syncUplodeMutableLiveData;
     }
 
     @Override
-    public MutableLiveData<Result> getUserPlaylists(String idToken) {
+    public MutableLiveData<Result> getUserYTData(String idToken) {
+        //getUserYTData part 1
+        this.idToken = idToken;
         userDataRemoteDataSource.getUserPlaylists(idToken);
-        return userPlaylistsMutableLiveData;
+        return syncDownMutableLiveData;
+    }
+
+    @Override
+    public MutableLiveData<Result> getGoogleUser(String idToken) {
+        signInWithGoogle(idToken);
+        return userMutableLiveData;
     }
 
     @Override
@@ -100,10 +112,7 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Pl
         userRemoteDataSource.signInWithGoogle(token);
     }
 
-    @Override
-    public void saveUserPreferences(String favoriteCountry, Set<String> favoriteTopics, String idToken) {
-        userDataRemoteDataSource.saveUserPreferences(favoriteCountry, favoriteTopics, idToken);
-    }
+
 
     @Override
     public void onSuccessFromAuthentication(User user) {
@@ -126,7 +135,7 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Pl
 
     @Override
     public void onSuccessFromRemoteDatabase(List<Playlist> playlistList) {
-        playlistLocalDataSource.insertPlaylistsList(new PlaylistApiResponse(playlistList));
+        playlistLocalDataSource.insertPlaylistsList(new PlaylistApiResponse(playlistList), false, 1);
     }
 
     @Override
@@ -145,6 +154,18 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Pl
         playlistLocalDataSource.deleteAll();
     }
 
+    @Override
+    public void onSuccessFromPlaylistListSync(List<Playlist> playlistList, String idToken) {
+        //getUserYTData part 2
+        playlistLocalDataSource.insertPlaylistsList(new PlaylistApiResponse(playlistList), false, 2);
+    }
+
+    @Override
+    public void onSuccessFromVideoListSync(List<Video> videoList) {
+        //getUserYTData part 4
+        playlistLocalDataSource.insertVideoList(new PlaylistItemApiResponse(videoList), "", false, 1);
+    }
+
 
     @Override
     public void onSuccessFromRemotePlaylistList(PlaylistApiResponse newsApiResponse) {
@@ -157,8 +178,24 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Pl
     }
 
     @Override
-    public void onSuccessFromLocalPlaylistList(PlaylistApiResponse playlistApiResponse) {
-        //todo psta result del giro che recupera i minutaggi
+    public void onSuccessFromLocalPlaylistList(PlaylistApiResponse playlistApiResponse, int type) {
+        switch(type){
+            case 0:
+                Result.ResultPlaylistSuccess result = new Result.ResultPlaylistSuccess(playlistApiResponse);
+                syncDownMutableLiveData.postValue(result);
+                break;
+            case 1:
+                //saveUserYTData part 2
+                userDataRemoteDataSource.saveUserPlaylists(playlistApiResponse.getPlaylistList(), idToken);
+                playlistLocalDataSource.getAllVideos();
+                break;
+            case 2:
+                //getUserYTData part 3
+                userDataRemoteDataSource.getUserVideos(idToken);
+                break;
+        }
+        //syncMutableLiveData.postValue(new Result.GenericSuccess());
+
     }
 
     @Override
@@ -182,13 +219,24 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Pl
     }
 
     @Override
-    public void onSuccessFromLocalVideoList(PlaylistItemApiResponse playlistItemApiResponse) {
-
+    public void onSuccessFromLocalVideoList(PlaylistItemApiResponse playlistItemApiResponse, int type) {
+        switch(type){
+            case 0:
+                //saveUserYTData part 3
+                userDataRemoteDataSource.saveUserVideos(playlistItemApiResponse.getVideoList(), idToken);
+                syncUplodeMutableLiveData.postValue(new Result.GenericSuccess());
+                idToken = null;
+                break;
+            case 1:
+                //getUserYTData part 5
+                syncDownMutableLiveData.postValue(new Result.GenericSuccess());
+                break;
+        }
     }
 
     @Override
     public void onFailureFromLocalVideoList(Exception exception) {
-
+        syncUplodeMutableLiveData.postValue(new Result.Error(exception.getMessage()));
     }
 
     @Override

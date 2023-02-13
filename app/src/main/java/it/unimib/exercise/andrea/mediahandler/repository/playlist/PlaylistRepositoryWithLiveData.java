@@ -40,10 +40,11 @@ public class PlaylistRepositoryWithLiveData implements IPlaylistRepositoryWithLi
         long currentTime = System.currentTimeMillis();
 
         //todo check if database empty, if so retrieve data from remote
-        if(currentTime - lastUpdate > FRESH_TIMEOUT)
+        if(currentTime - lastUpdate > FRESH_TIMEOUT) {
             playlistRemoteDataSource.getPlaylistList();
-        else
-            playlistLocalDataSource.getPlaylistList();
+        }else {
+            playlistLocalDataSource.getPlaylistList(0);
+        }
         return playlistsListMutableLiveData;
     }
 
@@ -95,7 +96,7 @@ public class PlaylistRepositoryWithLiveData implements IPlaylistRepositoryWithLi
     @Override
     public void onSuccessFromRemotePlaylistList(PlaylistApiResponse playlistApiResponse) {
         Log.d(TAG, "onSuccessFromRemote: ");
-        playlistLocalDataSource.insertPlaylistsList(playlistApiResponse);
+        playlistLocalDataSource.insertPlaylistsList(playlistApiResponse, true, 0);
     }
 
     @Override
@@ -107,7 +108,7 @@ public class PlaylistRepositoryWithLiveData implements IPlaylistRepositoryWithLi
     }
 
     @Override
-    public void onSuccessFromLocalPlaylistList(PlaylistApiResponse playlistApiResponse) {
+    public void onSuccessFromLocalPlaylistList(PlaylistApiResponse playlistApiResponse, int type) {
         Log.d(TAG, "onSuccessFromLocalPlaylistList: ");
         Result.ResultPlaylistSuccess result = new Result.ResultPlaylistSuccess(playlistApiResponse);
         playlistsListMutableLiveData.postValue(result);
@@ -125,10 +126,13 @@ public class PlaylistRepositoryWithLiveData implements IPlaylistRepositoryWithLi
     public void onSuccessFromLocalLastUpdate(Long lastUpdate, String playlistId) {
         Log.d(TAG, "onSuccessFromLocalLastUpdate: last update of playlist: " + lastUpdate);
         long currentTime = System.currentTimeMillis();
-        if(currentTime - lastUpdate > FRESH_TIMEOUT)
+        if(currentTime - lastUpdate > FRESH_TIMEOUT) {
+            Log.d(TAG, "fetchVideoList: get from Local");
             playlistRemoteDataSource.getVideoList(playlistId);
-        else
+        }else{
+            Log.d(TAG, "fetchVideoList: get from Remote");
             playlistLocalDataSource.getVideoList(playlistId);
+        }
     }
 
     //PlaylistItem callback
@@ -136,7 +140,7 @@ public class PlaylistRepositoryWithLiveData implements IPlaylistRepositoryWithLi
     public void onSuccessFromRemoteVideoList(PlaylistItemApiResponse response, String playlistId) {
         Log.d(TAG, "onSuccessFromRemoteVideoList: ");
         //Result.Success result = new Result.Success(new PlaylistApiResponse(playlistList));
-        playlistLocalDataSource.insertVideoList(response, playlistId);
+        playlistLocalDataSource.insertVideoList(response, playlistId, true, 0);
     }
 
     @Override
@@ -147,7 +151,7 @@ public class PlaylistRepositoryWithLiveData implements IPlaylistRepositoryWithLi
     }
 
     @Override
-    public void onSuccessFromLocalVideoList(PlaylistItemApiResponse response) {
+    public void onSuccessFromLocalVideoList(PlaylistItemApiResponse response, int type) {
         Log.d(TAG, "onSuccessFromLocalVideoList: ");
         Result.ResultPlaylistItemSuccess result =
                 new Result.ResultPlaylistItemSuccess(new PlaylistItemApiResponse(response.getVideoList()));

@@ -10,14 +10,14 @@
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
-            android:id="@+id/action_fragment_login_to_activityMain"
-            app:destination="@id/activityMain" />
-        <action
             android:id="@+id/action_fragment_login_to_fragmen_login_google"
             app:destination="@id/fragmen_login_google" />
         <action
             android:id="@+id/action_fragment_login_to_fragmentSignUp"
             app:destination="@id/fragmentSignUp" />
+        <action
+            android:id="@+id/action_fragment_login_to_fragmentLoading"
+            app:destination="@id/fragmentLoading" />
     </fragment>
     <activity
         android:id="@+id/activityMain"
@@ -30,11 +30,6 @@
         android:label="fragment_login_google"
         tools:layout="@layout/fragment_login_google" />
     <fragment
-        android:id="@+id/fragmentPlayListList"
-        android:name="it.unimib.exercise.andrea.mediahandler.ui.main.FragmentPlayListList"
-        android:label="fragment_playlist_list"
-        tools:layout="@layout/fragment_playlist_list" />
-    <fragment
         android:id="@+id/fragmentSignUp"
         android:name="it.unimib.exercise.andrea.mediahandler.ui.welcome.FragmentSignUp"
         android:label="fragment_sign_up"
@@ -42,6 +37,18 @@
         <action
             android:id="@+id/action_fragmentSignUp_to_activityMain2"
             app:destination="@id/activityMain" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentLoading"
+        android:name="it.unimib.exercise.andrea.mediahandler.ui.welcome.FragmentLoading"
+        android:label="fragment_loading"
+        tools:layout="@layout/fragment_loading" >
+        <action
+            android:id="@+id/action_fragmentLoading_to_activityMain"
+            app:destination="@id/activityMain" />
+        <argument
+            android:name="idToken"
+            app:argType="string" />
     </fragment>
 
 </navigation>

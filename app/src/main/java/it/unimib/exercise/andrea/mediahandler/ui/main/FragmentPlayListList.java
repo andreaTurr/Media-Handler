@@ -184,7 +184,7 @@ public class FragmentPlayListList extends Fragment {
                 Snackbar.make(view, errorMessagesUtil.getErrorMessage(((
                         Result.Error)resultPlaylist).getMessage()),
                         Snackbar.LENGTH_SHORT).show();
-                Log.d(TAG, "observe: not success");
+                Log.d(TAG, "observe: not success playlistList");
             }
         });
     }

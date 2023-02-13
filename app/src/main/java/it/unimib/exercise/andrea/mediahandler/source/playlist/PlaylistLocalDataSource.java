@@ -6,6 +6,7 @@ import static it.unimib.exercise.andrea.mediahandler.util.Constants.SHARED_PREFE
 
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import it.unimib.exercise.andrea.mediahandler.database.PlaylistListDao;
@@ -35,9 +36,10 @@ public class PlaylistLocalDataSource extends BasePlaylistLocalDataSource {
      * Gets the playlist from the local database.
      * The method is executed with an ExecutorService defined in YoutubeRoomDatabase class
      * because the database access cannot been executed in the main thread.
+     * @param responseType
      */
     @Override
-    public void getPlaylistList() {
+    public void getPlaylistList(int responseType) {
         Log.d(TAG, "getPlaylist: local");
         RoomDatabase.databaseWriteExecutor.execute(() ->{
             List<Playlist> list = playlistListDao.getAllPlaylists();
@@ -47,7 +49,7 @@ public class PlaylistLocalDataSource extends BasePlaylistLocalDataSource {
                 PlaylistApiResponse playlistApiResponse = new PlaylistApiResponse(list);
                 PlaylistApiResponse playlistItemApiResponse =
                         new PlaylistApiResponse(list);
-                playlistCallback.onSuccessFromLocalPlaylistList(playlistItemApiResponse);
+                playlistCallback.onSuccessFromLocalPlaylistList(playlistItemApiResponse, responseType );
             }else{
                 sharedPreferencesUtil.writeStringData(SHARED_PREFERENCES_FILE_NAME,
                         LAST_UPDATE_PLAYLIST_LIST, "0");
@@ -59,13 +61,14 @@ public class PlaylistLocalDataSource extends BasePlaylistLocalDataSource {
     }
 //todo update method to handle a response containing multiple api's calls content
     /**
-     *
-     * @param playlistApiResponse this response should contain the list of ALL playlist of the
+     *  @param playlistApiResponse this response should contain the list of ALL playlist of the
      *                            channel, so it could contain multiple api's calls content
+     * @param setLastUpdate
+     * @param responseType
      *
      */
     @Override
-    public void insertPlaylistsList(PlaylistApiResponse playlistApiResponse) {
+    public void insertPlaylistsList(PlaylistApiResponse playlistApiResponse, boolean setLastUpdate, int responseType) {
         RoomDatabase.databaseWriteExecutor.execute(() -> {
             //todo handle playlist deleted by user and not in user account anymore
             List<Playlist> newPlaylistList = playlistApiResponse.getPlaylistList();
@@ -88,14 +91,16 @@ public class PlaylistLocalDataSource extends BasePlaylistLocalDataSource {
             }
 
             playlistListDao.insertNewPlaylistList(newPlaylistList);
-            Log.d(TAG, "insertPlaylists: " + newPlaylistList);
-            sharedPreferencesUtil.writeStringData(SHARED_PREFERENCES_FILE_NAME,
-                    LAST_UPDATE_PLAYLIST_LIST, String.valueOf(System.currentTimeMillis()));
+            Log.d(TAG, "insertPlaylists: " + newPlaylistList + ", setLastUpdate: " + setLastUpdate);
+            if(setLastUpdate){
+                sharedPreferencesUtil.writeStringData(SHARED_PREFERENCES_FILE_NAME,
+                        LAST_UPDATE_PLAYLIST_LIST, String.valueOf(System.currentTimeMillis()));
+            }
 
             //update response with playlists saved
             newPlaylistList = playlistListDao.getAllPlaylists();
             playlistApiResponse.setPlaylistList(newPlaylistList);
-            playlistCallback.onSuccessFromLocalPlaylistList(playlistApiResponse);
+            playlistCallback.onSuccessFromLocalPlaylistList(playlistApiResponse, responseType);
         });
     }
 
@@ -117,18 +122,23 @@ public class PlaylistLocalDataSource extends BasePlaylistLocalDataSource {
             PlaylistItemApiResponse playlistItemApiResponse = new PlaylistItemApiResponse(list);
             Log.d(TAG, "getVideoList: " + list);
             if (!list.isEmpty()) //check if database empty
-                playlistCallback.onSuccessFromLocalVideoList(playlistItemApiResponse);
+                playlistCallback.onSuccessFromLocalVideoList(playlistItemApiResponse, 0);
             else
                 playlistCallback.onFailureFromLocalVideoList(new Exception(LOCAL_SOURCE_ERROR));
         });
     }
 
     @Override
-    public void insertVideoList(PlaylistItemApiResponse playlistItemApiResponse, String playlistId) {
+    public void insertVideoList(PlaylistItemApiResponse playlistItemApiResponse, String playlistId, boolean setUpdateTime, int responseType) {
         RoomDatabase.databaseWriteExecutor.execute(() -> {
-            Log.d(TAG, "insertVideoList: ");
+            Log.d(TAG, "insertVideoList: " + playlistItemApiResponse);
+            List<Video> oldVideoList = new ArrayList<Video>();
+            if (playlistId.equalsIgnoreCase("")){
+                oldVideoList = playlistListDao.getAllVideos();
+            }else{
+                oldVideoList = playlistListDao.getVideoListFromPlaylistId(playlistId);
+            }
             List<Video> newVideoList = playlistItemApiResponse.getVideoList();
-            List<Video> oldVideoList = playlistListDao.getVideoListFromPlaylistId(playlistId);
 
             //delete video not present anymore
             for (Video video:
@@ -139,7 +149,11 @@ public class PlaylistLocalDataSource extends BasePlaylistLocalDataSource {
                 }
             }
             //update already present video
-            oldVideoList = playlistListDao.getVideoListFromPlaylistId(playlistId);
+            if (playlistId.equalsIgnoreCase("")){
+                oldVideoList = playlistListDao.getAllVideos();
+            }else{
+                oldVideoList = playlistListDao.getVideoListFromPlaylistId(playlistId);
+            }
             for (Video video:
                     newVideoList) {
                 if(oldVideoList.contains(video)){
@@ -147,18 +161,26 @@ public class PlaylistLocalDataSource extends BasePlaylistLocalDataSource {
                     Log.d(TAG, "insertVideoList: updated " + video);
                 }
             }
-
+            //add video that are new, the one already present should be ignored
             playlistListDao.insertNewVideoList(newVideoList);
-            //update lastUpdate
-            Playlist playlist = playlistListDao.getPlaylist(playlistId);
-            playlist.setLastUpdate(System.currentTimeMillis());
-            playlistListDao.updatePlaylist(playlist);
+            if(setUpdateTime){
+                //update lastUpdate
+                Playlist playlist = playlistListDao.getPlaylist(playlistId);
+                playlist.setLastUpdate(System.currentTimeMillis());
+                playlistListDao.updatePlaylist(playlist);
+            }
+
 
             //get video in playlist, taken from local to have correct values
-            newVideoList = playlistListDao.getVideoListFromPlaylistId(playlistId);
+            if (playlistId.equalsIgnoreCase("")){
+                newVideoList = playlistListDao.getAllVideos();
+            }else{
+                newVideoList = playlistListDao.getVideoListFromPlaylistId(playlistId);
+            }
+            //newVideoList = playlistListDao.getVideoListFromPlaylistId(playlistId);
             playlistItemApiResponse.setVideoList(newVideoList);
             //callback
-            playlistCallback.onSuccessFromLocalVideoList(playlistItemApiResponse);
+            playlistCallback.onSuccessFromLocalVideoList(playlistItemApiResponse, responseType);
         });
     }
 
@@ -169,7 +191,7 @@ public class PlaylistLocalDataSource extends BasePlaylistLocalDataSource {
             playlistListDao.updateVideo(video);
             List<Video> list = playlistListDao.getVideoListFromPlaylistId(video.getSnippet().getPlaylistId());
             PlaylistItemApiResponse playlistItemApiResponse = new PlaylistItemApiResponse(list);
-            playlistCallback.onSuccessFromLocalVideoList(playlistItemApiResponse);
+            playlistCallback.onSuccessFromLocalVideoList(playlistItemApiResponse, 0);
         });
     }
 
@@ -199,6 +221,20 @@ public class PlaylistLocalDataSource extends BasePlaylistLocalDataSource {
             if (newsCounter == newsDeletedNews) {
                 sharedPreferencesUtil.deleteAll(SHARED_PREFERENCES_FILE_NAME);
                 playlistCallback.onSuccessDeletion();
+            }
+
+        });
+    }
+
+    @Override
+    public void getAllVideos() {
+        RoomDatabase.databaseWriteExecutor.execute(() -> {
+            List<Video> list = playlistListDao.getAllVideos();
+            if (!list.isEmpty()){
+                PlaylistItemApiResponse playlistItemApiResponse = new PlaylistItemApiResponse(list);
+                playlistCallback.onSuccessFromLocalVideoList(playlistItemApiResponse, 0);
+            }else{
+                playlistCallback.onFailureFromLocalVideoList(new Exception(LOCAL_SOURCE_ERROR));
             }
 
         });

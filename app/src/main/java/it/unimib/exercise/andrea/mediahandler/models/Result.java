@@ -13,7 +13,7 @@ public abstract class Result {
         if (this instanceof ResultVideoDurationSuccess || this instanceof ResultPlaylistSuccess ||
                 this instanceof ResultVideoSuccess || this instanceof ResultLocalVideosSuccess ||
                 this instanceof ResultLocalAudiosSuccess || this instanceof ResultPlaylistItemSuccess ||
-                this instanceof UserResponseSuccess) {
+                this instanceof UserResponseSuccess || this instanceof GenericSuccess) {
             return true;
         } else {
             return false;
@@ -88,6 +88,10 @@ public abstract class Result {
         public User getData() {
             return user;
         }
+    }
+
+    public static final class GenericSuccess extends Result {
+        public GenericSuccess() {}
     }
 
     public static final class Error extends Result {
