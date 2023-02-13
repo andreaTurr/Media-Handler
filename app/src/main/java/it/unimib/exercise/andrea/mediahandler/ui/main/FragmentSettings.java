@@ -19,11 +19,15 @@ import android.view.ViewGroup;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import net.openid.appauth.AuthState;
+import net.openid.appauth.AuthorizationService;
+
 import it.unimib.exercise.andrea.mediahandler.R;
 import it.unimib.exercise.andrea.mediahandler.databinding.FragmentSettingsBinding;
 import it.unimib.exercise.andrea.mediahandler.repository.user.IUserRepository;
 import it.unimib.exercise.andrea.mediahandler.ui.welcome.ViewModelFactoryUser;
 import it.unimib.exercise.andrea.mediahandler.ui.welcome.ViewModelUser;
+import it.unimib.exercise.andrea.mediahandler.util.AuthStateManager;
 import it.unimib.exercise.andrea.mediahandler.util.ServiceLocator;
 
 /**
@@ -35,6 +39,8 @@ public class FragmentSettings extends Fragment {
     private ViewModelUser userViewModel;
     private FragmentSettingsBinding fragmentSettingsBinding;
     private ViewModelPlaylist viewModelPlaylist;
+    private AuthorizationService mAuthService = null ;
+    private AuthStateManager mStateManager = null;
 
     public FragmentSettings() {
         // Required empty public constructor
@@ -74,6 +80,8 @@ public class FragmentSettings extends Fragment {
         });
 
         fragmentSettingsBinding.buttonLogout.setOnClickListener(v -> {
+            mStateManager = AuthStateManager.getInstance(getActivity()) ;
+            mStateManager.replace(new AuthState());
             userViewModel.logout().observe(getViewLifecycleOwner(), result -> {
                 Log.d(TAG, "onViewCreated: result logout" );
                 if (result.isSuccess()) {
@@ -88,22 +96,20 @@ public class FragmentSettings extends Fragment {
             });
         });
 
-        fragmentSettingsBinding.buttonSync.setOnClickListener(view1 -> {
-            userViewModel.saveYTData().observe(getViewLifecycleOwner(), result -> {
+        fragmentSettingsBinding.buttonSync.setOnClickListener(view1 -> userViewModel.saveYTData().observe(getViewLifecycleOwner(), result -> {
 
-                if (result.isSuccess()) {
-                    Log.d(TAG, "savePlaylistList: result success" );
-                    Snackbar.make(view,
-                            requireActivity().getString(R.string.sync_success_upl),
-                            Snackbar.LENGTH_SHORT).show();
-                } else {
-                    Log.d(TAG, "savePlaylistList: result error" );
-                    Snackbar.make(view,
-                            requireActivity().getString(R.string.sync_error_upl),
-                            Snackbar.LENGTH_SHORT).show();
-                }
-            });
-        });
+            if (result.isSuccess()) {
+                Log.d(TAG, "savePlaylistList: result success" );
+                Snackbar.make(view,
+                        requireActivity().getString(R.string.sync_success_upl),
+                        Snackbar.LENGTH_SHORT).show();
+            } else {
+                Log.d(TAG, "savePlaylistList: result error" );
+                Snackbar.make(view,
+                        requireActivity().getString(R.string.sync_error_upl),
+                        Snackbar.LENGTH_SHORT).show();
+            }
+        }));
     }
 
     @Override
