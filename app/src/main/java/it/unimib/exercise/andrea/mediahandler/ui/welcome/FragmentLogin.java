@@ -146,9 +146,10 @@ public class FragmentLogin extends Fragment {
         userLocal = userViewModel.getLoggedUser();
         progressIndicator = view.findViewById(R.id.loading);
         if (userLocal != null) {
+            Log.d(TAG, "onViewCreated: " + userLocal.getIdToken());
             FragmentLoginDirections.ActionFragmentLoginToFragmentLoading action =
                     FragmentLoginDirections.actionFragmentLoginToFragmentLoading(userLocal.getIdToken());
-            Navigation.findNavController(requireView()).navigate(action);
+            Navigation.findNavController(view).navigate(action);
             //Navigation.findNavController(requireView()).navigate(R.id.action_fragment_login_to_fragmentLoading);
         }
 

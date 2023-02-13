@@ -43,7 +43,7 @@
     <string name="check_login_data_message">Check the data you inserted</string>
     <string name="error_user_collision_message">The email address is already in use by another account</string>
     <string name="logout">Logout</string>
-    <string name="SyncButton">Synchronize</string>
+    <string name="SyncButton">Synchronize to Server</string>
     <string name="sync_success_upl">Synchronization upload successfull</string>
     <string name="sync_error_upl">Synchronization upload error</string>
     <string name="sync_success_dwn">Synchronization download successfull</string>

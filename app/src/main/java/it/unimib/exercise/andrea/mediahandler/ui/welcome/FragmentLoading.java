@@ -32,7 +32,7 @@ import it.unimib.exercise.andrea.mediahandler.util.ServiceLocator;
  */
 public class FragmentLoading extends Fragment {
     private static final String TAG = FragmentLoading.class.getSimpleName();
-    private LinearProgressIndicator progressIndicator;
+    private com.google.android.material.progressindicator.CircularProgressIndicator progressIndicator;
     private ViewModelUser userViewModel;
 
 
@@ -64,7 +64,7 @@ public class FragmentLoading extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         String idToken = FragmentLoadingArgs.fromBundle(getArguments()).getIdToken();
-        progressIndicator = view.findViewById(R.id.loading);
+        progressIndicator = view.findViewById(R.id.loadingCircularProgressIndicator);
         retrieveUserInformationAndStartActivity(idToken);
     }
 
@@ -84,7 +84,7 @@ public class FragmentLoading extends Fragment {
                                 requireActivity().getString(R.string.sync_error_dwn),
                                 Snackbar.LENGTH_SHORT).show();
                     }
-                    progressIndicator.setVisibility(View.GONE);
+                    //progressIndicator.setVisibility(View.GONE);
                     Navigation.findNavController(requireView()).navigate(R.id.action_fragmentLoading_to_activityMain);
                 }
         );
