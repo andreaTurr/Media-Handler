@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
@@ -20,7 +21,6 @@ import android.view.ViewGroup;
 import com.google.android.material.snackbar.Snackbar;
 
 import net.openid.appauth.AuthState;
-import net.openid.appauth.AuthorizationService;
 
 import it.unimib.exercise.andrea.mediahandler.R;
 import it.unimib.exercise.andrea.mediahandler.databinding.FragmentSettingsBinding;
@@ -38,8 +38,6 @@ public class FragmentSettings extends Fragment {
     private static final String TAG = FragmentSettings.class.getSimpleName();
     private ViewModelUser userViewModel;
     private FragmentSettingsBinding fragmentSettingsBinding;
-    private ViewModelPlaylist viewModelPlaylist;
-    private AuthorizationService mAuthService = null ;
     private AuthStateManager mStateManager = null;
 
     public FragmentSettings() {
@@ -57,7 +55,7 @@ public class FragmentSettings extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater  inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         fragmentSettingsBinding = FragmentSettingsBinding.inflate(inflater, container, false);
@@ -80,20 +78,24 @@ public class FragmentSettings extends Fragment {
         });
 
         fragmentSettingsBinding.buttonLogout.setOnClickListener(v -> {
-            mStateManager = AuthStateManager.getInstance(getActivity()) ;
-            mStateManager.replace(new AuthState());
-            userViewModel.logout().observe(getViewLifecycleOwner(), result -> {
-                Log.d(TAG, "onViewCreated: result logout" );
-                if (result.isSuccess()) {
-                    Log.d(TAG, "onViewCreated: success logout");
-                    Navigation.findNavController(view).navigate(
-                            R.id.action_fragment_settings_to_activityWelcome);
-                } else {
-                    Snackbar.make(view,
-                            requireActivity().getString(R.string.unexpected_error),
-                            Snackbar.LENGTH_SHORT).show();
-                }
-            });
+            FragmentActivity activity = getActivity();
+            if (activity != null){
+                mStateManager = AuthStateManager.getInstance(activity) ;
+                mStateManager.replace(new AuthState());
+                userViewModel.logout().observe(getViewLifecycleOwner(), result -> {
+                    Log.d(TAG, "onViewCreated: result logout" );
+                    if (result.isSuccess()) {
+                        Log.d(TAG, "onViewCreated: success logout");
+                        Navigation.findNavController(view).navigate(
+                                R.id.action_fragment_settings_to_activityWelcome);
+                    } else {
+                        Snackbar.make(view,
+                                requireActivity().getString(R.string.unexpected_error),
+                                Snackbar.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
         });
 
         fragmentSettingsBinding.buttonSync.setOnClickListener(view1 -> userViewModel.saveYTData().observe(getViewLifecycleOwner(), result -> {
